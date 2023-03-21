@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 23:27:34 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/20 00:12:10 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/21 09:45:50 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,10 @@
 
 int	cub_file_parser(t_game *g)
 {
-	char	**ext;
-	int		i;
-
-	i = cub_count_occurences(g->map.file.path, '.');
-	if (!i)
-		return (cub_errors_setter(g, EXTENSION_NO_OCCUR));
-	if (i > 1 && !(i == 2 && g->map.file.path[0] == '.'))
-		return (cub_errors_setter(g, EXTENSION_MULTIPLE));
-	ext = ft_split(g->map.file.path, '.');
-	if (!ext)
-		return (cub_errors_setter(g, ERR_MALLOC));
-	i = -1;
-	while (ext[++i])
-		;
-	if (ft_strncmp(ext[i - 1], "cub", 4))
-		return (cub_free_double_ptr((void **) ext)
-			+ cub_errors_setter(g, EXTENSION_INVALID));
-	cub_free_double_ptr((void **) ext);
+	if (cub_check_disponibility(g))
+		return (RETURN_FAILURE);
+	if (cub_check_extension(g))
+		return (RETURN_FAILURE);
 	if (cub_parse_config(g))
 		return (RETURN_FAILURE);
 	return (RETURN_SUCCESS);
@@ -39,7 +25,40 @@ int	cub_file_parser(t_game *g)
 
 int	cub_parse_config(t_game *g)
 {
-	(void) g;
-	ft_printf("Parsing config file...\n");
+	char	*line;
+
+	while (true)
+	{
+		line = get_next_line(g->map.file.fd);
+		if (!line)
+			break ;
+		if (cub_file_line_empty(line))
+		{
+			if (g->parsing.is_map)
+				return (cub_free(line), cub_errors_setter(g, MAP_EMPTY_LINE));
+			cub_free(line);
+			continue ;
+		}
+		cub_map_check(g);
+		if (cub_file_line_parse(g, line))
+			return (cub_free(line), RETURN_FAILURE);
+		free(line);
+	}
+	return (RETURN_SUCCESS);
+}
+
+int	cub_file_line_parse(t_game *g, char *line)
+{
+	char	**split;
+	
+	if (g->parsing.is_map)
+		return (cub_map_parse(g, line));
+	line[ft_strlen(line) - 1] = 0;
+	split = ft_split(line, " \t\n");
+	if (!split)
+		return (cub_errors_setter(g, ERR_MALLOC));
+	if (cub_file_line_parse_identifier(g, split))
+		return (cub_free_double_ptr((void **) split), RETURN_FAILURE);
+	cub_free_double_ptr((void **) split);
 	return (RETURN_SUCCESS);
 }

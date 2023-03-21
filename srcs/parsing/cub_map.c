@@ -1,34 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   cub_map.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/19 21:40:50 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/21 11:09:18 by absalhi          ###   ########.fr       */
+/*   Created: 2023/03/20 21:28:45 by absalhi           #+#    #+#             */
+/*   Updated: 2023/03/21 00:18:57 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	cub_print_parsing(t_game *g)
+int	cub_map_init(t_game *g, char *line)
 {
 	(void) g;
-	printf("");
+	(void) line;
+	return (RETURN_SUCCESS);
 }
 
-int	main(int argc, char **argv)
+int	cub_map_parse(t_game *g, char *line)
 {
-	t_game	g;
+	(void) g;
+	(void) line;
+	return (RETURN_SUCCESS);
+}
 
-	ft_bzero(&g, sizeof(t_game));
-	if (argc != 2)
-		cub_errors_exit(&g, "\tUsage:\t./cub3D [filename].cub");
-	if (cub_parser(&g, argv[1]))
-		cub_errors_exit(&g, g.error.message);
-	if (LEAKS)
-		system("leaks cub3D");
-	
-	return (EXIT_SUCCESS);
+int	cub_map_check(t_game *g)
+{
+	if (g->parsing.has_north && g->parsing.has_south && g->parsing.has_west
+		&& g->parsing.has_east && g->parsing.has_floor && g->parsing.has_ceiling)
+		g->parsing.is_map = true;
+	return (RETURN_SUCCESS);
 }

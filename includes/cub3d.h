@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/20 00:16:00 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/21 11:05:36 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,14 @@
 
 # include <stdio.h>
 # include <fcntl.h>
+# include <errno.h>
 # include <mlx.h>
 
 # include "libft.h"
 # include "structs.h"
 # include "errors.h"
+
+# define LEAKS 0
 
 # define RETURN_FAILURE 1
 # define RETURN_SUCCESS 0
@@ -85,6 +88,28 @@ void	cub_init_game_struct(t_game *g, char *filename);
 */
 int		cub_file_parser(t_game *g);
 int		cub_parse_config(t_game *g);
+int		cub_file_line_parse(t_game *g, char *line);
+
+/*
+** cub_file_checker.c
+*/
+int		cub_check_disponibility(t_game *g);
+int		cub_check_extension(t_game *g);
+
+/*
+** cub_file_line.c
+*/
+bool	cub_file_line_empty(char *line);
+int		cub_file_line_parse_identifier(t_game *g, char **line);
+int		cub_parse_texture(t_game *g, char **line, char **t, bool *has_t);
+int		cub_parse_color(t_game *g, char **line, t_color *c, bool *has_c);
+
+/*
+** cub_map.c
+*/
+int		cub_map_init(t_game *g, char *line);
+int		cub_map_parse(t_game *g, char *line);
+int		cub_map_check(t_game *g);
 
 /* --------------------------- LIBCUB --------------------------- */
 

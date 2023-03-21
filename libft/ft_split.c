@@ -3,16 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: absalhi <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 20:14:15 by absalhi           #+#    #+#             */
-/*   Updated: 2022/10/15 17:31:58 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/20 23:30:42 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_countwords(char const *s, char delimiter)
+static int	ft_is_delimiter(char c, char const *charset)
+{
+	int	i;
+
+	i = -1;
+	while (charset[++i])
+		if (c == charset[i])
+			return (1);
+	return (0);
+}
+
+static int	ft_countwords(char const *s, char const *charset)
 {
 	int	i;
 	int	new;
@@ -25,7 +36,7 @@ static int	ft_countwords(char const *s, char delimiter)
 	i = -1;
 	while (s[++i])
 	{
-		if (s[i] != delimiter)
+		if (!ft_is_delimiter(s[i], charset))
 		{
 			if (new)
 				words++;
@@ -37,7 +48,7 @@ static int	ft_countwords(char const *s, char delimiter)
 	return (words);
 }
 
-static char	*ft_strdupi(const char *s, char c, unsigned int *index)
+static char	*ft_strdupi(const char *s, char const *set, unsigned int *index)
 {
 	char	*minitab;
 	int		i;
@@ -45,13 +56,13 @@ static char	*ft_strdupi(const char *s, char c, unsigned int *index)
 
 	len = 0;
 	i = (*index) - 1;
-	while (s[++i] && s[i] != c)
+	while (s[++i] && !ft_is_delimiter(s[i], set))
 		len++;
 	minitab = (char *) ft_calloc(len + 1, sizeof(char));
 	if (!minitab)
 		return (NULL);
 	i = 0;
-	while (s[(*index)] && s[(*index)] != c)
+	while (s[(*index)] && !ft_is_delimiter(s[(*index)], set))
 		minitab[i++] = s[(*index)++];
 	return (minitab);
 }
@@ -66,14 +77,14 @@ static void	ft_freetab(char **tab)
 	free(tab);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char const *charset)
 {
 	char			**tab;
 	int				words;
 	int				current;
 	unsigned int	i;
 
-	words = ft_countwords(s, c);
+	words = ft_countwords(s, charset);
 	tab = (char **) ft_calloc(words + 1, sizeof(char *));
 	if (!tab)
 		return (NULL);
@@ -81,10 +92,10 @@ char	**ft_split(char const *s, char c)
 	i = 0;
 	while (s && current < words)
 	{
-		while (s[i] && s[i] == c)
+		while (s[i] && ft_is_delimiter(s[i], charset))
 			if (!s[i++])
 				break ;
-		tab[current] = ft_strdupi(s, c, &i);
+		tab[current] = ft_strdupi(s, charset, &i);
 		if (!tab[current++])
 		{
 			ft_freetab(tab);

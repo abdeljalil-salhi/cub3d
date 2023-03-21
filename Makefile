@@ -6,7 +6,7 @@
 #    By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/19 21:24:26 by absalhi           #+#    #+#              #
-#    Updated: 2023/03/20 00:16:21 by absalhi          ###   ########.fr        #
+#    Updated: 2023/03/21 09:47:23 by absalhi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,8 @@ LIBCUB		=	$(addprefix libcub/, $(_LIBCUB))
 _UTILS		=	cub_errors.c	cub_free.c
 UTILS		=	$(addprefix utils/, $(_UTILS))
 
-_PARSING	=	cub_parser.c	cub_file_parser.c
+_PARSING	=	cub_parser.c	cub_file_parser.c	cub_file_checker.c	\
+				cub_file_line.c	cub_map.c
 PARSING		=	$(addprefix parsing/, $(_PARSING))
 
 _SRCS		=	$(LIBCUB) $(UTILS) $(PARSING)
@@ -42,8 +43,8 @@ OBJS		=	$(SRCS:.c=.o)
 all			:	$(NAME)
 
 $(NAME)		:	$(OBJS)
-				@echo $(ITALIC)$(GRAY) "     - Compiling $(NAME)..." $(NONE)
 				@make -C libft/
+				@echo $(ITALIC)$(GRAY) "     - Compiling $(NAME)..." $(NONE)
 				@$(CC) $(CFLAGS) $(MXFLAGS) -L libft/ -lft $(OBJS) -o $(NAME)
 				@echo $(GREEN)"- Compiled -"$(NONE)
 
