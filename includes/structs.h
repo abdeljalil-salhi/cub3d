@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/20 22:08:52 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/22 14:28:22 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ typedef struct s_map
 {
 	t_file	file;
 	int		**arr;
+	int		width;
+	int		height;
 }	t_map;
 
 typedef struct s_error
@@ -61,12 +63,15 @@ typedef struct s_color
 typedef struct s_parsing
 {
 	bool	is_map;
+	bool	map_initialized;
 	bool	has_north;
 	bool	has_south;
 	bool	has_west;
 	bool	has_east;
 	bool	has_floor;
 	bool	has_ceiling;
+	int		lines_before_map;
+	int		lowest_indent;
 }	t_parsing;
 
 typedef struct s_assets
@@ -79,6 +84,11 @@ typedef struct s_assets
 	t_color	ceiling;
 }	t_assets;
 
+typedef struct s_player
+{
+	unsigned int	degree;
+}	t_player;
+
 typedef struct s_game
 {
 	void		*mlx;
@@ -87,6 +97,7 @@ typedef struct s_game
 	t_error		error;
 	t_parsing	parsing;
 	t_assets	assets;
+	t_player	player;
 	bool		paused;
 	bool		freeze;
 	bool		game_over;

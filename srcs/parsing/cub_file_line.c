@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 14:50:29 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/21 11:07:16 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/21 11:22:19 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	cub_parse_texture(t_game *g, char **line, char **t, bool *has_t)
 			return (cub_errors_setter(g, MAP_TEXTURE_UNKNOWN_ERROR));
 	}
 	close(fd);
-	*t = line[1];
+	*t = ft_strdup(line[1]);
 	*has_t = true;
 	return (RETURN_SUCCESS);
 }
