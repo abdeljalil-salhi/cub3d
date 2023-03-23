@@ -6,21 +6,46 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:40:50 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/22 10:24:16 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/23 17:27:03 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+static void	cub_print_map(t_game *g)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++i < g->map.height)
+	{
+		// printf("%d\t", i);
+		j = -1;
+		while (++j < g->map.width)
+		{
+			if (g->map.arr[i][j] == -1 || g->map.arr[i][j] == 0)
+				printf(" ");
+			else if (g->map.arr[i][j] == 2)
+				printf("P");
+			else
+				printf("%d", g->map.arr[i][j]);
+		}
+		printf("\n");
+	}
+}
+
 static void	cub_print_assets(t_game *g)
 {
-	printf("R : %d %d\n", g->win.width, g->win.height);
-	printf("NO: %s\n", g->assets.north);
-	printf("SO: %s\n", g->assets.south);
-	printf("WE: %s\n", g->assets.west);
-	printf("EA: %s\n", g->assets.east);
-	printf("F : %3d %3d %3d\n", g->assets.floor.r, g->assets.floor.g, g->assets.floor.b);
-	printf("C : %3d %3d %3d\n", g->assets.ceiling.r, g->assets.ceiling.g, g->assets.ceiling.b);
+	printf("R   : %d %d\n", g->win.width, g->win.height);
+	printf("NO  : %s\n", g->assets.north);
+	printf("SO  : %s\n", g->assets.south);
+	printf("WE  : %s\n", g->assets.west);
+	printf("EA  : %s\n", g->assets.east);
+	printf("F   : %3d %3d %3d\n", g->assets.floor.r, g->assets.floor.g, g->assets.floor.b);
+	printf("C   : %3d %3d %3d\n", g->assets.ceiling.r, g->assets.ceiling.g, g->assets.ceiling.b);
+	printf("MAP :\n");
+	cub_print_map(g);
 }
 
 static void	cub_free_memory(t_game *g)

@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 21:28:45 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/22 14:42:00 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/23 17:32:37 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,12 @@ int	cub_map_init(t_game *g)
 	lowest_indent = -1;
 	width = 0;
 	height = 0;
-	close(g->map.file.fd);
-	g->map.file.fd = open(g->map.file.path, O_RDONLY);
-	i = -1;
-	while (++i < g->parsing.lines_before_map)
-		free(get_next_line(g->map.file.fd));
 	while (true)
 	{
 		quick_line = get_next_line(g->map.file.fd);
+		height++;
 		if (!quick_line)
 			break ;
-		printf(GREEN "%s" RESET, quick_line);
 		if (cub_file_line_empty(quick_line))
 		{
 			free(quick_line);
@@ -43,16 +38,15 @@ int	cub_map_init(t_game *g)
 		i = 0;
 		while (quick_line[i] && quick_line[i] == ' ')
 			i++;
-		j = 0;
-		while (quick_line[j] && quick_line[i] != ' ' && quick_line[i] != '\n')
+		j = i;
+		while (quick_line[j] && quick_line[j] != ' ' && quick_line[j] != '\n')
 			j++;
-		if (j > width)
-			width = j;
+		if (j - i > width)
+			width = j - i;
 		if (lowest_indent == -1)
 			lowest_indent = i;
 		else if (i < lowest_indent)
 			lowest_indent = i;
-		height++;
 		free(quick_line);
 	}
 	g->parsing.lowest_indent = lowest_indent;
@@ -70,8 +64,9 @@ int	cub_map_init(t_game *g)
 			return (cub_errors_setter(g, FILE_UNKNOWN_ERROR));
 	}
 	i = -1;
-	while (++i < g->parsing.lines_before_map)
+	while (++i < g->parsing.lines_before_map + 1)
 		free(get_next_line(g->map.file.fd));
+	printf("lowest_indent: %d width: %d height: %d lines_before_map: %d\n", lowest_indent, width, height, g->parsing.lines_before_map);
 	g->map.arr = (int **) malloc(sizeof(int *) * g->map.height);
 	if (!g->map.arr)
 		return (cub_errors_setter(g, ERR_MALLOC));
@@ -81,14 +76,14 @@ int	cub_map_init(t_game *g)
 
 int	cub_map_parse(t_game *g, char *line)
 {
-	static int	i = -1;
+	static int	i = 0;
 	int			j;
 	int			k;
 
 	if (!g->parsing.map_initialized)
 		if (cub_map_init(g))
 			return (RETURN_FAILURE);
-	if (++i >= g->map.height)
+	if (i >= g->map.height + 1)
 		return (cub_errors_setter(g, MAP_INDEX_OUT_OF_RANGE));
 	g->map.arr[i] = (int *) malloc(sizeof(int) * g->map.width);
 	if (!g->map.arr[i])
@@ -132,6 +127,7 @@ int	cub_map_parse(t_game *g, char *line)
 		else
 			g->map.arr[i][j] = -1;
 	}
+	i++;
 	return (RETURN_SUCCESS);
 }
 
@@ -146,7 +142,7 @@ int	cub_map_check(t_game *g, char *line)
 		g->parsing.is_map = true;
 		g->parsing.lines_before_map = lines_before_map;
 	}
-	if (!g->parsing.map_initialized)
+	if (!g->parsing.is_map)
 		lines_before_map++;
 	return (RETURN_SUCCESS);
 }

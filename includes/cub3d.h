@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/22 14:32:38 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/23 17:19:52 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,11 @@ int		cub_parse_color(t_game *g, char **line, t_color *c, bool *has_c);
 int		cub_map_init(t_game *g);
 int		cub_map_parse(t_game *g, char *line);
 int		cub_map_check(t_game *g, char *line);
+
+/*
+** cub_check.c
+*/
+int		cub_check_map(t_game *g);
 
 /* --------------------------- LIBCUB --------------------------- */
 

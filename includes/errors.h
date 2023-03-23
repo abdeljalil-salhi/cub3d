@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 23:58:34 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/22 14:36:02 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/23 17:41:10 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,6 @@
 # define MAP_INVALID_COLOR_RANGE "Invalid color range in your config [#0-255]"
 # define MAP_INDEX_OUT_OF_RANGE "Indexed map out of range"
 # define MAP_INVALID_CHAR "Invalid character in your map"
+# define MAP_INVALID_BORDER "Invalid border in your map"
 
 #endif
