@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 23:03:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/23 17:18:49 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/23 23:08:00 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int	cub_parser(t_game *g, char *filename)
 	if (close(g->map.file.fd) == -1)
 		return (cub_errors_setter(g, "Failed to close config file"));
 	if (cub_check_map(g))
+		return (RETURN_FAILURE);
+	if (cub_check_occurences(g))
 		return (RETURN_FAILURE);
 	return (RETURN_SUCCESS);
 }

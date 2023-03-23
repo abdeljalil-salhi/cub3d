@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 17:19:06 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/23 18:13:16 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/23 23:23:52 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,19 @@ int	cub_check_map(t_game *g)
 				return (cub_errors_setter(g, MAP_INVALID_BORDER));
 		}
 	}
+	return (RETURN_SUCCESS);
+}
+
+int	cub_check_occurences(t_game *g)
+{
+	int	i;
+	int	occur;
+
+	occur = 0;
+	i = -1;
+	while (++i < g->map.height)
+		occur += cub_count_int_occurences(g->map.arr[i], g->map.width, 2);
+	if (occur != 1)
+		return (cub_errors_setter(g, MAP_MULTIPLE_PLAYERS));
 	return (RETURN_SUCCESS);
 }
