@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 23:58:34 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/23 23:23:37 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/24 00:49:13 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@
 # define ERR_MALLOC "Malloc failed"
 # define ERR_GNL "get_next_line failed"
 
-# define FILE_NOT_FOUND "UHH... Where is your config file ??"
-# define FILE_PERMISSION_DENIED "You don't have permission to read this file"
-# define FILE_UNKNOWN_ERROR "Error while opening your config file"
+# define CONFIG_NOT_FOUND "UHH... Where is your config file ??"
+
+# define FILE_NOT_FOUND "File not found"
+# define FILE_PERMISSION_DENIED "You don't have permission to read a file"
+# define FILE_UNKNOWN_ERROR "Error while opening a file"
 
 # define EXTENSION_NO_OCCUR "Where is your file extension mate ?? o.O"
 # define EXTENSION_MULTIPLE "WDYM multiple points in your filename ??"

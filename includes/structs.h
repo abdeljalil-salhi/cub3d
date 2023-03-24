@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/22 14:28:22 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/23 23:45:06 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,13 @@ typedef struct s_game
 	bool		game_over;
 	t_alloc		allocated;
 }	t_game;
+
+/* --------------------------- UTILS --------------------------- */
+
+typedef struct s_iterators
+{
+	int	i;
+	int	j;
+}	t_iterators;
 
 #endif

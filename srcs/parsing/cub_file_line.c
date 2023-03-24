@@ -6,38 +6,32 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 14:50:29 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/21 11:22:19 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/24 00:57:39 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-bool	cub_file_line_empty(char *line)
-{
-	int	i;
-
-	i = -1;
-	while (line[++i] == 32 || (line[i] >= 9 && line[i] <= 13))
-		;
-	if (line[i] == '\0' || line[i] == '\n')
-		return (true);
-	return (false);
-}
-
 int	cub_file_line_parse_identifier(t_game *g, char **line)
 {
 	if (ft_strncmp(line[0], "NO", 2) == 0)
-		return (cub_parse_texture(g, line, &g->assets.north, &g->parsing.has_north));
+		return (cub_parse_texture(g, line,
+				&g->assets.north, &g->parsing.has_north));
 	else if (ft_strncmp(line[0], "SO", 2) == 0)
-		return (cub_parse_texture(g, line, &g->assets.south, &g->parsing.has_south));
+		return (cub_parse_texture(g, line,
+				&g->assets.south, &g->parsing.has_south));
 	else if (ft_strncmp(line[0], "WE", 2) == 0)
-		return (cub_parse_texture(g, line, &g->assets.west, &g->parsing.has_west));
+		return (cub_parse_texture(g, line,
+				&g->assets.west, &g->parsing.has_west));
 	else if (ft_strncmp(line[0], "EA", 2) == 0)
-		return (cub_parse_texture(g, line, &g->assets.east, &g->parsing.has_east));
+		return (cub_parse_texture(g, line,
+				&g->assets.east, &g->parsing.has_east));
 	else if (ft_strncmp(line[0], "F", 1) == 0)
-		return (cub_parse_color(g, line, &g->assets.floor, &g->parsing.has_floor));
+		return (cub_parse_color(g, line,
+				&g->assets.floor, &g->parsing.has_floor));
 	else if (ft_strncmp(line[0], "C", 1) == 0)
-		return (cub_parse_color(g, line, &g->assets.ceiling, &g->parsing.has_ceiling));
+		return (cub_parse_color(g, line,
+				&g->assets.ceiling, &g->parsing.has_ceiling));
 	return (cub_errors_setter(g, MAP_INVALID_IDENTIFIER));
 }
 
@@ -52,78 +46,90 @@ int	cub_parse_texture(t_game *g, char **line, char **t, bool *has_t)
 		;
 	if (fd != 2)
 		return (cub_errors_setter(g, MAP_TEXTURE_UNKNOWN_ERROR));
-	fd = open(line[1], O_RDONLY);
-	if (fd == -1)
-	{
-		if (errno == EACCES)
-			return (cub_errors_setter(g, MAP_TEXTURE_PERMISSION));
-		else if (errno == ENOENT)
-			return (cub_errors_setter(g, MAP_TEXTURE_NOT_FOUND));
-		else
-			return (cub_errors_setter(g, MAP_TEXTURE_UNKNOWN_ERROR));
-	}
+	if (cub_file_open(g, &fd, line[1]))
+		return (RETURN_FAILURE);
 	close(fd);
 	*t = ft_strdup(line[1]);
 	*has_t = true;
 	return (RETURN_SUCCESS);
 }
 
-int	cub_parse_color(t_game *g, char **line, t_color *c, bool *has_c)
+typedef struct s_cub_parse_color
 {
-	char	**rgb;
-	char	*join;
-	char	*trim;
-	char	*tmp;
-	int		i;
-	int		j;
+	char		**rgb;
+	char		*join;
+	char		*trim;
+	char		*tmp;
+	t_iterators	it;
+}	t_cub_parse_color;
 
-	if (*has_c)
-		return (cub_errors_setter(g, MAP_DUPLICATE_IDENTIFIER));
-	join = ft_strdup("");
-	if (!join)
+static int	cub_parse_color_joiner(t_cub_parse_color *s, t_game *g,
+		char **line)
+{
+	s->join = ft_strdup("");
+	if (!s->join)
 		return (cub_errors_setter(g, ERR_MALLOC));
-	i = -1;
-	while (line[++i])
+	s->it.i = -1;
+	while (line[++s->it.i])
 	{
-		if (i == 0)
+		if (s->it.i == 0)
 			continue ;
 		else
 		{
-			tmp = join;
-			join = ft_strjoin(join, line[i]);
-			free(tmp);
+			s->tmp = s->join;
+			s->join = ft_strjoin(s->join, line[s->it.i]);
+			free(s->tmp);
 		}
 	}
-	rgb = ft_split(join, ",");
-	free(join);
-	if (!rgb)
+	s->rgb = ft_split(s->join, ",");
+	free(s->join);
+	if (!s->rgb)
 		return (cub_errors_setter(g, ERR_MALLOC));
-	i = -1;
-	while (rgb[++i])
+	return (RETURN_SUCCESS);
+}
+
+static int	cub_parse_color_helper(t_cub_parse_color *s, t_game *g)
+{
+	s->it.i = -1;
+	while (s->rgb[++s->it.i])
 		;
-	if (i != 3)
+	if (s->it.i != 3)
 		return (cub_errors_setter(g, MAP_INVALID_COLOR));
-	i = -1;
-	while (rgb[++i])
+	s->it.i = -1;
+	while (s->rgb[++s->it.i])
 	{
-		trim = ft_strtrim(rgb[i], " \t");
-		if (!trim)
-			return (cub_free_double_ptr((void **) rgb),
+		s->trim = ft_strtrim(s->rgb[s->it.i], " \t");
+		if (!s->trim)
+			return (cub_free_double_ptr((void **) s->rgb),
 				cub_errors_setter(g, ERR_MALLOC));
-		tmp = rgb[i];
-		rgb[i] = trim;
-		free(tmp);
-		j = -1;
-		while (rgb[i][++j])
-			if (!ft_isdigit(rgb[i][j]))
-				return (cub_free_double_ptr((void **) rgb),
+		s->tmp = s->rgb[s->it.i];
+		s->rgb[s->it.i] = s->trim;
+		free(s->tmp);
+		s->it.j = -1;
+		while (s->rgb[s->it.i][++s->it.j])
+			if (!ft_isdigit(s->rgb[s->it.i][s->it.j]))
+				return (cub_free_double_ptr((void **) s->rgb),
 					cub_errors_setter(g, MAP_INVALID_COLOR));
 	}
-	c->r = ft_atoi(rgb[0]);
-	c->g = ft_atoi(rgb[1]);
-	c->b = ft_atoi(rgb[2]);
-	cub_free_double_ptr((void **) rgb);
-	if (c->r < 0 || c->r > 255 || c->g < 0 || c->g > 255 || c->b < 0 || c->b > 255)
+	return (RETURN_SUCCESS);
+}
+
+int	cub_parse_color(t_game *g, char **line, t_color *c, bool *has_c)
+{
+	t_cub_parse_color	s;
+
+	if (*has_c)
+		return (cub_errors_setter(g, MAP_DUPLICATE_IDENTIFIER));
+	if (cub_parse_color_joiner(&s, g, line))
+		return (RETURN_FAILURE);
+	if (cub_parse_color_helper(&s, g))
+		return (RETURN_FAILURE);
+	c->r = ft_atoi(s.rgb[0]);
+	c->g = ft_atoi(s.rgb[1]);
+	c->b = ft_atoi(s.rgb[2]);
+	cub_free_double_ptr((void **) s.rgb);
+	if (c->r < 0 || c->r > 255 || c->g < 0
+		|| c->g > 255 || c->b < 0 || c->b > 255)
 		return (cub_errors_setter(g, MAP_INVALID_COLOR_RANGE));
 	*has_c = true;
 	return (RETURN_SUCCESS);

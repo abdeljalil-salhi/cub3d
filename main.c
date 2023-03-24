@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:40:50 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/23 17:27:03 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/24 01:15:21 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,20 @@
 
 static void	cub_print_map(t_game *g)
 {
-	int	i;
-	int	j;
+	t_iterators	it;
 
-	i = -1;
-	while (++i < g->map.height)
+	it.i = -1;
+	while (++it.i < g->map.height)
 	{
-		// printf("%d\t", i);
-		j = -1;
-		while (++j < g->map.width)
+		it.j = -1;
+		while (++it.j < g->map.width)
 		{
-			if (g->map.arr[i][j] == -1 || g->map.arr[i][j] == 0)
+			if (g->map.arr[it.i][it.j] == -1 || g->map.arr[it.i][it.j] == 0)
 				printf(" ");
-			else if (g->map.arr[i][j] == 2)
+			else if (g->map.arr[it.i][it.j] == 2)
 				printf("P");
 			else
-				printf("%d", g->map.arr[i][j]);
+				printf("%d", g->map.arr[it.i][it.j]);
 		}
 		printf("\n");
 	}
@@ -42,8 +40,10 @@ static void	cub_print_assets(t_game *g)
 	printf("SO  : %s\n", g->assets.south);
 	printf("WE  : %s\n", g->assets.west);
 	printf("EA  : %s\n", g->assets.east);
-	printf("F   : %3d %3d %3d\n", g->assets.floor.r, g->assets.floor.g, g->assets.floor.b);
-	printf("C   : %3d %3d %3d\n", g->assets.ceiling.r, g->assets.ceiling.g, g->assets.ceiling.b);
+	printf("F   : %3d %3d %3d\n",
+		g->assets.floor.r, g->assets.floor.g, g->assets.floor.b);
+	printf("C   : %3d %3d %3d\n",
+		g->assets.ceiling.r, g->assets.ceiling.g, g->assets.ceiling.b);
 	printf("MAP :\n");
 	cub_print_map(g);
 }
@@ -67,7 +67,8 @@ int	main(int argc, char **argv)
 		cub_errors_exit(&g, "\tUsage:\t./cub3D [filename].cub");
 	if (cub_parser(&g, argv[1]))
 		cub_errors_exit(&g, g.error.message);
-	cub_print_assets(&g);
+	if (DEBUG)
+		cub_print_assets(&g);
 	cub_free_memory(&g);
 	if (LEAKS)
 		system("leaks cub3D");

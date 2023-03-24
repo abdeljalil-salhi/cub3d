@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 23:27:34 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/23 15:27:19 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/24 00:20:58 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	cub_parse_config(t_game *g)
 		line = get_next_line(g->map.file.fd);
 		if (!line)
 			break ;
-		if (cub_file_line_empty(line))
+		if (cub_line_empty(line))
 		{
 			if (g->parsing.map_initialized)
 				return (cub_free(line), cub_errors_setter(g, MAP_EMPTY_LINE));
@@ -51,7 +51,7 @@ int	cub_parse_config(t_game *g)
 int	cub_file_line_parse(t_game *g, char *line)
 {
 	char	**split;
-	
+
 	if (g->parsing.is_map)
 		return (cub_map_parse(g, line));
 	line[ft_strlen(line) - 1] = 0;

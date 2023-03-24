@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 12:45:57 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/22 10:21:05 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/24 00:56:27 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,7 @@
 
 int	cub_check_disponibility(t_game *g)
 {
-	g->map.file.fd = open(g->map.file.path, O_RDONLY);
-	if (g->map.file.fd == -1)
-	{
-		if (errno == EACCES)
-			return (cub_errors_setter(g, FILE_PERMISSION_DENIED));
-		else if (errno == ENOENT)
-			return (cub_errors_setter(g, FILE_NOT_FOUND));
-		else
-			return (cub_errors_setter(g, FILE_UNKNOWN_ERROR));
-	}
-	return (RETURN_SUCCESS);
+	return (cub_file_open(g, &g->map.file.fd, g->map.file.path));
 }
 
 int	cub_check_extension(t_game *g)

@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/23 23:24:44 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/24 01:13:12 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,10 @@
 # define GREEN "\033[0;32m"
 # define YELLOW "\033[0;33m"
 # define RESET "\033[0m"
+
+# ifndef DEBUG
+#  define DEBUG 0
+# endif
 
 enum
 {
@@ -99,7 +103,6 @@ int		cub_check_extension(t_game *g);
 /*
 ** cub_file_line.c
 */
-bool	cub_file_line_empty(char *line);
 int		cub_file_line_parse_identifier(t_game *g, char **line);
 int		cub_parse_texture(t_game *g, char **line, char **t, bool *has_t);
 int		cub_parse_color(t_game *g, char **line, t_color *c, bool *has_c);
@@ -107,20 +110,32 @@ int		cub_parse_color(t_game *g, char **line, t_color *c, bool *has_c);
 /*
 ** cub_map.c
 */
+typedef struct s_cub_map_init
+{
+	int			lowest_indent;
+	char		*quick_line;
+	int			width;
+	int			height;
+	t_iterators	it;
+}	t_cub_map_init;
+
 int		cub_map_init(t_game *g);
 int		cub_map_parse(t_game *g, char *line);
-int		cub_map_check(t_game *g, char *line);
+void	cub_map_init_norm(t_cub_map_init *s);
 
 /*
 ** cub_check.c
 */
 int		cub_check_map(t_game *g);
 int		cub_check_occurences(t_game *g);
+int		cub_map_check(t_game *g, char *line);
 
 /* --------------------------- LIBCUB --------------------------- */
 
 int		cub_count_occurences(char *str, char c);
 int		cub_count_int_occurences(int *arr, size_t size, int n);
+bool	cub_line_empty(char *line);
+int		cub_file_open(t_game *g, int *fd, char *filename);
 
 /* --------------------------- RENDERING --------------------------- */
 
