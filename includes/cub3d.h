@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/24 01:13:12 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/24 15:35:18 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include "libft.h"
 # include "structs.h"
 # include "errors.h"
+
+# define NAME "cub3D"
 
 # define LEAKS 0
 
@@ -71,6 +73,7 @@ enum
 int		cub_free_double_ptr(void **tab);
 int		cub_free_double_int(int **tab, size_t size);
 int		cub_free(void *ptr);
+int		cub_free_memory(t_game *g);
 
 /*
 ** cub_errors.c
@@ -78,6 +81,11 @@ int		cub_free(void *ptr);
 void	cub_errors_exit(t_game *g, char *err);
 int		cub_errors_setter(t_game *g, char *err);
 int		cub_errors_map(t_game *g, size_t size, char *err);
+
+/*
+** cub_keys.c
+*/
+int		cub_key_hook(int keycode, t_game *g);
 
 /* --------------------------- PARSING --------------------------- */
 

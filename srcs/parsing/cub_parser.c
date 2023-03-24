@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 23:03:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/23 23:08:00 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/24 15:18:29 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	cub_init_game_struct(t_game *g, char *filename)
 {
+	g->win.width = 1920;
+	g->win.height = 1080;
 	g->map.file.path = filename;
 	g->parsing.is_map = false;
 	g->parsing.map_initialized = false;

@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:40:50 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/24 01:15:21 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/24 15:31:10 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,6 @@ static void	cub_print_assets(t_game *g)
 	cub_print_map(g);
 }
 
-static void	cub_free_memory(t_game *g)
-{
-	cub_free(g->assets.north);
-	cub_free(g->assets.south);
-	cub_free(g->assets.west);
-	cub_free(g->assets.east);
-	if (g->allocated.map)
-		cub_free_double_int(g->map.arr, g->win.height);
-}
-
 int	main(int argc, char **argv)
 {
 	t_game	g;
@@ -69,8 +59,9 @@ int	main(int argc, char **argv)
 		cub_errors_exit(&g, g.error.message);
 	if (DEBUG)
 		cub_print_assets(&g);
-	cub_free_memory(&g);
-	if (LEAKS)
-		system("leaks cub3D");
-	return (EXIT_SUCCESS);
+	g.mlx = mlx_init();
+	g.win.ref = mlx_new_window(&g.mlx, g.win.width, g.win.height, NAME);
+	mlx_hook(g.win.ref, ON_DESTROY, 0L, cub_free_memory, &g);
+	mlx_hook(g.win.ref, ON_KEYDOWN, 0L, cub_key_hook, &g);
+	mlx_loop(g.mlx);
 }

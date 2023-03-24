@@ -6,7 +6,7 @@
 #    By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/19 21:24:26 by absalhi           #+#    #+#              #
-#    Updated: 2023/03/24 01:11:26 by absalhi          ###   ########.fr        #
+#    Updated: 2023/03/24 15:32:09 by absalhi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ ITALIC		=	'\033[3m'
 _LIBCUB		=	cub_occurences.c	cub_line.c		cub_file.c
 LIBCUB		=	$(addprefix libcub/, $(_LIBCUB))
 
-_UTILS		=	cub_errors.c	cub_free.c
+_UTILS		=	cub_errors.c	cub_free.c	cub_keys.c
 UTILS		=	$(addprefix utils/, $(_UTILS))
 
 _PARSING	=	cub_parser.c	cub_file_parser.c	cub_file_checker.c	\
