@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/23 23:45:06 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/27 22:34:36 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,15 @@ typedef struct s_file
 	int		fd;
 }	t_file;
 
+typedef struct s_image
+{
+	void	*ref;
+	char	*addr;
+	int		bpp;
+	int		line_length;
+	int		endian;
+}	t_image;
+
 typedef struct s_map
 {
 	t_file	file;
@@ -44,8 +53,8 @@ typedef struct s_error
 
 typedef struct s_coords
 {
-	int	r;
-	int	c;
+	int	x;
+	int	y;
 }	t_coords;
 
 typedef struct s_alloc
@@ -86,7 +95,10 @@ typedef struct s_assets
 
 typedef struct s_player
 {
-	unsigned int	degree;
+	t_coords		pos;
+	double			angle;
+	double			speed;
+	double			rot_speed;
 }	t_player;
 
 typedef struct s_game
@@ -98,6 +110,9 @@ typedef struct s_game
 	t_parsing	parsing;
 	t_assets	assets;
 	t_player	player;
+	t_image		frame;
+	clock_t		start_time;
+	double		delta_time;
 	bool		paused;
 	bool		freeze;
 	bool		game_over;

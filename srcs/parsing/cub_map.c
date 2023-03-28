@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 21:28:45 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/24 01:13:06 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/27 08:07:10 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,11 @@ static void	cub_map_parse_helper_setter(t_game *g,
 		int i, int j, int degree)
 {
 	g->map.arr[i][j] = 2;
-	g->player.degree = degree;
+	g->player.pos.x = 3;
+	g->player.pos.y = 5;
+	g->player.angle = degree;
+	g->player.speed = 0.004;
+	g->player.rot_speed = 0.002;
 }
 
 static int	cub_map_parse_helper(char *line, t_game *g,

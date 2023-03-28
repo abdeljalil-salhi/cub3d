@@ -6,7 +6,7 @@
 #    By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/19 21:24:26 by absalhi           #+#    #+#              #
-#    Updated: 2023/03/24 15:32:09 by absalhi          ###   ########.fr        #
+#    Updated: 2023/03/27 22:33:09 by absalhi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,18 +22,20 @@ GREEN		=	'\033[32m'
 GRAY		=	'\033[2;37m'
 ITALIC		=	'\033[3m'
 
-_LIBCUB		=	cub_occurences.c	cub_line.c		cub_file.c
+_LIBCUB		=	cub_occurences.c cub_line.c cub_file.c cub_time.c
 LIBCUB		=	$(addprefix libcub/, $(_LIBCUB))
 
-_UTILS		=	cub_errors.c	cub_free.c	cub_keys.c
+_UTILS		=	cub_errors.c cub_free.c cub_keys.c cub_pixel_put.c
 UTILS		=	$(addprefix utils/, $(_UTILS))
 
-_PARSING	=	cub_parser.c	cub_file_parser.c	cub_file_checker.c	\
-				cub_file_line.c	cub_map.c			cub_check.c			\
-				cub_map_norm.c
+_PARSING	=	cub_parser.c cub_file_parser.c cub_file_checker.c		\
+				cub_file_line.c cub_map.c cub_check.c cub_map_norm.c
 PARSING		=	$(addprefix parsing/, $(_PARSING))
 
-_SRCS		=	$(LIBCUB) $(UTILS) $(PARSING)
+_RENDERING	=	cub_render.c
+RENDERING	= $(addprefix rendering/, $(_RENDERING))
+
+_SRCS		=	$(LIBCUB) $(UTILS) $(PARSING) $(RENDERING)
 SRCS		=	$(addprefix srcs/, $(_SRCS)) main.c
 OBJS		=	$(SRCS:.c=.o)
 
