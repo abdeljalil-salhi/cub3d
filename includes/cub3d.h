@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/27 22:36:20 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/28 01:52:26 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,11 @@
 # define NAME "cub3D"
 
 # define LEAKS 0
-# define FPS 30
+# define FPS 120
 # define FRAME_RATE (1000 / FPS)
 # define TILE_SIZE 40
+# define WIN_WIDTH 1920
+# define WIN_HEIGHT 1080
 
 # define RETURN_FAILURE 1
 # define RETURN_SUCCESS 0
