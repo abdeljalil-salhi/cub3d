@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:40:50 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/28 03:58:44 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/29 03:34:40 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ int	main(int argc, char **argv)
 		cub_errors_exit(&g, g.error.message);
 	if (DEBUG)
 		cub_print_assets(&g);
-	g.win.width = WIN_WIDTH - (WIN_WIDTH % g.map.width) + 1;
-	g.win.height = WIN_HEIGHT - (WIN_HEIGHT % g.map.height) + 1;
 	g.mlx = mlx_init();
 	g.win.ref = mlx_new_window(g.mlx, g.win.width, g.win.height, NAME);
 	g.start_time = clock();

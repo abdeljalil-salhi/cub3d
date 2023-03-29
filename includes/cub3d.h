@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/29 01:09:36 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/29 03:50:45 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 
 # define WIN_WIDTH 1920
 # define WIN_HEIGHT 1080
+# define TILE_SIZE 40
 
 # define FOV (60 * (M_PI / 180))
 # define HALF_FOV (FOV / 2)

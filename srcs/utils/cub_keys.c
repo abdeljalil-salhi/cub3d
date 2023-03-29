@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 15:32:28 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/29 01:04:25 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/29 03:55:04 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ int	cub_key_hook(int keycode, t_game *g)
 	if (keycode == ESC)
 		cub_free_memory(g);
 	if (keycode == KEY_W)
-		g->player.walk_direction = 1;
-	else if (keycode == KEY_S)
 		g->player.walk_direction = -1;
+	else if (keycode == KEY_S)
+		g->player.walk_direction = 1;
 	else if (keycode == KEY_A)
 		g->player.turn_direction = -1;
 	else if (keycode == KEY_D)

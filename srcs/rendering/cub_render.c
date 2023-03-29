@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/29 01:19:39 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/29 03:56:28 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,25 @@ void	draw_player(t_game *g)
     draw_line(g, pos, end_pos);
 }
 
+bool	has_wall_at(t_game *g, float x, float y)
+{
+	if (x < 0 || x > g->map.width * TILE_SIZE || y < 0 || y > g->map.height * TILE_SIZE)
+		return (true);
+	return (g->map.arr[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] == 1);
+}
+
+void	check_wall_collision(t_game *g, float dx, float dy)
+{
+	// if (!has_wall_at(g, g->player.pos.x + dx + g->player.turn_direction * (g->player.width / 2), g->player.pos.y))
+	// 	g->player.pos.x += dx;
+	// if (!has_wall_at(g, g->player.pos.x, g->player.pos.y + dy + g->player.walk_direction * (g->player.height / 2)))
+	// 	g->player.pos.y += dy;
+	if (!has_wall_at(g, g->player.pos.x + dx, g->player.pos.y))
+		g->player.pos.x += dx;
+	if (!has_wall_at(g, g->player.pos.x, g->player.pos.y + dy))
+		g->player.pos.y += dy;
+}
+
 int	player_movement(t_game *g)
 {
 	double	sin_a;
@@ -82,13 +101,13 @@ int	player_movement(t_game *g)
 	speed_cos = speed * cos_a;
 	if (g->player.walk_direction == 1)
 	{
-		dx += speed_cos;
-		dy += speed_sin;
+		dx += -speed_cos;
+		dy += -speed_sin;
 	}
 	if (g->player.walk_direction == -1)
 	{
-		dx += -speed_cos;
-		dy += -speed_sin;
+		dx += speed_cos;
+		dy += speed_sin;
 	}
 	if (g->player.turn_direction == 1)
 	{
@@ -100,8 +119,9 @@ int	player_movement(t_game *g)
 		dx += speed_sin;
 		dy += -speed_cos;
 	}
-	g->player.pos.x += dx;
-	g->player.pos.y += dy;
+	// g->player.pos.x += dx;
+	// g->player.pos.y += dy;
+	check_wall_collision(g, dx, dy);
 	if (g->player.rotation_direction == 1)
 		g->player.angle += g->player.rot_speed * g->delta_time;
 	if (g->player.rotation_direction == -1)

@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 21:28:45 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/29 01:13:44 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/29 03:32:40 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,9 @@ typedef struct s_cub_map_parse
 static void	cub_map_parse_helper_setter(t_game *g,
 		int i, int j, double degree)
 {
-	int	horizontal_size;
-	int	vertical_size;
-
-	horizontal_size = g->win.width / g->map.width;
-	vertical_size = g->win.height / g->map.height;
 	g->map.arr[i][j] = 2;
-	g->player.pos.x = horizontal_size * j + horizontal_size / 2;
-	g->player.pos.y = vertical_size * i + vertical_size / 2;
+	g->player.pos.x = TILE_SIZE * j + TILE_SIZE / 2;
+	g->player.pos.y = TILE_SIZE * i + TILE_SIZE / 2;
 	g->player.width = PLAYER_WIDTH;
 	g->player.height = PLAYER_HEIGHT;
 	g->player.angle = degree;
