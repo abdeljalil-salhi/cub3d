@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 21:28:45 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/28 01:25:45 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/29 00:21:27 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef struct s_cub_map_parse
 }	t_cub_map_parse;
 
 static void	cub_map_parse_helper_setter(t_game *g,
-		int i, int j, int degree)
+		int i, int j, double degree)
 {
 	int	horizontal_size;
 	int	vertical_size;
@@ -73,6 +73,8 @@ static void	cub_map_parse_helper_setter(t_game *g,
 	g->map.arr[i][j] = 2;
 	g->player.pos.x = horizontal_size * j + horizontal_size / 2;
 	g->player.pos.y = vertical_size * i + vertical_size / 2;
+	g->player.width = PLAYER_WIDTH;
+	g->player.height = PLAYER_HEIGHT;
 	g->player.angle = degree;
 	g->player.speed = 0.004;
 	g->player.rot_speed = 0.002;
@@ -88,13 +90,13 @@ static int	cub_map_parse_helper(char *line, t_game *g,
 	else if (line[s->k] == '1')
 		g->map.arr[i][s->j] = 1;
 	else if (line[s->k] == 'N')
-		cub_map_parse_helper_setter(g, i, s->j, 270);
+		cub_map_parse_helper_setter(g, i, s->j, 3 * M_PI / 2);
 	else if (line[s->k] == 'S')
-		cub_map_parse_helper_setter(g, i, s->j, 90);
+		cub_map_parse_helper_setter(g, i, s->j, M_PI / 2);
 	else if (line[s->k] == 'E')
-		cub_map_parse_helper_setter(g, i, s->j, 0);
+		cub_map_parse_helper_setter(g, i, s->j, 2 * M_PI);
 	else if (line[s->k] == 'W')
-		cub_map_parse_helper_setter(g, i, s->j, 180);
+		cub_map_parse_helper_setter(g, i, s->j, M_PI);
 	else
 		return (cub_errors_setter(g, MAP_INVALID_CHAR));
 	s->k++;

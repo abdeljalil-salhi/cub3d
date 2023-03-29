@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/27 22:34:36 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/29 01:04:41 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ typedef struct s_error
 
 typedef struct s_coords
 {
-	int	x;
-	int	y;
+	float	x;
+	float	y;
 }	t_coords;
 
 typedef struct s_alloc
@@ -96,9 +96,14 @@ typedef struct s_assets
 typedef struct s_player
 {
 	t_coords		pos;
+	int				width;
+	int				height;
 	double			angle;
 	double			speed;
 	double			rot_speed;
+	int				turn_direction;
+	int				walk_direction;
+	int				rotation_direction;
 }	t_player;
 
 typedef struct s_game

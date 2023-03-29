@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:40:50 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/28 01:53:56 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/28 03:58:44 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int	main(int argc, char **argv)
 	g.start_time = clock();
 	mlx_hook(g.win.ref, ON_DESTROY, 0L, cub_free_memory, &g);
 	mlx_hook(g.win.ref, ON_KEYDOWN, 0L, cub_key_hook, &g);
+	mlx_hook(g.win.ref, ON_KEYUP, 0L, cub_key_release, &g);
 	mlx_loop_hook(g.mlx, cub_render, &g);
 	mlx_loop(g.mlx);
 }

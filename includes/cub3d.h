@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/28 01:52:26 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/29 01:09:36 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,21 @@
 # define NAME "cub3D"
 
 # define LEAKS 0
+
 # define FPS 120
 # define FRAME_RATE (1000 / FPS)
-# define TILE_SIZE 40
+
 # define WIN_WIDTH 1920
 # define WIN_HEIGHT 1080
+
+# define FOV (60 * (M_PI / 180))
+# define HALF_FOV (FOV / 2)
+# define NUM_RAYS WIN_WIDTH
+
+# define PLAYER_WIDTH 10
+# define PLAYER_HEIGHT 5
+# define PLAYER_SPEED 100
+# define PLAYER_ROTATION_SPEED (90 * (M_PI / 180))
 
 # define RETURN_FAILURE 1
 # define RETURN_SUCCESS 0
@@ -95,11 +105,12 @@ int		cub_errors_map(t_game *g, size_t size, char *err);
 ** cub_keys.c
 */
 int		cub_key_hook(int keycode, t_game *g);
+int		cub_key_release(int keycode, t_game *g);
 
 /*
 ** cub_pixel_put.c
 */
-void	cub_pixel_put(t_game *g, int x, int y, int color);
+void	cub_pixel_put(t_game *g, double x, double y, int color);
 void	cub_rect_put(t_game *g, t_iterators pos, int color, int size);
 
 /* --------------------------- PARSING --------------------------- */
@@ -156,7 +167,7 @@ int		cub_map_check(t_game *g, char *line);
 /* --------------------------- RENDERING --------------------------- */
 
 int		cub_render(t_game *g);
-int		player_movement(t_game *g, int direction);
+int		player_movement(t_game *g);
 
 /* --------------------------- LIBCUB --------------------------- */
 
