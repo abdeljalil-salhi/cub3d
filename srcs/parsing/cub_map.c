@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 21:28:45 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/29 00:21:27 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/29 01:13:44 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ static void	cub_map_parse_helper_setter(t_game *g,
 	g->player.width = PLAYER_WIDTH;
 	g->player.height = PLAYER_HEIGHT;
 	g->player.angle = degree;
-	g->player.speed = 0.004;
-	g->player.rot_speed = 0.002;
+	g->player.speed = PLAYER_SPEED;
+	g->player.rot_speed = PLAYER_ROTATION_SPEED;
 }
 
 static int	cub_map_parse_helper(char *line, t_game *g,

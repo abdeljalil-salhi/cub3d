@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/29 01:08:32 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/29 01:19:39 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	player_movement(t_game *g)
 	cos_a = cos(g->player.angle);
 	dx = 0;
 	dy = 0;
-	speed = PLAYER_SPEED * g->delta_time;
+	speed = g->player.speed * g->delta_time;
 	speed_sin = speed * sin_a;
 	speed_cos = speed * cos_a;
 	if (g->player.walk_direction == 1)
@@ -103,9 +103,9 @@ int	player_movement(t_game *g)
 	g->player.pos.x += dx;
 	g->player.pos.y += dy;
 	if (g->player.rotation_direction == 1)
-		g->player.angle += PLAYER_ROTATION_SPEED * g->delta_time;
+		g->player.angle += g->player.rot_speed * g->delta_time;
 	if (g->player.rotation_direction == -1)
-		g->player.angle -= PLAYER_ROTATION_SPEED * g->delta_time;
+		g->player.angle -= g->player.rot_speed * g->delta_time;
 	g->player.angle = fmod(g->player.angle, 2 * M_PI);
 	return (RETURN_SUCCESS);
 }
