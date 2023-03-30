@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/30 04:04:08 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/30 16:28:14 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,22 @@ int	player_movement(t_game *g)
 	return (RETURN_SUCCESS);
 }
 
+void	draw_ray_rect(t_game *g, t_coords start, int width, int height)
+{
+	t_iterators	it;
+
+	it.i = -1;
+	// while (++it.i < width)
+		// draw_line(g, start, (t_coords){start.x + it.i, start.y + height});
+	while (++it.i < height)
+	{
+		it.j = -1;
+		while (++it.j < width)
+			if (start.y + it.i < g->win.height && start.x + it.j < g->win.width)
+				cub_pixel_put(g, start.x + it.j, start.y + it.i, 0xFFFFFF);
+	}
+}
+
 // PYTHONIC WAY
 void	raycast(t_game *g)
 {
@@ -150,6 +166,7 @@ void	raycast(t_game *g)
 	map_pos.x = (int)(origin.x / TILE_SIZE);
 	map_pos.y = (int)(origin.y / TILE_SIZE);
 	ray_angle = g->player.angle - HALF_FOV + 0.0001;
+	float screen_dist = HALF_WIN_WIDTH / tan(HALF_FOV);
 	it.i = -1;
 	while (++it.i < NUM_RAYS)
 	{
@@ -212,13 +229,26 @@ void	raycast(t_game *g)
 			depth = depth_horz;
 			horz_intersection.x = fmod(horz_intersection.x, TILE_SIZE);
 		}
-		
+
+		// fishbowl effect
+		depth *= (float) cos(g->player.angle - ray_angle);
+
+		float proj_height = (TILE_SIZE / depth) * screen_dist;
+
 		t_coords	start;
 		t_coords	end;
 		start = g->player.pos;
 		end.x = start.x + depth * cos_a;
 		end.y = start.y + depth * sin_a;
-		draw_line(g, start, end);
+		
+		if (MINIMAP)
+			draw_line(g, start, end);
+		else
+		{
+			start.x = it.i * SCALE;
+			start.y = HALF_WIN_HEIGHT - proj_height / 2;
+			draw_ray_rect(g, start, SCALE, proj_height);
+		}
 		
 		ray_angle += DELTA_ANGLE;
 	}
@@ -275,10 +305,12 @@ int	cub_render(t_game *g)
 		g->start_time = clock();
 	}
 	update(g);
-	display_map(g);
+	if (MINIMAP)
+		display_map(g);
 	player_movement(g);
 	raycast(g);
-	draw_player(g);
+	if (MINIMAP)
+		draw_player(g);
 	mlx_put_image_to_window(g->mlx, g->win.ref, g->frame.ref, 0, 0);
 	mlx_destroy_image(g->mlx, g->frame.ref);
 	tmp = ft_itoa(last_fps);

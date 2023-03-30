@@ -6,7 +6,7 @@
 #    By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/19 21:24:26 by absalhi           #+#    #+#              #
-#    Updated: 2023/03/30 03:30:23 by absalhi          ###   ########.fr        #
+#    Updated: 2023/03/30 05:52:18 by absalhi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,6 +53,9 @@ $(NAME)		:	$(OBJS)
 
 debug		:	CFLAGS += -D DEBUG
 debug		:	re
+
+minimap		:	CFLAGS += -D MINIMAP
+minimap		:	re
 
 clean		:
 				@echo $(ITALIC)$(GRAY) "     - Removing object files..." $(NONE)

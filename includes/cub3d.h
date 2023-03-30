@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/30 04:03:31 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/30 16:34:33 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,16 @@
 # define FPS 60
 # define FRAME_RATE (1000 / FPS)
 
-# define WIN_WIDTH 1920
-# define WIN_HEIGHT 1080
+# define WIN_WIDTH 1600
+# define WIN_HEIGHT 900
+# define HALF_WIN_WIDTH (WIN_WIDTH / 2)
+# define HALF_WIN_HEIGHT (WIN_HEIGHT / 2)
 # define TILE_SIZE 40
 
 # define FOV (60 * (M_PI / 180))
 # define HALF_FOV (FOV / 2)
 # define NUM_RAYS WIN_WIDTH
+# define SCALE (WIN_WIDTH / NUM_RAYS)
 # define DELTA_ANGLE (FOV / NUM_RAYS)
 # define MAX_DEPTH 100
 
@@ -57,6 +60,10 @@
 
 # ifndef DEBUG
 #  define DEBUG 0
+# endif
+
+# ifndef MINIMAP
+#  define MINIMAP 0
 # endif
 
 enum
