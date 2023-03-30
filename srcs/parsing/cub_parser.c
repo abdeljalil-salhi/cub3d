@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 23:03:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/28 01:52:38 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/29 05:50:20 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ void	cub_init_game_struct(t_game *g, char *filename)
 	g->paused = false;
 	g->freeze = false;
 	g->game_over = false;
+	g->rays = (t_ray *) malloc(NUM_RAYS * sizeof(t_ray));
+	if (!g->rays)
+		cub_errors_exit(g, "Failed to allocate memory for rays");
 }
 
 int	cub_parser(t_game *g, char *filename)

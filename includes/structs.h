@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/29 03:32:13 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/30 04:03:15 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define STRUCTS_H
 
 # include <stdbool.h>
+# include <pthread.h>
 
 typedef struct s_window
 {
@@ -93,17 +94,30 @@ typedef struct s_assets
 	t_color	ceiling;
 }	t_assets;
 
+typedef struct s_ray
+{
+	t_coords	wall_hit;
+	float		angle;
+	float		distance;
+	bool		vertical_hit;
+	bool		rayface_down;
+	bool		rayface_up;
+	bool		rayface_right;
+	bool		rayface_left;
+	int			content_hit;
+}	t_ray;
+
 typedef struct s_player
 {
-	t_coords		pos;
-	int				width;
-	int				height;
-	double			angle;
-	double			speed;
-	double			rot_speed;
-	int				turn_direction;
-	int				walk_direction;
-	int				rotation_direction;
+	t_coords	pos;
+	int			width;
+	int			height;
+	float		angle;
+	float		speed;
+	float		rot_speed;
+	int			turn_direction;
+	int			walk_direction;
+	int			rotation_direction;
 }	t_player;
 
 typedef struct s_game
@@ -114,10 +128,11 @@ typedef struct s_game
 	t_error		error;
 	t_parsing	parsing;
 	t_assets	assets;
+	t_ray		*rays;
 	t_player	player;
 	t_image		frame;
 	clock_t		start_time;
-	double		delta_time;
+	float		delta_time;
 	bool		paused;
 	bool		freeze;
 	bool		game_over;

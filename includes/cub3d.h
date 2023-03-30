@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/29 03:50:45 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/30 04:03:31 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 
 # define LEAKS 0
 
-# define FPS 120
+# define FPS 60
 # define FRAME_RATE (1000 / FPS)
 
 # define WIN_WIDTH 1920
@@ -38,10 +38,12 @@
 # define FOV (60 * (M_PI / 180))
 # define HALF_FOV (FOV / 2)
 # define NUM_RAYS WIN_WIDTH
+# define DELTA_ANGLE (FOV / NUM_RAYS)
+# define MAX_DEPTH 100
 
 # define PLAYER_WIDTH 10
 # define PLAYER_HEIGHT 5
-# define PLAYER_SPEED 100
+# define PLAYER_SPEED 200
 # define PLAYER_ROTATION_SPEED (90 * (M_PI / 180))
 
 # define RETURN_FAILURE 1
@@ -83,6 +85,14 @@ enum
 	ARROW_UP = 126
 };
 
+enum
+{
+	RAY_FACING_UP = 1,
+	RAY_FACING_DOWN,
+	RAY_FACING_LEFT,
+	RAY_FACING_RIGHT
+};
+
 typedef unsigned long long	t_ull;
 
 /* --------------------------- UTILS --------------------------- */
@@ -111,8 +121,8 @@ int		cub_key_release(int keycode, t_game *g);
 /*
 ** cub_pixel_put.c
 */
-void	cub_pixel_put(t_game *g, double x, double y, int color);
-void	cub_rect_put(t_game *g, t_iterators pos, int color, int size);
+void	cub_pixel_put(t_game *g, float x, float y, int color);
+void	cub_rect_put(t_game *g, t_iterators pos, int color);
 
 /* --------------------------- PARSING --------------------------- */
 

@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/29 03:56:28 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/30 04:04:08 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	display_map(t_game *g)
 		it.j = -1;
 		while (++it.j < g->map.width)
 			if (g->map.arr[it.i][it.j] == 1)
-				cub_rect_put(g, it, 0xFFFFFF, 0);
+				cub_rect_put(g, it, 0xFFFFFF);
 	}
 }
 
@@ -87,10 +87,10 @@ void	check_wall_collision(t_game *g, float dx, float dy)
 
 int	player_movement(t_game *g)
 {
-	double	sin_a;
-	double	cos_a;
+	float	sin_a;
+	float	cos_a;
 	float	dx, dy;
-	double	speed, speed_sin, speed_cos;
+	float	speed, speed_sin, speed_cos;
 
 	sin_a = sin(g->player.angle);
 	cos_a = cos(g->player.angle);
@@ -119,8 +119,6 @@ int	player_movement(t_game *g)
 		dx += speed_sin;
 		dy += -speed_cos;
 	}
-	// g->player.pos.x += dx;
-	// g->player.pos.y += dy;
 	check_wall_collision(g, dx, dy);
 	if (g->player.rotation_direction == 1)
 		g->player.angle += g->player.rot_speed * g->delta_time;
@@ -130,16 +128,131 @@ int	player_movement(t_game *g)
 	return (RETURN_SUCCESS);
 }
 
+// PYTHONIC WAY
+void	raycast(t_game *g)
+{
+	t_coords	origin;
+	t_coords	map_pos;
+	t_coords	horz_intersection;
+	t_coords	vert_intersection;
+	t_coords	horz_tile;
+	t_coords	vert_tile;
+	t_coords	distance;
+	float		depth_horz;
+	float		depth_vert;
+	float		delta_depth;
+	float		depth;
+	float		ray_angle;
+	float		sin_a, cos_a;
+	t_iterators	it;
+
+	origin = g->player.pos;
+	map_pos.x = (int)(origin.x / TILE_SIZE);
+	map_pos.y = (int)(origin.y / TILE_SIZE);
+	ray_angle = g->player.angle - HALF_FOV + 0.0001;
+	it.i = -1;
+	while (++it.i < NUM_RAYS)
+	{
+		sin_a = sin(ray_angle);
+		cos_a = cos(ray_angle);
+		
+		horz_intersection.y = (sin_a > 0) ? (map_pos.y + 1) * TILE_SIZE : map_pos.y * TILE_SIZE - 0.0001;
+		distance.y = (sin_a > 0) ? TILE_SIZE : -TILE_SIZE;
+		
+		depth_horz = (horz_intersection.y - origin.y) / sin_a;
+		horz_intersection.x = origin.x + depth_horz * cos_a;
+
+		delta_depth = distance.y / sin_a;
+		distance.x = delta_depth * cos_a;
+		
+		it.j = -1;
+		while (++it.j < MAX_DEPTH)
+		{
+			horz_tile.x = (int)(horz_intersection.x / TILE_SIZE);
+			horz_tile.y = (int)(horz_intersection.y / TILE_SIZE);
+			if (abs((int)(horz_tile.y)) >= g->map.height || abs((int)(horz_tile.x)) >= g->map.width)
+				break ;
+			if (g->map.arr[abs((int)(horz_tile.y))][abs((int)(horz_tile.x))] == 1)
+				break ;
+			horz_intersection.x += distance.x;
+			horz_intersection.y += distance.y;
+			depth_horz += delta_depth;
+		}
+
+		vert_intersection.x = (cos_a > 0) ? (map_pos.x + 1) * TILE_SIZE : map_pos.x * TILE_SIZE - 0.0001;
+		distance.x = (cos_a > 0) ? TILE_SIZE : -TILE_SIZE;
+
+		depth_vert = (vert_intersection.x - origin.x) / cos_a;
+		vert_intersection.y = origin.y + depth_vert * sin_a;
+
+		delta_depth = distance.x / cos_a;
+		distance.y = delta_depth * sin_a;
+
+		it.j = -1;
+		while (++it.j < MAX_DEPTH)
+		{
+			vert_tile.x = (int)(vert_intersection.x / TILE_SIZE);
+			vert_tile.y = (int)(vert_intersection.y / TILE_SIZE);
+			if (abs((int)(vert_tile.y)) >= g->map.height || abs((int)(vert_tile.x)) >= g->map.width)
+				break ;
+			if (g->map.arr[abs((int)(vert_tile.y))][abs((int)(vert_tile.x))] == 1)
+				break ;
+			vert_intersection.x += distance.x;
+			vert_intersection.y += distance.y;
+			depth_vert += delta_depth;
+		}
+
+		if (depth_vert < depth_horz)
+		{
+			depth = depth_vert;
+			vert_intersection.y = fmod(vert_intersection.y, TILE_SIZE);
+		}
+		else
+		{
+			depth = depth_horz;
+			horz_intersection.x = fmod(horz_intersection.x, TILE_SIZE);
+		}
+		
+		t_coords	start;
+		t_coords	end;
+		start = g->player.pos;
+		end.x = start.x + depth * cos_a;
+		end.y = start.y + depth * sin_a;
+		draw_line(g, start, end);
+		
+		ray_angle += DELTA_ANGLE;
+	}
+}
+
+// void	raycast(t_game *g)
+// {
+// 	t_coords	origin;
+// 	t_coords	ray_dir;
+// 	float		ray_angle;
+// 	int			i;
+
+// 	origin = g->player.pos;
+// 	ray_angle = g->player.angle - HALF_FOV;
+// 	i = -1;
+// 	while (++i < NUM_RAYS)
+// 	{
+// 		ray_dir.x = cos(ray_angle);
+// 		ray_dir.y = sin(ray_angle);
+// 		// draw_line(g, origin, ray_dir);
+// 		ray_angle += DELTA_ANGLE;		
+// 	}
+// }
+
 void	update(t_game *g)
 {
-	static double	ticks_last_frame = 0.0;
+	static float	ticks_last_frame = 0.0;
 
 	if (ticks_last_frame < 0.5)
-		ticks_last_frame = (double) current_time_ms();
-	while ((double) current_time_ms() - (ticks_last_frame + FRAME_RATE) < 0)
+		ticks_last_frame = (float) current_time_ms();
+	while ((float) current_time_ms() - (ticks_last_frame + FRAME_RATE) < 0)
 		;
-	g->delta_time = (double) (current_time_ms() - ticks_last_frame) / 1000.0f;
-	ticks_last_frame = (double) current_time_ms();
+	g->delta_time = (float) (current_time_ms() - ticks_last_frame) / 1000.0f;
+	ticks_last_frame = (float) current_time_ms();
 }
 
 int	cub_render(t_game *g)
@@ -163,8 +276,9 @@ int	cub_render(t_game *g)
 	}
 	update(g);
 	display_map(g);
-	draw_player(g);
 	player_movement(g);
+	raycast(g);
+	draw_player(g);
 	mlx_put_image_to_window(g->mlx, g->win.ref, g->frame.ref, 0, 0);
 	mlx_destroy_image(g->mlx, g->frame.ref);
 	tmp = ft_itoa(last_fps);

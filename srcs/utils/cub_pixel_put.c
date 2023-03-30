@@ -6,13 +6,13 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:53:09 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/29 03:35:18 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/30 04:04:27 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	cub_pixel_put(t_game *g, double x, double y, int color)
+void	cub_pixel_put(t_game *g, float x, float y, int color)
 {
 	t_image	*image;
 	char	*dst;
@@ -23,11 +23,10 @@ void	cub_pixel_put(t_game *g, double x, double y, int color)
 	*(unsigned int *)dst = color;
 }
 
-void	cub_rect_put(t_game *g, t_iterators pos, int color, int size)
+void	cub_rect_put(t_game *g, t_iterators pos, int color)
 {
 	t_iterators	it;
 
-	(void) size;
 	it.i = -1;
 	while (++it.i < TILE_SIZE)
 	{
