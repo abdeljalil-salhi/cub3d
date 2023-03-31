@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/31 06:49:59 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/31 20:17:22 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,7 @@ void	raycast(t_game *g)
 	float		depth;
 	float		ray_angle;
 	float		sin_a, cos_a;
-	int			color;
+	// int			color;
 	int			vert_wall_content;
 	int			horz_wall_content;
 	t_iterators	it;
@@ -327,10 +327,48 @@ void	raycast(t_game *g)
 			draw_line(g, start, end);
 		else
 		{
-			start.x = it.i * SCALE;
-			start.y = HALF_WIN_HEIGHT - proj_height / 2;
-			color = (depth_vert < depth_horz) ? 0x00FF00 : 0xFF0000;
-			draw_ray_rect(g, start, SCALE, proj_height, color);
+			// start.x = it.i * SCALE;
+			// start.y = HALF_WIN_HEIGHT - proj_height / 2;
+			// color = (depth_vert < depth_horz) ? 0x00FF00 : 0xFF0000;
+			// draw_ray_rect(g, start, SCALE, proj_height, color);
+			int	wall_top_pixel;
+			int	wall_bottom_pixel;
+			int	text_offset_x;
+			int	text_offset_y;
+			int	i;
+			unsigned int	textcolor;
+			int	ceiling_color = create_trgb(0, g->assets.ceiling.r, g->assets.ceiling.g, g->assets.ceiling.b);
+			int	floor_color = create_trgb(0, g->assets.floor.r, g->assets.floor.g, g->assets.floor.b);
+			
+			wall_top_pixel = HALF_WIN_HEIGHT - ((int) proj_height) / 2;
+			wall_top_pixel = wall_top_pixel < 0 ? 0 : wall_top_pixel;
+			wall_bottom_pixel = HALF_WIN_HEIGHT + ((int) proj_height) / 2;
+			wall_bottom_pixel = wall_bottom_pixel > WIN_HEIGHT ? WIN_HEIGHT : wall_bottom_pixel;
+			// ceiling
+			i = -1;
+			while (++i < wall_top_pixel)
+				cub_pixel_put(g, it.i * SCALE, i, ceiling_color);
+			// walls 
+			if (g->rays[it.i].vertical_hit)
+				text_offset_x = (int) vert_intersection.y % TILE_SIZE;
+			else
+				text_offset_x = (int) horz_intersection.x % TILE_SIZE;
+			i = wall_top_pixel - 1;
+			while (++i < wall_bottom_pixel)
+			{
+				if (TEXTURES)
+				{
+					text_offset_y = (i + (int) proj_height / 2 - HALF_WIN_HEIGHT) * (TILE_SIZE / proj_height);
+					textcolor = ((unsigned int *) g->textures.wall_texture.addr)[(text_offset_y * TILE_SIZE) + text_offset_x];
+					cub_pixel_put(g, it.i * SCALE, i, textcolor);
+				}
+				else
+					g->rays[it.i].vertical_hit ? cub_pixel_put(g, it.i * SCALE, i, 0x00FF00) : cub_pixel_put(g, it.i * SCALE, i, 0xFF0000); 
+			}
+			// floor
+			i--;
+			while (++i < WIN_HEIGHT)
+				cub_pixel_put(g, it.i * SCALE, i, floor_color);
 		}
 		
 		ray_angle += DELTA_ANGLE;
@@ -465,8 +503,8 @@ int	cub_render(t_game *g)
 	update(g);
 	if (MINIMAP)
 		display_map(g);
-	else
-		draw_background(g);
+	// else
+	// 	draw_background(g);
 	player_movement(g);
 	raycast(g);
 	if (MINIMAP)

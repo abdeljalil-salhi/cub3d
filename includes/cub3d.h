@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/31 06:53:01 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/31 20:29:40 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,19 @@
 #  define DEBUG 0
 # endif
 
+# ifndef TEXTURES
+#  define TEXTURES 0
+# endif
+
 # ifdef MINIMAP
-#  define FPS 60
+#  define FPS 120
+#  define TILE_SIZE 32
+#  define PLAYER_SPEED 200
 # else
 #  define MINIMAP 0
-#  define FPS 30
+#  define FPS 120
+#  define TILE_SIZE 64
+#  define PLAYER_SPEED 250
 # endif
 
 # define FRAME_RATE (1000 / FPS)
@@ -45,7 +53,6 @@
 # define WIN_HEIGHT 900
 # define HALF_WIN_WIDTH (WIN_WIDTH / 2)
 # define HALF_WIN_HEIGHT (WIN_HEIGHT / 2)
-# define TILE_SIZE 40
 
 # define FOV (60 * (M_PI / 180))
 # define HALF_FOV (FOV / 2)
@@ -59,7 +66,6 @@
 # define PLAYER_MINIMAP_WIDTH 5
 # define PLAYER_MINIMAP_HEIGHT 3
 # define PLAYER_SCALE 3
-# define PLAYER_SPEED 200
 # define PLAYER_ROTATION_SPEED (90 * (M_PI / 180))
 
 # define RETURN_FAILURE 1

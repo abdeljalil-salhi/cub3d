@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/31 06:49:43 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/31 20:11:29 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,11 @@ typedef struct s_player
 	int			rotation_direction;
 }	t_player;
 
+typedef struct s_texture
+{
+	t_image		wall_texture;
+}	t_texture;
+
 typedef struct s_game
 {
 	void		*mlx;
@@ -137,6 +142,7 @@ typedef struct s_game
 	bool		freeze;
 	bool		game_over;
 	t_alloc		allocated;
+	t_texture	textures;
 }	t_game;
 
 /* --------------------------- UTILS --------------------------- */
