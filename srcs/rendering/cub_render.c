@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/31 05:51:37 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/31 06:49:59 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,6 +220,8 @@ void	raycast(t_game *g)
 	float		ray_angle;
 	float		sin_a, cos_a;
 	int			color;
+	int			vert_wall_content;
+	int			horz_wall_content;
 	t_iterators	it;
 
 	origin = g->player.pos;
@@ -230,6 +232,12 @@ void	raycast(t_game *g)
 	it.i = -1;
 	while (++it.i < NUM_RAYS)
 	{
+		g->rays[it.i].angle = ray_angle;
+		g->rays[it.i].rayface_down = g->player.angle > 0 && g->player.angle < M_PI;
+		g->rays[it.i].rayface_up = !g->rays[it.i].rayface_down;
+		g->rays[it.i].rayface_right = g->player.angle < M_PI_2 || g->player.angle > 3 * M_PI / 2;
+		g->rays[it.i].rayface_left = !g->rays[it.i].rayface_right;
+
 		sin_a = sin(ray_angle);
 		cos_a = cos(ray_angle);
 		
@@ -250,7 +258,10 @@ void	raycast(t_game *g)
 			if (abs((int)(horz_tile.y)) >= g->map.height || abs((int)(horz_tile.x)) >= g->map.width)
 				break ;
 			if (g->map.arr[abs((int)(horz_tile.y))][abs((int)(horz_tile.x))] == 1)
+			{
+				horz_wall_content = g->map.arr[abs((int)(horz_tile.y))][abs((int)(horz_tile.x))];
 				break ;
+			}
 			horz_intersection.x += distance.x;
 			horz_intersection.y += distance.y;
 			depth_horz += delta_depth;
@@ -273,7 +284,10 @@ void	raycast(t_game *g)
 			if (abs((int)(vert_tile.y)) >= g->map.height || abs((int)(vert_tile.x)) >= g->map.width)
 				break ;
 			if (g->map.arr[abs((int)(vert_tile.y))][abs((int)(vert_tile.x))] == 1)
+			{
+				vert_wall_content = g->map.arr[abs((int)(vert_tile.y))][abs((int)(vert_tile.x))];
 				break ;
+			}
 			vert_intersection.x += distance.x;
 			vert_intersection.y += distance.y;
 			depth_vert += delta_depth;
@@ -283,11 +297,19 @@ void	raycast(t_game *g)
 		{
 			depth = depth_vert;
 			vert_intersection.y = fmod(vert_intersection.y, TILE_SIZE);
+			g->rays[it.i].depth = depth_vert;
+			g->rays[it.i].wall_hit = vert_intersection;
+			g->rays[it.i].content_hit = vert_wall_content;
+			g->rays[it.i].vertical_hit = true;
 		}
 		else
 		{
 			depth = depth_horz;
 			horz_intersection.x = fmod(horz_intersection.x, TILE_SIZE);
+			g->rays[it.i].depth = depth_horz;
+			g->rays[it.i].wall_hit = horz_intersection;
+			g->rays[it.i].content_hit = horz_wall_content;
+			g->rays[it.i].vertical_hit = false;
 		}
 
 		// fishbowl effect

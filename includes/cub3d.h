@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/31 05:52:59 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/31 06:53:01 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,17 @@
 
 # define LEAKS 0
 
-# define FPS 120
+# ifndef DEBUG
+#  define DEBUG 0
+# endif
+
+# ifdef MINIMAP
+#  define FPS 60
+# else
+#  define MINIMAP 0
+#  define FPS 30
+# endif
+
 # define FRAME_RATE (1000 / FPS)
 
 # define WIN_WIDTH 1600
@@ -60,14 +70,6 @@
 # define GREEN "\033[0;32m" 
 # define YELLOW "\033[0;33m"
 # define RESET "\033[0m"
-
-# ifndef DEBUG
-#  define DEBUG 0
-# endif
-
-# ifndef MINIMAP
-#  define MINIMAP 0
-# endif
 
 enum
 {

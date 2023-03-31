@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/30 04:03:15 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/31 06:49:43 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ typedef struct s_ray
 {
 	t_coords	wall_hit;
 	float		angle;
-	float		distance;
+	float		depth;
 	bool		vertical_hit;
 	bool		rayface_down;
 	bool		rayface_up;
