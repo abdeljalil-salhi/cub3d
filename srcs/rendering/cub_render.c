@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/30 16:28:14 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/31 05:51:37 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,9 @@ void	check_wall_collision(t_game *g, float dx, float dy)
 	// 	g->player.pos.x += dx;
 	// if (!has_wall_at(g, g->player.pos.x, g->player.pos.y + dy + g->player.walk_direction * (g->player.height / 2)))
 	// 	g->player.pos.y += dy;
-	if (!has_wall_at(g, g->player.pos.x + dx, g->player.pos.y))
+	if (!has_wall_at(g, g->player.pos.x + dx * PLAYER_SCALE, g->player.pos.y))
 		g->player.pos.x += dx;
-	if (!has_wall_at(g, g->player.pos.x, g->player.pos.y + dy))
+	if (!has_wall_at(g, g->player.pos.x, g->player.pos.y + dy * PLAYER_SCALE))
 		g->player.pos.y += dy;
 }
 
@@ -128,20 +128,79 @@ int	player_movement(t_game *g)
 	return (RETURN_SUCCESS);
 }
 
-void	draw_ray_rect(t_game *g, t_coords start, int width, int height)
+int	create_trgb(int t, int r, int g, int b)
+{
+	return (t << 24 | r << 16 | g << 8 | b);
+}
+
+int	get_t(int trgb)
+{
+	return ((trgb >> 24) & 0xFF);
+}
+
+int	get_r(int trgb)
+{
+	return ((trgb >> 16) & 0xFF);
+}
+
+int	get_g(int trgb)
+{
+	return ((trgb >> 8) & 0xFF);
+}
+
+int	get_b(int trgb)
+{
+	return (trgb & 0xFF);
+}
+
+void	draw_ray_rect(t_game *g, t_coords start, int width, int height, int color)
 {
 	t_iterators	it;
+	// int	ceiling_color = create_trgb(0, g->assets.ceiling.r, g->assets.ceiling.g, g->assets.ceiling.b);
+	// int	floor_color = create_trgb(0, g->assets.floor.r, g->assets.floor.g, g->assets.floor.b);
 
+	// it.i = -1;
+	// while (++it.i < start.y)
+	// {
+	// 	it.j = -1;
+	// 	while (++it.j < width)
+	// 		cub_pixel_put(g, it.j, it.i, ceiling_color);
+	// }
+	int	used_color;
 	it.i = -1;
-	// while (++it.i < width)
-		// draw_line(g, start, (t_coords){start.x + it.i, start.y + height});
 	while (++it.i < height)
 	{
+		used_color = color;
+		if (start.y + it.i >= g->win.height)
+			break ;
+		if (start.y + it.i < 0)
+			continue ;
+		if (start.x >= g->win.width)
+			break ;
+		if (start.x < 0)
+			continue ;
+		// if (start.x + width >= g->win.width)
+		// 	width = g->win.width - start.x;
+		// if (start.x + width < 0)
+		// 	width = 0;
+		// if (start.y + it.i + height >= g->win.height)
+		// 	height = g->win.height - start.y - it.i;
+		// if (start.y + it.i + height < 0)
+		// 	height = 0;
+		if (it.i == 0 || it.i == height - 1)
+			used_color = 0x000000;
 		it.j = -1;
 		while (++it.j < width)
 			if (start.y + it.i < g->win.height && start.x + it.j < g->win.width)
-				cub_pixel_put(g, start.x + it.j, start.y + it.i, 0xFFFFFF);
+				cub_pixel_put(g, start.x + it.j, start.y + it.i, used_color);
 	}
+	// it.i = -1;
+	// while (++it.i < g->win.height - start.y - height)
+	// {
+	// 	it.j = -1;
+	// 	while (++it.j < width)
+	// 		cub_pixel_put(g, it.j, start.y + height + it.i, floor_color);
+	// }
 }
 
 // PYTHONIC WAY
@@ -160,6 +219,7 @@ void	raycast(t_game *g)
 	float		depth;
 	float		ray_angle;
 	float		sin_a, cos_a;
+	int			color;
 	t_iterators	it;
 
 	origin = g->player.pos;
@@ -247,7 +307,8 @@ void	raycast(t_game *g)
 		{
 			start.x = it.i * SCALE;
 			start.y = HALF_WIN_HEIGHT - proj_height / 2;
-			draw_ray_rect(g, start, SCALE, proj_height);
+			color = (depth_vert < depth_horz) ? 0x00FF00 : 0xFF0000;
+			draw_ray_rect(g, start, SCALE, proj_height, color);
 		}
 		
 		ray_angle += DELTA_ANGLE;
@@ -272,6 +333,81 @@ void	raycast(t_game *g)
 // 		ray_angle += DELTA_ANGLE;		
 // 	}
 // }
+
+void	draw_background(t_game *g)
+{
+	t_coords	start;
+	t_coords	end;
+	t_iterators	it;
+
+	start.x = 0;
+	start.y = 0;
+	end.x = WIN_WIDTH;
+	end.y = HALF_WIN_HEIGHT;
+	int	ceiling_color = create_trgb(0, g->assets.ceiling.r, g->assets.ceiling.g, g->assets.ceiling.b);
+	int	floor_color = create_trgb(0, g->assets.floor.r, g->assets.floor.g, g->assets.floor.b);
+	it.i = -1;
+	while (++it.i < WIN_WIDTH)
+	{
+		it.j = -1;
+		while (++it.j < HALF_WIN_HEIGHT)
+			cub_pixel_put(g, it.i, it.j, ceiling_color);
+	}
+	start.y = HALF_WIN_HEIGHT;
+	end.y = WIN_HEIGHT;
+	it.i = -1;
+	while (++it.i < WIN_WIDTH)
+	{
+		it.j = HALF_WIN_HEIGHT - 1;
+		while (++it.j < WIN_HEIGHT)
+			cub_pixel_put(g, it.i, it.j, floor_color);
+	}
+}
+
+void	draw_minimap(t_game *g)
+{
+	t_iterators	it;
+	t_iterators	it2;
+	int			tile_size;
+
+	tile_size = 10;
+	it.i = -1;
+	while (++it.i < g->map.height)
+	{
+		it.j = -1;
+		while (++it.j < g->map.width)
+		{
+			if (g->map.arr[it.i][it.j] == 1)
+			{
+				it2.i = -1;
+				while (++it2.i < tile_size)
+				{
+					it2.j = -1;
+					while (++it2.j < tile_size)
+						if (it.i * tile_size + it2.i < g->win.height
+							&& it.j * tile_size + it2.j < g->win.width
+							&& (it2.i == 0 || it2.j == 0
+							|| it2.i == tile_size - 1 || it2.j == tile_size - 1))
+							cub_pixel_put(g, it.j * tile_size + it2.j, it.i * tile_size + it2.i, 0xFFFFFF);
+						else
+							cub_pixel_put(g, it.j * tile_size + it2.j, it.i * tile_size + it2.i, 0x000000);
+				}
+			}
+		}
+	}
+	
+	t_coords	player_pos;
+	
+	player_pos.x = g->player.pos.x / TILE_SIZE * tile_size;
+	player_pos.y = g->player.pos.y / TILE_SIZE * tile_size;
+	it.i = -1;
+	while (++it.i < PLAYER_MINIMAP_HEIGHT)
+	{
+		it.j = -1;
+		while (++it.j < PLAYER_MINIMAP_WIDTH)
+			cub_pixel_put(g, player_pos.x + it.j - PLAYER_MINIMAP_WIDTH / 2, player_pos.y + it.i - PLAYER_MINIMAP_HEIGHT / 2, 0xFF0000);
+	}
+}
 
 void	update(t_game *g)
 {
@@ -307,10 +443,14 @@ int	cub_render(t_game *g)
 	update(g);
 	if (MINIMAP)
 		display_map(g);
+	else
+		draw_background(g);
 	player_movement(g);
 	raycast(g);
 	if (MINIMAP)
 		draw_player(g);
+	else
+		draw_minimap(g);
 	mlx_put_image_to_window(g->mlx, g->win.ref, g->frame.ref, 0, 0);
 	mlx_destroy_image(g->mlx, g->frame.ref);
 	tmp = ft_itoa(last_fps);

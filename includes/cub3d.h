@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/30 16:34:33 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/31 05:52:59 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 
 # define LEAKS 0
 
-# define FPS 60
+# define FPS 120
 # define FRAME_RATE (1000 / FPS)
 
 # define WIN_WIDTH 1600
@@ -46,6 +46,9 @@
 
 # define PLAYER_WIDTH 10
 # define PLAYER_HEIGHT 5
+# define PLAYER_MINIMAP_WIDTH 5
+# define PLAYER_MINIMAP_HEIGHT 3
+# define PLAYER_SCALE 3
 # define PLAYER_SPEED 200
 # define PLAYER_ROTATION_SPEED (90 * (M_PI / 180))
 
@@ -54,7 +57,7 @@
 # define RETURN_DEFAULT 1
 
 # define ERROR "\033[1;31m"
-# define GREEN "\033[0;32m"
+# define GREEN "\033[0;32m" 
 # define YELLOW "\033[0;33m"
 # define RESET "\033[0m"
 

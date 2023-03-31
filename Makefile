@@ -6,13 +6,13 @@
 #    By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/19 21:24:26 by absalhi           #+#    #+#              #
-#    Updated: 2023/03/30 05:52:18 by absalhi          ###   ########.fr        #
+#    Updated: 2023/03/31 03:07:45 by absalhi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	cub3D
 
-CFLAGS		=	-Wall -Wextra -Werror -Iincludes -Ilibft
+CFLAGS		=	-Wall -Wextra -Werror -Iincludes -Ilibft #-fsanitize=address -g3
 MXFLAGS		=	-Lmlx -lmlx -framework OpenGL -framework AppKit
 CC			=	cc
 RM			=	rm -rf
