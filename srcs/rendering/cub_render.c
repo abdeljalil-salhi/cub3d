@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/04/01 00:53:34 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/04/01 05:55:35 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 bool	check_if_wall(int content)
 {
-	return (content == 1 || content == 2 || content == 3);
+	return (content == 1 || content == 2 || content == 3
+		|| content == 4 || content == 5);
 }
 
 void	display_map(t_game *g)
@@ -211,12 +212,15 @@ void	draw_ray_rect(t_game *g, t_coords start, int width, int height, int color)
 t_image	get_texture(t_game *g, int ind)
 {
 	if (g->rays[ind].content_hit == 1)
-		return (g->textures.redbrick);
+		return (g->textures.wall_1);
 	else if (g->rays[ind].content_hit == 2)
-		return (g->textures.eagle);
+		return (g->textures.wall_2);
 	else if (g->rays[ind].content_hit == 3)
-		return (g->textures.eagle);
-	return (g->textures.redbrick);
+		return (g->textures.wall_3);
+	else if (g->rays[ind].content_hit == 4)
+		return (g->textures.wall_4);
+	else
+		return (g->textures.wall_5);
 }
 
 // PYTHONIC WAY
@@ -363,7 +367,13 @@ void	raycast(t_game *g)
 			// ceiling
 			i = -1;
 			while (++i < wall_top_pixel)
+			{
+				// text_offset_x = (int) (it.i * SCALE) % WIN_WIDTH;
+				// text_offset_y = (int) (i * SCALE) % HALF_WIN_HEIGHT;
+				// textcolor = ((unsigned int *) g->textures.sky.addr)[(text_offset_y * WIN_WIDTH) + text_offset_x];
+				// cub_pixel_put(g, it.i * SCALE, i, textcolor);
 				cub_pixel_put(g, it.i * SCALE, i, ceiling_color);
+			}
 			// walls 
 			if (g->rays[it.i].vertical_hit)
 				text_offset_x = (int) vert_intersection.y % TILE_SIZE;

@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 21:28:45 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/31 23:52:33 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/04/01 04:49:13 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,10 @@ static int	cub_map_parse_helper(char *line, t_game *g,
 		g->map.arr[i][s->j] = 2;
 	else if (line[s->k] == '3')
 		g->map.arr[i][s->j] = 3;
+	else if (line[s->k] == '4')
+		g->map.arr[i][s->j] = 4;
+	else if (line[s->k] == '5')
+		g->map.arr[i][s->j] = 5;
 	else if (line[s->k] == 'N')
 		cub_map_parse_helper_setter(g, i, s->j, 3 * M_PI / 2);
 	else if (line[s->k] == 'S')

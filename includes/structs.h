@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/04/01 00:48:58 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/04/01 05:17:15 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,12 +131,12 @@ typedef struct s_sprite
 
 typedef struct s_texture
 {
-	t_image		redbrick;
-	// t_image		pillar;
-	//t_image		wood;
-	t_image		eagle;
-	//t_image		barrel;
-	t_image		bluestone;
+	t_image		wall_1;
+	t_image		wall_2;
+	t_image		wall_3;
+	t_image		wall_4;
+	t_image		wall_5;
+	t_image		sky;
 	t_sprite	green_light;
 }	t_texture;
 

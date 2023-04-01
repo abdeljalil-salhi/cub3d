@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 14:50:29 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/24 00:57:39 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/04/01 04:57:21 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ static int	cub_parse_color_joiner(t_cub_parse_color *s, t_game *g,
 			free(s->tmp);
 		}
 	}
+	if (cub_count_occurences(s->join, ',') != 2)
+		return (cub_errors_setter(g, MAP_INVALID_COLOR));
 	s->rgb = ft_split(s->join, ",");
 	free(s->join);
 	if (!s->rgb)

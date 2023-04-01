@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 00:20:08 by absalhi           #+#    #+#             */
-/*   Updated: 2023/04/01 00:56:41 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/04/01 05:17:36 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,30 +24,44 @@ int	cub_init_textures(t_game *g)
 {
 	t_iterators	it;
 
-	g->textures.redbrick.ref = mlx_xpm_file_to_image(g->mlx, "assets/textures/redbrick.xpm", &it.i, &it.j);
-	g->textures.redbrick.addr = mlx_get_data_addr(g->textures.redbrick.ref,
-			&g->textures.redbrick.bpp, &g->textures.redbrick.line_length, &g->textures.redbrick.endian);
-	if (!g->textures.redbrick.addr)
-		return (cub_errors_setter(g, "Failed to get data addr of redbrick xpm."));
-	g->textures.bluestone.ref = mlx_xpm_file_to_image(g->mlx, "assets/textures/bluestone.xpm", &it.i, &it.j);
-	g->textures.bluestone.addr = mlx_get_data_addr(g->textures.bluestone.ref,
-			&g->textures.bluestone.bpp, &g->textures.bluestone.line_length, &g->textures.bluestone.endian);
-	if (!g->textures.bluestone.addr)
-		return (cub_errors_setter(g, "Failed to get data addr of bluestone xpm."));
-	g->textures.eagle.ref = mlx_xpm_file_to_image(g->mlx, "assets/textures/eagle.xpm", &it.i, &it.j);
-	g->textures.eagle.addr = mlx_get_data_addr(g->textures.eagle.ref,
-			&g->textures.eagle.bpp, &g->textures.eagle.line_length, &g->textures.eagle.endian);
-	if (!g->textures.eagle.addr)
-		return (cub_errors_setter(g, "Failed to get data addr of eagle xpm."));
-	// g->textures.pillar.ref = mlx_xpm_file_to_image(g->mlx, "assets/textures/pillar.xpm", &it.i, &it.j);
-	// g->textures.pillar.addr = mlx_get_data_addr(g->textures.pillar.ref,
-	// 		&g->textures.pillar.bpp, &g->textures.eagle.line_length, &g->textures.pillar.endian);
-	// g->textures.wood.ref = mlx_xpm_file_to_image(g->mlx, "assets/textures/wood.xpm", &it.i, &it.j);
-	// g->textures.wood.addr = mlx_get_data_addr(g->textures.wood.ref,
-	// 		&g->textures.wood.bpp, &g->textures.wood.line_length, &g->textures.wood.endian);
-	// g->textures.barrel.ref = mlx_xpm_file_to_image(g->mlx, "assets/textures/barrel.xpm", &it.i, &it.j);
-	// g->textures.barrel.addr = mlx_get_data_addr(g->textures.barrel.ref,
-	// 		&g->textures.barrel.bpp, &g->textures.barrel.line_length, &g->textures.barrel.endian);
+	g->textures.wall_1.ref = mlx_xpm_file_to_image(g->mlx, "assets/textures/1.xpm", &it.i, &it.j);
+	if (!g->textures.wall_1.ref)
+		return (cub_errors_setter(g, "Failed to get data addr of wall_1 xpm."));
+	g->textures.wall_1.addr = mlx_get_data_addr(g->textures.wall_1.ref,
+			&g->textures.wall_1.bpp, &g->textures.wall_1.line_length, &g->textures.wall_1.endian);
+	if (!g->textures.wall_1.addr)
+		return (cub_errors_setter(g, "Failed to get data addr of wall_1 xpm."));
+	g->textures.wall_2.ref = mlx_xpm_file_to_image(g->mlx, "assets/textures/2.xpm", &it.i, &it.j);
+	if (!g->textures.wall_2.ref)
+		return (cub_errors_setter(g, "Failed to get data addr of wall_2 xpm."));
+	g->textures.wall_2.addr = mlx_get_data_addr(g->textures.wall_2.ref,
+			&g->textures.wall_2.bpp, &g->textures.wall_2.line_length, &g->textures.wall_2.endian);
+	if (!g->textures.wall_2.addr)
+		return (cub_errors_setter(g, "Failed to get data addr of wall_2 xpm."));
+	g->textures.wall_3.ref = mlx_xpm_file_to_image(g->mlx, "assets/textures/3.xpm", &it.i, &it.j);
+	if (!g->textures.wall_3.ref)
+		return (cub_errors_setter(g, "Failed to get data addr of wall_3 xpm."));
+	g->textures.wall_3.addr = mlx_get_data_addr(g->textures.wall_3.ref,
+			&g->textures.wall_3.bpp, &g->textures.wall_3.line_length, &g->textures.wall_3.endian);
+	if (!g->textures.wall_3.addr)
+		return (cub_errors_setter(g, "Failed to get data addr of wall_3 xpm."));
+	g->textures.wall_4.ref = mlx_xpm_file_to_image(g->mlx, "assets/textures/4.xpm", &it.i, &it.j);
+	if (!g->textures.wall_4.ref)
+		return (cub_errors_setter(g, "Failed to get data addr of wall_4 xpm."));
+	g->textures.wall_4.addr = mlx_get_data_addr(g->textures.wall_4.ref,
+			&g->textures.wall_4.bpp, &g->textures.wall_3.line_length, &g->textures.wall_4.endian);
+	if (!g->textures.wall_4.addr)
+		return (cub_errors_setter(g, "Failed to get data addr of wall_4 xpm."));
+	g->textures.wall_5.ref = mlx_xpm_file_to_image(g->mlx, "assets/textures/5.xpm", &it.i, &it.j);
+	if (!g->textures.wall_5.ref)
+		return (cub_errors_setter(g, "Failed to get data addr of wall_5 xpm."));
+	g->textures.wall_5.addr = mlx_get_data_addr(g->textures.wall_5.ref,
+			&g->textures.wall_5.bpp, &g->textures.wall_5.line_length, &g->textures.wall_5.endian);
+	if (!g->textures.wall_5.addr)
+		return (cub_errors_setter(g, "Failed to get data addr of wall_5 xpm."));
+	g->textures.sky.ref = mlx_xpm_file_to_image(g->mlx, "assets/sky.xpm", &it.i, &it.j);
+	if (!g->textures.sky.ref)
+		return (cub_errors_setter(g, "Failed to get data addr of sky xpm."));
 	return (RETURN_SUCCESS);
 }
 
