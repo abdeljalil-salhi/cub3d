@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 21:28:45 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/30 04:03:50 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/31 23:52:33 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef struct s_cub_map_parse
 static void	cub_map_parse_helper_setter(t_game *g,
 		int i, int j, float degree)
 {
-	g->map.arr[i][j] = 2;
+	g->map.arr[i][j] = 99;
 	g->player.pos.x = TILE_SIZE * j + TILE_SIZE / 2;
 	g->player.pos.y = TILE_SIZE * i + TILE_SIZE / 2;
 	g->player.width = PLAYER_WIDTH;
@@ -84,6 +84,10 @@ static int	cub_map_parse_helper(char *line, t_game *g,
 		g->map.arr[i][s->j] = 0;
 	else if (line[s->k] == '1')
 		g->map.arr[i][s->j] = 1;
+	else if (line[s->k] == '2')
+		g->map.arr[i][s->j] = 2;
+	else if (line[s->k] == '3')
+		g->map.arr[i][s->j] = 3;
 	else if (line[s->k] == 'N')
 		cub_map_parse_helper_setter(g, i, s->j, 3 * M_PI / 2);
 	else if (line[s->k] == 'S')

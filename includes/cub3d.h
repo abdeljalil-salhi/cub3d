@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/31 20:29:40 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/04/01 00:57:06 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,17 @@
 #  define DEBUG 0
 # endif
 
-# ifndef TEXTURES
-#  define TEXTURES 0
+# ifndef NO_TEXTURES
+#  define NO_TEXTURES 0
 # endif
 
 # ifdef MINIMAP
-#  define FPS 120
+#  define FPS 80
 #  define TILE_SIZE 32
 #  define PLAYER_SPEED 200
 # else
 #  define MINIMAP 0
-#  define FPS 120
+#  define FPS 40
 #  define TILE_SIZE 64
 #  define PLAYER_SPEED 250
 # endif
@@ -195,6 +195,10 @@ int		cub_map_check(t_game *g, char *line);
 
 /* --------------------------- RENDERING --------------------------- */
 
+int		cub_init(t_game *g);
+void	cub_free_textures(t_game *g);
+int		cub_init_textures(t_game *g);
+int		cub_init_sprites(t_game *g);
 int		cub_render(t_game *g);
 int		player_movement(t_game *g);
 

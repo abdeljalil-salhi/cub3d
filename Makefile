@@ -6,7 +6,7 @@
 #    By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/19 21:24:26 by absalhi           #+#    #+#              #
-#    Updated: 2023/03/31 20:26:29 by absalhi          ###   ########.fr        #
+#    Updated: 2023/04/01 00:52:22 by absalhi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,8 +32,11 @@ _PARSING	=	cub_parser.c cub_file_parser.c cub_file_checker.c		\
 				cub_file_line.c cub_map.c cub_check.c cub_map_norm.c
 PARSING		=	$(addprefix parsing/, $(_PARSING))
 
-_RENDERING	=	cub_render.c
-RENDERING	= $(addprefix rendering/, $(_RENDERING))
+_TEXTURES	=	cub_green_light.c
+TEXTURES	=	$(addprefix rendering/textures/, $(_TEXTURES))
+
+_RENDERING	=	cub_render.c cub_init.c
+RENDERING	=	$(addprefix rendering/, $(_RENDERING)) $(TEXTURES)
 
 _SRCS		=	$(LIBCUB) $(UTILS) $(PARSING) $(RENDERING)
 SRCS		=	$(addprefix srcs/, $(_SRCS)) main.c
@@ -57,8 +60,8 @@ debug		:	re
 minimap		:	CFLAGS += -D MINIMAP
 minimap		:	re
 
-textures	:	CFLAGS += -D TEXTURES
-textures	:	re
+no_textures	:	CFLAGS += -D NO_TEXTURES
+no_textures	:	re
 
 clean		:
 				@echo $(ITALIC)$(GRAY) "     - Removing object files..." $(NONE)

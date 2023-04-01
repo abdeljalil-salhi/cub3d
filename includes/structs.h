@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/31 20:11:29 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/04/01 00:48:58 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_coords
 typedef struct s_alloc
 {
 	bool	map;
+	bool	green_light;
 }	t_alloc;
 
 typedef struct s_color
@@ -120,9 +121,23 @@ typedef struct s_player
 	int			rotation_direction;
 }	t_player;
 
+typedef struct s_sprite
+{
+	t_image		image;
+	char		**path;
+	int			frame;
+	int			n_of_frames;
+}	t_sprite;
+
 typedef struct s_texture
 {
-	t_image		wall_texture;
+	t_image		redbrick;
+	// t_image		pillar;
+	//t_image		wood;
+	t_image		eagle;
+	//t_image		barrel;
+	t_image		bluestone;
+	t_sprite	green_light;
 }	t_texture;
 
 typedef struct s_game

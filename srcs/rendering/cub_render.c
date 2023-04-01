@@ -6,11 +6,16 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/31 20:17:22 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/04/01 00:53:34 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+bool	check_if_wall(int content)
+{
+	return (content == 1 || content == 2 || content == 3);
+}
 
 void	display_map(t_game *g)
 {
@@ -21,7 +26,7 @@ void	display_map(t_game *g)
 	{
 		it.j = -1;
 		while (++it.j < g->map.width)
-			if (g->map.arr[it.i][it.j] == 1)
+			if (check_if_wall(g->map.arr[it.i][it.j]))
 				cub_rect_put(g, it, 0xFFFFFF);
 	}
 }
@@ -70,7 +75,7 @@ bool	has_wall_at(t_game *g, float x, float y)
 {
 	if (x < 0 || x > g->map.width * TILE_SIZE || y < 0 || y > g->map.height * TILE_SIZE)
 		return (true);
-	return (g->map.arr[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] == 1);
+	return (check_if_wall(g->map.arr[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)]));
 }
 
 void	check_wall_collision(t_game *g, float dx, float dy)
@@ -203,6 +208,17 @@ void	draw_ray_rect(t_game *g, t_coords start, int width, int height, int color)
 	// }
 }
 
+t_image	get_texture(t_game *g, int ind)
+{
+	if (g->rays[ind].content_hit == 1)
+		return (g->textures.redbrick);
+	else if (g->rays[ind].content_hit == 2)
+		return (g->textures.eagle);
+	else if (g->rays[ind].content_hit == 3)
+		return (g->textures.eagle);
+	return (g->textures.redbrick);
+}
+
 // PYTHONIC WAY
 void	raycast(t_game *g)
 {
@@ -257,7 +273,7 @@ void	raycast(t_game *g)
 			horz_tile.y = (int)(horz_intersection.y / TILE_SIZE);
 			if (abs((int)(horz_tile.y)) >= g->map.height || abs((int)(horz_tile.x)) >= g->map.width)
 				break ;
-			if (g->map.arr[abs((int)(horz_tile.y))][abs((int)(horz_tile.x))] == 1)
+			if (check_if_wall(g->map.arr[abs((int)(horz_tile.y))][abs((int)(horz_tile.x))]))
 			{
 				horz_wall_content = g->map.arr[abs((int)(horz_tile.y))][abs((int)(horz_tile.x))];
 				break ;
@@ -283,7 +299,7 @@ void	raycast(t_game *g)
 			vert_tile.y = (int)(vert_intersection.y / TILE_SIZE);
 			if (abs((int)(vert_tile.y)) >= g->map.height || abs((int)(vert_tile.x)) >= g->map.width)
 				break ;
-			if (g->map.arr[abs((int)(vert_tile.y))][abs((int)(vert_tile.x))] == 1)
+			if (check_if_wall(g->map.arr[abs((int)(vert_tile.y))][abs((int)(vert_tile.x))]))
 			{
 				vert_wall_content = g->map.arr[abs((int)(vert_tile.y))][abs((int)(vert_tile.x))];
 				break ;
@@ -356,14 +372,14 @@ void	raycast(t_game *g)
 			i = wall_top_pixel - 1;
 			while (++i < wall_bottom_pixel)
 			{
-				if (TEXTURES)
+				if (NO_TEXTURES)
+					g->rays[it.i].vertical_hit ? cub_pixel_put(g, it.i * SCALE, i, 0x00FF00) : cub_pixel_put(g, it.i * SCALE, i, 0xFF0000); 
+				else
 				{
 					text_offset_y = (i + (int) proj_height / 2 - HALF_WIN_HEIGHT) * (TILE_SIZE / proj_height);
-					textcolor = ((unsigned int *) g->textures.wall_texture.addr)[(text_offset_y * TILE_SIZE) + text_offset_x];
+					textcolor = ((unsigned int *) get_texture(g, it.i).addr)[(text_offset_y * TILE_SIZE) + text_offset_x];
 					cub_pixel_put(g, it.i * SCALE, i, textcolor);
 				}
-				else
-					g->rays[it.i].vertical_hit ? cub_pixel_put(g, it.i * SCALE, i, 0x00FF00) : cub_pixel_put(g, it.i * SCALE, i, 0xFF0000); 
 			}
 			// floor
 			i--;
@@ -394,35 +410,35 @@ void	raycast(t_game *g)
 // 	}
 // }
 
-void	draw_background(t_game *g)
-{
-	t_coords	start;
-	t_coords	end;
-	t_iterators	it;
+// void	draw_background(t_game *g)
+// {
+// 	t_coords	start;
+// 	t_coords	end;
+// 	t_iterators	it;
 
-	start.x = 0;
-	start.y = 0;
-	end.x = WIN_WIDTH;
-	end.y = HALF_WIN_HEIGHT;
-	int	ceiling_color = create_trgb(0, g->assets.ceiling.r, g->assets.ceiling.g, g->assets.ceiling.b);
-	int	floor_color = create_trgb(0, g->assets.floor.r, g->assets.floor.g, g->assets.floor.b);
-	it.i = -1;
-	while (++it.i < WIN_WIDTH)
-	{
-		it.j = -1;
-		while (++it.j < HALF_WIN_HEIGHT)
-			cub_pixel_put(g, it.i, it.j, ceiling_color);
-	}
-	start.y = HALF_WIN_HEIGHT;
-	end.y = WIN_HEIGHT;
-	it.i = -1;
-	while (++it.i < WIN_WIDTH)
-	{
-		it.j = HALF_WIN_HEIGHT - 1;
-		while (++it.j < WIN_HEIGHT)
-			cub_pixel_put(g, it.i, it.j, floor_color);
-	}
-}
+// 	start.x = 0;
+// 	start.y = 0;
+// 	end.x = WIN_WIDTH;
+// 	end.y = HALF_WIN_HEIGHT;
+// 	int	ceiling_color = create_trgb(0, g->assets.ceiling.r, g->assets.ceiling.g, g->assets.ceiling.b);
+// 	int	floor_color = create_trgb(0, g->assets.floor.r, g->assets.floor.g, g->assets.floor.b);
+// 	it.i = -1;
+// 	while (++it.i < WIN_WIDTH)
+// 	{
+// 		it.j = -1;
+// 		while (++it.j < HALF_WIN_HEIGHT)
+// 			cub_pixel_put(g, it.i, it.j, ceiling_color);
+// 	}
+// 	start.y = HALF_WIN_HEIGHT;
+// 	end.y = WIN_HEIGHT;
+// 	it.i = -1;
+// 	while (++it.i < WIN_WIDTH)
+// 	{
+// 		it.j = HALF_WIN_HEIGHT - 1;
+// 		while (++it.j < WIN_HEIGHT)
+// 			cub_pixel_put(g, it.i, it.j, floor_color);
+// 	}
+// }
 
 void	draw_minimap(t_game *g)
 {
@@ -437,7 +453,7 @@ void	draw_minimap(t_game *g)
 		it.j = -1;
 		while (++it.j < g->map.width)
 		{
-			if (g->map.arr[it.i][it.j] == 1)
+			if (check_if_wall(g->map.arr[it.i][it.j]))
 			{
 				it2.i = -1;
 				while (++it2.i < tile_size)

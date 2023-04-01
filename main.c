@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:40:50 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/31 20:14:27 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/04/01 00:42:00 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ static void	cub_print_assets(t_game *g)
 int	main(int argc, char **argv)
 {
 	t_game	g;
-	int		texture_w;
-	int		texture_h;
 
 	ft_bzero(&g, sizeof(t_game));
 	if (argc != 2)
@@ -63,9 +61,8 @@ int	main(int argc, char **argv)
 		cub_print_assets(&g);
 	g.mlx = mlx_init();
 	g.win.ref = mlx_new_window(g.mlx, g.win.width, g.win.height, NAME);
-	g.textures.wall_texture.ref = mlx_xpm_file_to_image(g.mlx, "textures/redbrick.xpm", &texture_w, &texture_h);
-	g.textures.wall_texture.addr = mlx_get_data_addr(g.textures.wall_texture.ref,
-			&g.textures.wall_texture.bpp, &g.textures.wall_texture.line_length, &g.textures.wall_texture.endian);
+	if (cub_init(&g))
+		cub_errors_exit(&g, g.error.message);
 	g.start_time = clock();
 	mlx_hook(g.win.ref, ON_DESTROY, 0L, cub_free_memory, &g);
 	mlx_hook(g.win.ref, ON_KEYDOWN, 0L, cub_key_hook, &g);

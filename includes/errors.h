@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 23:58:34 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/24 00:49:13 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/03/31 23:43:36 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 # define MAP_INDEX_OUT_OF_RANGE "Indexed map out of range"
 # define MAP_INVALID_CHAR "Invalid character in your map"
 # define MAP_INVALID_BORDER "Invalid border in your map"
+# define MAP_NO_PLAYERS "No players found in your map"
 # define MAP_MULTIPLE_PLAYERS "Multiple players found in your map"
 
 #endif
