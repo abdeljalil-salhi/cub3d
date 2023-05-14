@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/04/01 00:57:06 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/14 19:45:59 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 # include <math.h>
 # include <time.h>
 # include <mlx.h>
+
+typedef unsigned long		t_ul;
+typedef unsigned long long	t_ull;
 
 # include "libft.h"
 # include "structs.h"
@@ -56,13 +59,15 @@
 
 # define FOV (60 * (M_PI / 180))
 # define HALF_FOV (FOV / 2)
+# define SCREEN_DIST HALF_WIN_WIDTH / tan(HALF_FOV)
 # define NUM_RAYS WIN_WIDTH
+# define HALF_NUM_RAYS NUM_RAYS / 2
 # define SCALE (WIN_WIDTH / NUM_RAYS)
 # define DELTA_ANGLE (FOV / NUM_RAYS)
 # define MAX_DEPTH 100
 
 # define PLAYER_WIDTH 10
-# define PLAYER_HEIGHT 5
+# define PLAYER_HEIGHT 32
 # define PLAYER_MINIMAP_WIDTH 5
 # define PLAYER_MINIMAP_HEIGHT 3
 # define PLAYER_SCALE 3
@@ -76,6 +81,8 @@
 # define GREEN "\033[0;32m" 
 # define YELLOW "\033[0;33m"
 # define RESET "\033[0m"
+
+# define TAU 2 * M_PI
 
 enum
 {
@@ -94,6 +101,7 @@ enum
 	KEY_D = 2,
 	KEY_S = 1,
 	KEY_W = 13,
+	KEY_E = 14,
 	KEY_P = 35,
 	KEY_SPACE = 49,
 	ESC = 53,
@@ -111,7 +119,22 @@ enum
 	RAY_FACING_RIGHT
 };
 
-typedef unsigned long long	t_ull;
+enum
+{
+	DOOR_OPENED = 97,
+	DOOR_CLOSED,
+	PLAYER
+};
+
+enum
+{
+	WEAPON_SHOTGUN,
+};
+
+enum
+{
+	OBJECT_BARREL,
+};
 
 /* --------------------------- UTILS --------------------------- */
 
@@ -141,6 +164,7 @@ int		cub_key_release(int keycode, t_game *g);
 */
 void	cub_pixel_put(t_game *g, float x, float y, int color);
 void	cub_rect_put(t_game *g, t_iterators pos, int color);
+void	draw_rect(t_game *g, t_iterators pos, int width, int height, int color);
 
 /* --------------------------- PARSING --------------------------- */
 
@@ -184,7 +208,8 @@ typedef struct s_cub_map_init
 
 int		cub_map_init(t_game *g);
 int		cub_map_parse(t_game *g, char *line);
-void	cub_map_init_norm(t_cub_map_init *s);
+void	cub_map_init_norm(t_game *g, t_cub_map_init *s);
+bool	is_object(char c);
 
 /*
 ** cub_check.c
@@ -196,9 +221,13 @@ int		cub_map_check(t_game *g, char *line);
 /* --------------------------- RENDERING --------------------------- */
 
 int		cub_init(t_game *g);
-void	cub_free_textures(t_game *g);
+int		cub_init_objects(t_game *g);
 int		cub_init_textures(t_game *g);
 int		cub_init_sprites(t_game *g);
+int		cub_init_weapon(t_game *g);
+int		cub_render_sprite(t_game *g);
+int		cub_init_candlebra(t_game *g);
+int		scale_img(t_game *g, t_iterators dimension);
 int		cub_render(t_game *g);
 int		player_movement(t_game *g);
 

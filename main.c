@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:40:50 by absalhi           #+#    #+#             */
-/*   Updated: 2023/04/01 00:42:00 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/13 22:18:53 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,29 @@ static void	cub_print_assets(t_game *g)
 	cub_print_map(g);
 }
 
+int	cub_mouse_release(int code, int x, int y, t_game *g)
+{
+	(void) x, (void) y;
+	if (code == 1 && !g->player.shooting)
+	{
+		g->player.shooting = true;
+		g->mouse.left = false;
+	}
+	else if (code == 2)
+		g->mouse.right = false;
+	return (RETURN_SUCCESS);
+}
+
+int	cub_mouse_hook(int code, int x, int y, t_game *g)
+{
+	(void) x, (void) y;
+	if (code == 1)
+		g->mouse.left = true;
+	else if (code == 2)
+		g->mouse.right = true;
+	return (RETURN_SUCCESS);
+}
+
 int	main(int argc, char **argv)
 {
 	t_game	g;
@@ -67,6 +90,8 @@ int	main(int argc, char **argv)
 	mlx_hook(g.win.ref, ON_DESTROY, 0L, cub_free_memory, &g);
 	mlx_hook(g.win.ref, ON_KEYDOWN, 0L, cub_key_hook, &g);
 	mlx_hook(g.win.ref, ON_KEYUP, 0L, cub_key_release, &g);
+	mlx_hook(g.win.ref, ON_MOUSEDOWN, 0L, cub_mouse_hook, &g);
+	mlx_hook(g.win.ref, ON_MOUSEUP, 0L, cub_mouse_release, &g);
 	mlx_loop_hook(g.mlx, cub_render, &g);
 	mlx_loop(g.mlx);
 }

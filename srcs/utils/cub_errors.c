@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:36:14 by absalhi           #+#    #+#             */
-/*   Updated: 2023/04/01 00:56:38 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/14 18:28:10 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@ void	cub_errors_exit(t_game *g, char *err)
 	ft_putstr_fd("\n", STDERR_FILENO);
 	if (g->allocated.map)
 		cub_free_double_int(g->map.arr, (size_t) g->win.height);
-	cub_free_textures(g);
+	if (g->allocated.buffer)
+		cub_free(g->buffer);
 	if (LEAKS)
 		system("leaks cub3D");
+	mlx_mouse_show();
 	exit(EXIT_FAILURE);
 }
 

@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 21:28:45 by absalhi           #+#    #+#             */
-/*   Updated: 2023/04/01 04:49:13 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/14 19:42:01 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ static int	cub_map_init_helper(t_game *g, t_cub_map_init *s)
 	if (DEBUG)
 		printf("lowest_indent: %d width: %d height: %d lines_before_map: %d\n",
 			s->lowest_indent, s->width, s->height, g->parsing.lines_before_map);
+	g->doors = (t_door *) malloc(sizeof(t_door) * g->doors_count);
+	if (!g->doors)
+		return (cub_errors_setter(g, ERR_MALLOC));
+	g->objects = (t_object *) malloc(sizeof(t_object) * g->objects_count);
+	if (!g->objects)
+		return (cub_errors_setter(g, ERR_MALLOC));
 	g->map.arr = (int **) malloc(sizeof(int *) * g->map.height);
 	if (!g->map.arr)
 		return (cub_errors_setter(g, ERR_MALLOC));
@@ -50,7 +56,7 @@ int	cub_map_init(t_game *g)
 			free(s.quick_line);
 			continue ;
 		}
-		cub_map_init_norm(&s);
+		cub_map_init_norm(g, &s);
 		free(s.quick_line);
 	}
 	return (cub_map_init_helper(g, &s));
@@ -65,7 +71,7 @@ typedef struct s_cub_map_parse
 static void	cub_map_parse_helper_setter(t_game *g,
 		int i, int j, float degree)
 {
-	g->map.arr[i][j] = 99;
+	g->map.arr[i][j] = PLAYER;
 	g->player.pos.x = TILE_SIZE * j + TILE_SIZE / 2;
 	g->player.pos.y = TILE_SIZE * i + TILE_SIZE / 2;
 	g->player.width = PLAYER_WIDTH;
@@ -73,6 +79,41 @@ static void	cub_map_parse_helper_setter(t_game *g,
 	g->player.angle = degree;
 	g->player.speed = PLAYER_SPEED;
 	g->player.rot_speed = PLAYER_ROTATION_SPEED;
+}
+
+static void	cub_map_parse_door(t_game *g,
+		int i, int j)
+{
+	static int	count = 0;
+
+	g->map.arr[i][j] = DOOR_CLOSED;
+	g->doors[count].id = count;
+	g->doors[count].x = j;
+	g->doors[count].y = i;
+	g->doors[count].state = DOOR_CLOSED;
+	g->doors[count].pos.x = TILE_SIZE * j + TILE_SIZE / 2;
+	g->doors[count].pos.y = TILE_SIZE * i + TILE_SIZE / 2;
+	count++;
+}
+
+bool	is_object(char c)
+{
+	return (c == 'B');
+}
+
+void	cub_parse_object(t_game *g, char c, int i, int j)
+{
+	static int	count = 0;
+
+	g->map.arr[i][j] = 0;
+	g->objects[count].id = count;
+	if (c == 'B')
+		g->objects[count].type = OBJECT_BARREL;
+	g->objects[count].pos.x = j * TILE_SIZE + TILE_SIZE / 2;
+	g->objects[count].pos.y = i * TILE_SIZE + TILE_SIZE / 2;
+	g->objects[count].frame = 0;
+	g->objects[count].animating = false;
+	count++;
 }
 
 static int	cub_map_parse_helper(char *line, t_game *g,
@@ -100,6 +141,10 @@ static int	cub_map_parse_helper(char *line, t_game *g,
 		cub_map_parse_helper_setter(g, i, s->j, 2 * M_PI);
 	else if (line[s->k] == 'W')
 		cub_map_parse_helper_setter(g, i, s->j, M_PI);
+	else if (line[s->k] == 'D')
+		cub_map_parse_door(g, i, s->j);
+	else if (is_object(line[s->k]))
+		cub_parse_object(g, line[s->k], i, s->j);
 	else
 		return (cub_errors_setter(g, MAP_INVALID_CHAR));
 	s->k++;

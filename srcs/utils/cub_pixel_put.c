@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:53:09 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/31 20:13:19 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/13 20:34:33 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,18 @@ void	cub_rect_put(t_game *g, t_iterators pos, int color)
 					|| it.j == 0 || it.j == TILE_SIZE - 1))
 				cub_pixel_put(g, TILE_SIZE * pos.j + it.j,
 					TILE_SIZE * pos.i + it.i + 1, color);
+	}
+}
+
+void	draw_rect(t_game *g, t_iterators pos, int width, int height, int color)
+{
+	t_iterators	it;
+
+	it.i = -1;
+	while (++it.i < height)
+	{
+		it.j = -1;
+		while (++it.j < width)
+			cub_pixel_put(g, pos.j + it.j, pos.i + it.i, color);
 	}
 }

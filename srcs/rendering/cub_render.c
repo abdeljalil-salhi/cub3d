@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/04/01 05:55:35 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/14 18:28:56 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 bool	check_if_wall(int content)
 {
 	return (content == 1 || content == 2 || content == 3
-		|| content == 4 || content == 5);
+		|| content == 4 || content == 5 || content == DOOR_CLOSED);
 }
 
 void	display_map(t_game *g)
@@ -127,9 +127,11 @@ int	player_movement(t_game *g)
 	}
 	check_wall_collision(g, dx, dy);
 	if (g->player.rotation_direction == 1)
-		g->player.angle += g->player.rot_speed * g->delta_time;
+		// g->player.angle += g->player.rot_speed * g->delta_time;
+		g->player.angle += g->mouse.angle * g->delta_time;
 	if (g->player.rotation_direction == -1)
-		g->player.angle -= g->player.rot_speed * g->delta_time;
+		// g->player.angle -= g->player.rot_speed * g->delta_time;
+		g->player.angle -= g->mouse.angle * g->delta_time;
 	g->player.angle = fmod(g->player.angle, 2 * M_PI);
 	return (RETURN_SUCCESS);
 }
@@ -219,8 +221,12 @@ t_image	get_texture(t_game *g, int ind)
 		return (g->textures.wall_3);
 	else if (g->rays[ind].content_hit == 4)
 		return (g->textures.wall_4);
-	else
+	else if (g->rays[ind].content_hit == 5)
 		return (g->textures.wall_5);
+	else if (g->rays[ind].content_hit == DOOR_CLOSED)
+		return (g->textures.door);
+	else
+		return (g->textures.wall_1);
 }
 
 // PYTHONIC WAY
@@ -248,7 +254,6 @@ void	raycast(t_game *g)
 	map_pos.x = (int)(origin.x / TILE_SIZE);
 	map_pos.y = (int)(origin.y / TILE_SIZE);
 	ray_angle = g->player.angle - HALF_FOV + 0.0001;
-	float screen_dist = HALF_WIN_WIDTH / tan(HALF_FOV);
 	it.i = -1;
 	while (++it.i < NUM_RAYS)
 	{
@@ -280,7 +285,8 @@ void	raycast(t_game *g)
 			if (check_if_wall(g->map.arr[abs((int)(horz_tile.y))][abs((int)(horz_tile.x))]))
 			{
 				horz_wall_content = g->map.arr[abs((int)(horz_tile.y))][abs((int)(horz_tile.x))];
-				break ;
+				if (horz_wall_content != DOOR_OPENED)
+					break ;
 			}
 			horz_intersection.x += distance.x;
 			horz_intersection.y += distance.y;
@@ -306,7 +312,8 @@ void	raycast(t_game *g)
 			if (check_if_wall(g->map.arr[abs((int)(vert_tile.y))][abs((int)(vert_tile.x))]))
 			{
 				vert_wall_content = g->map.arr[abs((int)(vert_tile.y))][abs((int)(vert_tile.x))];
-				break ;
+				if (vert_wall_content != DOOR_OPENED)
+					break ;
 			}
 			vert_intersection.x += distance.x;
 			vert_intersection.y += distance.y;
@@ -334,8 +341,7 @@ void	raycast(t_game *g)
 
 		// fishbowl effect
 		depth *= (float) cos(g->player.angle - ray_angle);
-
-		float proj_height = (TILE_SIZE / depth) * screen_dist;
+		float proj_height = (TILE_SIZE / depth) * SCREEN_DIST;
 
 		t_coords	start;
 		t_coords	end;
@@ -347,43 +353,59 @@ void	raycast(t_game *g)
 			draw_line(g, start, end);
 		else
 		{
-			// start.x = it.i * SCALE;
-			// start.y = HALF_WIN_HEIGHT - proj_height / 2;
-			// color = (depth_vert < depth_horz) ? 0x00FF00 : 0xFF0000;
-			// draw_ray_rect(g, start, SCALE, proj_height, color);
 			int	wall_top_pixel;
 			int	wall_bottom_pixel;
 			int	text_offset_x;
 			int	text_offset_y;
 			int	i;
 			unsigned int	textcolor;
-			int	ceiling_color = create_trgb(0, g->assets.ceiling.r, g->assets.ceiling.g, g->assets.ceiling.b);
-			int	floor_color = create_trgb(0, g->assets.floor.r, g->assets.floor.g, g->assets.floor.b);
-			
+
 			wall_top_pixel = HALF_WIN_HEIGHT - ((int) proj_height) / 2;
 			wall_top_pixel = wall_top_pixel < 0 ? 0 : wall_top_pixel;
 			wall_bottom_pixel = HALF_WIN_HEIGHT + ((int) proj_height) / 2;
 			wall_bottom_pixel = wall_bottom_pixel > WIN_HEIGHT ? WIN_HEIGHT : wall_bottom_pixel;
+
+			float		angle_r;
+			float		cos_r;
+			float		straight_dist;
+			float		dist;
+			t_coords	floor;
+			t_coords	ceil;
+			unsigned int floor_textcolor;
+			unsigned int ceil_textcolor;
+
+			angle_r =  g->player.angle - ray_angle;
+			cos_r = cos(angle_r);
 			// ceiling
 			i = -1;
 			while (++i < wall_top_pixel)
 			{
-				// text_offset_x = (int) (it.i * SCALE) % WIN_WIDTH;
-				// text_offset_y = (int) (i * SCALE) % HALF_WIN_HEIGHT;
-				// textcolor = ((unsigned int *) g->textures.sky.addr)[(text_offset_y * WIN_WIDTH) + text_offset_x];
-				// cub_pixel_put(g, it.i * SCALE, i, textcolor);
-				cub_pixel_put(g, it.i * SCALE, i, ceiling_color);
+				if (NO_TEXTURES)
+					cub_pixel_put(g, it.i * SCALE, i, 0xD6DBDF);
+				else
+				{
+					straight_dist = SCREEN_DIST * PLAYER_HEIGHT  /  (i - HALF_WIN_HEIGHT);
+					dist = straight_dist / cos_r;
+					ceil.x = g->player.pos.x - cos_a * dist;
+					ceil.y = g->player.pos.y - sin_a * dist;
+					text_offset_x = (int) ceil.x % TILE_SIZE;
+					text_offset_y = (int) ceil.y % TILE_SIZE;
+					ceil_textcolor = ((unsigned int *) g->textures.ceil.addr)[text_offset_y * TILE_SIZE + text_offset_x];
+					cub_pixel_put(g, it.i * SCALE, i, ceil_textcolor);
+				}
 			}
 			// walls 
 			if (g->rays[it.i].vertical_hit)
-				text_offset_x = (int) vert_intersection.y % TILE_SIZE;
+				text_offset_x = (int) vert_intersection.y;
 			else
-				text_offset_x = (int) horz_intersection.x % TILE_SIZE;
+				text_offset_x = (int) horz_intersection.x;
 			i = wall_top_pixel - 1;
 			while (++i < wall_bottom_pixel)
 			{
 				if (NO_TEXTURES)
-					g->rays[it.i].vertical_hit ? cub_pixel_put(g, it.i * SCALE, i, 0x00FF00) : cub_pixel_put(g, it.i * SCALE, i, 0xFF0000); 
+					g->rays[it.i].vertical_hit
+						? cub_pixel_put(g, it.i * SCALE, i, 0x00FF00)
+						: cub_pixel_put(g, it.i * SCALE, i, 0xFF0000); 
 				else
 				{
 					text_offset_y = (i + (int) proj_height / 2 - HALF_WIN_HEIGHT) * (TILE_SIZE / proj_height);
@@ -394,61 +416,27 @@ void	raycast(t_game *g)
 			// floor
 			i--;
 			while (++i < WIN_HEIGHT)
-				cub_pixel_put(g, it.i * SCALE, i, floor_color);
+			{
+				if (NO_TEXTURES)
+					cub_pixel_put(g, it.i * SCALE, i, 0xD6DBDF);
+				else
+				{
+					straight_dist = SCREEN_DIST * PLAYER_HEIGHT  /  (i - HALF_WIN_HEIGHT);
+					dist = straight_dist / cos_r;
+					floor.x = g->player.pos.x + cos_a * dist;
+					floor.y = g->player.pos.y + sin_a * dist;
+					text_offset_x = (int) floor.x % TILE_SIZE;
+					text_offset_y = (int) floor.y % TILE_SIZE;
+					floor_textcolor = ((unsigned int *) g->textures.floor.addr)[text_offset_y * TILE_SIZE + text_offset_x];
+					cub_pixel_put(g, it.i * SCALE, i, floor_textcolor);
+				}
+			}
 		}
-		
 		ray_angle += DELTA_ANGLE;
+		g->buffer[it.i] = depth;
 	}
+	cub_render_sprite(g);
 }
-
-// void	raycast(t_game *g)
-// {
-// 	t_coords	origin;
-// 	t_coords	ray_dir;
-// 	float		ray_angle;
-// 	int			i;
-
-// 	origin = g->player.pos;
-// 	ray_angle = g->player.angle - HALF_FOV;
-// 	i = -1;
-// 	while (++i < NUM_RAYS)
-// 	{
-// 		ray_dir.x = cos(ray_angle);
-// 		ray_dir.y = sin(ray_angle);
-// 		// draw_line(g, origin, ray_dir);
-// 		ray_angle += DELTA_ANGLE;		
-// 	}
-// }
-
-// void	draw_background(t_game *g)
-// {
-// 	t_coords	start;
-// 	t_coords	end;
-// 	t_iterators	it;
-
-// 	start.x = 0;
-// 	start.y = 0;
-// 	end.x = WIN_WIDTH;
-// 	end.y = HALF_WIN_HEIGHT;
-// 	int	ceiling_color = create_trgb(0, g->assets.ceiling.r, g->assets.ceiling.g, g->assets.ceiling.b);
-// 	int	floor_color = create_trgb(0, g->assets.floor.r, g->assets.floor.g, g->assets.floor.b);
-// 	it.i = -1;
-// 	while (++it.i < WIN_WIDTH)
-// 	{
-// 		it.j = -1;
-// 		while (++it.j < HALF_WIN_HEIGHT)
-// 			cub_pixel_put(g, it.i, it.j, ceiling_color);
-// 	}
-// 	start.y = HALF_WIN_HEIGHT;
-// 	end.y = WIN_HEIGHT;
-// 	it.i = -1;
-// 	while (++it.i < WIN_WIDTH)
-// 	{
-// 		it.j = HALF_WIN_HEIGHT - 1;
-// 		while (++it.j < WIN_HEIGHT)
-// 			cub_pixel_put(g, it.i, it.j, floor_color);
-// 	}
-// }
 
 void	draw_minimap(t_game *g)
 {
@@ -476,12 +464,16 @@ void	draw_minimap(t_game *g)
 							|| it2.i == tile_size - 1 || it2.j == tile_size - 1))
 							cub_pixel_put(g, it.j * tile_size + it2.j, it.i * tile_size + it2.i, 0xFFFFFF);
 						else
-							cub_pixel_put(g, it.j * tile_size + it2.j, it.i * tile_size + it2.i, 0x000000);
+						{
+							if (g->map.arr[it.i][it.j] == DOOR_CLOSED)
+								cub_pixel_put(g, it.j * tile_size + it2.j, it.i * tile_size + it2.i, 0x008800);
+							else
+								cub_pixel_put(g, it.j * tile_size + it2.j, it.i * tile_size + it2.i, 0x000000);
+						}
 				}
 			}
 		}
 	}
-	
 	t_coords	player_pos;
 	
 	player_pos.x = g->player.pos.x / TILE_SIZE * tile_size;
@@ -507,6 +499,90 @@ void	update(t_game *g)
 	ticks_last_frame = (float) current_time_ms();
 }
 
+void	draw_weapon(t_game *g)
+{
+	
+	int	type;
+	int	frame;
+
+	type = g->textures.weapon.type;
+	if (g->player.shooting)
+	{
+		if (g->textures.weapon.frame == 0 && !g->textures.weapon.animating)
+		{
+			g->textures.weapon.animating = true;
+			g->textures.weapon.last_time = current_time_ms();
+		}
+		if (current_time_ms() - g->textures.weapon.last_time > g->textures.weapon.frame_rate[type])
+		{
+			g->textures.weapon.frame++;
+			g->textures.weapon.last_time = current_time_ms();
+		}
+		if (g->textures.weapon.frame == g->textures.weapon.n_of_frames[type])
+		{
+			g->textures.weapon.animating = false;
+			g->player.shooting = false;
+			g->textures.weapon.frame = 0;
+		}
+	}
+	frame = g->textures.weapon.frame;
+	mlx_put_image_to_window(g->mlx, g->win.ref,
+		g->textures.weapon.image[type][frame].ref,
+		g->textures.weapon.pos.x, g->textures.weapon.pos.y);
+}
+
+void	show_message(t_game *g, char *message)
+{
+	static int	frames = 0;
+	
+	// mlx_string_put(g->mlx, g->win.ref, WIN_WIDTH / 2 - ft_strlen(message) * 5, WIN_HEIGHT / 2, 0xFFFFFF, message);
+	if (frames > 10)
+	{
+		g->tips.open_door = !g->tips.open_door;
+		frames = 0;
+	}
+	if (g->tips.open_door)
+	{
+		// t_iterators pos = {WIN_WIDTH / 2 - ft_strlen(message) * 6, WIN_HEIGHT - 20};
+
+		// draw_rect(g, pos, ft_strlen(message) * 6, 20, create_trgb(80, 255, 0, 0));
+		mlx_string_put(g->mlx, g->win.ref, WIN_WIDTH / 2 - ft_strlen(message) * 3, WIN_HEIGHT - 15, 0xFFFFFF, message);
+	}
+	frames++;
+}
+
+void	check_for_doors(t_game *g)
+{
+	int	i;
+
+	i = -1;
+	while (++i < g->doors_count)
+	{
+		float	distance = sqrt(pow(g->player.pos.x - g->doors[i].pos.x, 2) + pow(g->player.pos.y - g->doors[i].pos.y, 2));
+		if (g->doors[i].state == DOOR_CLOSED)
+		{
+			if (distance < 200.0f)
+			{
+				show_message(g, "Press E to open the door");
+				if (g->player.opening_door)
+				{
+					g->doors[i].state = DOOR_OPENED;
+					g->map.arr[g->doors[i].y][g->doors[i].x] = DOOR_OPENED;
+				}
+			}
+		}
+		else if (g->doors[i].state == DOOR_OPENED)
+		{
+			if (distance > 200.0f)
+			{
+				g->doors[i].state = DOOR_CLOSED;
+				g->map.arr[g->doors[i].y][g->doors[i].x] = DOOR_CLOSED;
+			}
+		}
+	}
+}
+
+int	cub_render_sprite(t_game *g);
 int	cub_render(t_game *g)
 {
 	static unsigned int	frames = 0;
@@ -526,6 +602,28 @@ int	cub_render(t_game *g)
 		frames = 0;
 		g->start_time = clock();
 	}
+	int	step_x, x, y;
+	mlx_mouse_get_pos(g->win.ref, &x, &y);
+	mlx_mouse_hide();
+	if (x != g->mouse.x)
+	{
+		step_x = x - g->mouse.x;
+		g->mouse.angle = atan2(abs(step_x), WIN_WIDTH) * 180 / M_PI;
+		if (step_x < 0)
+			g->player.rotation_direction = -1;
+		else if (step_x >= 0)
+			g->player.rotation_direction = 1;
+		g->mouse.x = x;
+		if (g->mouse.x > WIN_WIDTH || g->mouse.x < 0)
+		{
+			g->mouse.x = WIN_WIDTH / 2;
+			mlx_mouse_move(g->win.ref, WIN_WIDTH / 2, y);
+		}
+		if (y > WIN_HEIGHT || y < 0)
+			mlx_mouse_move(g->win.ref, x, WIN_HEIGHT / 2);
+	}
+	else
+		g->player.rotation_direction = 0;
 	update(g);
 	if (MINIMAP)
 		display_map(g);
@@ -538,11 +636,15 @@ int	cub_render(t_game *g)
 	else
 		draw_minimap(g);
 	mlx_put_image_to_window(g->mlx, g->win.ref, g->frame.ref, 0, 0);
+	// cub_render_sprite(g);
+	if (!MINIMAP)
+		draw_weapon(g);
+	check_for_doors(g);
 	mlx_destroy_image(g->mlx, g->frame.ref);
 	tmp = ft_itoa(last_fps);
 	fps_str = ft_strjoin("FPS: ", tmp);
 	free(tmp);
-	mlx_string_put(g->mlx, g->win.ref, 10, 5, 0xFF0000, fps_str);
+	mlx_string_put(g->mlx, g->win.ref, g->map.width * 10 + 5, 15, 0xFF0000, fps_str);
 	free(fps_str);
 	return (RETURN_SUCCESS);
 }

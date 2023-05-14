@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:40:17 by absalhi           #+#    #+#             */
-/*   Updated: 2023/04/01 00:56:51 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/14 18:27:51 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,10 @@ int	cub_free_memory(t_game *g)
 	cub_free(g->assets.east);
 	if (g->allocated.map)
 		cub_free_double_int(g->map.arr, g->win.height);
-	cub_free_textures(g);
+	if (g->allocated.buffer)
+		cub_free(g->buffer);
 	if (LEAKS)
 		system("leaks cub3D");
+	mlx_mouse_show();
 	exit(EXIT_SUCCESS);
 }
