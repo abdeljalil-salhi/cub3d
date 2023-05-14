@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 18:29:47 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/14 19:55:58 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/14 21:29:40 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,20 @@ int	cub_render_sprite(t_game *g)
 	z = -1;
 	while (++z < g->objects_count)
 	{
+		if (g->textures.object_n_of_frames[g->objects[z].type] > 1
+			&& g->objects[z].frame == 0 && !g->objects[z].animating)
+		{
+			g->objects[z].animating = true;
+			g->objects[z].last_time = current_time_ms();
+		}
+		if (current_time_ms() - g->objects[z].last_time
+			> g->textures.object_frame_rate[g->objects[z].type])
+		{
+			g->objects[z].frame++;
+			g->objects[z].last_time = current_time_ms();
+		}
+		if (g->objects[z].frame == g->textures.object_n_of_frames[g->objects[z].type])
+			g->objects[z].frame = 0;
 		diff.x = g->objects[z].pos.x - g->player.pos.x;
 		diff.y = g->objects[z].pos.y - g->player.pos.y;
 

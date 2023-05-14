@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/14 19:43:54 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/14 21:28:43 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ typedef struct s_texture
 	t_iterators	object_dimension[N_OF_OBJECTS];
 	int			object_n_of_frames[N_OF_OBJECTS];
 	t_ul		object_frame_rate[N_OF_OBJECTS];
-	clock_t		object_last_time;
+	clock_t		object_last_time[N_OF_OBJECTS];
 	float		object_scale[N_OF_OBJECTS];
 }	t_texture;
 
@@ -208,6 +208,7 @@ typedef struct s_object
 	t_coords	pos;
 	int			frame;
 	bool		animating;
+	clock_t		last_time;
 }	t_object;
 
 typedef struct s_game
