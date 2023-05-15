@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/15 01:55:59 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/15 02:11:38 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,13 @@ bool	has_wall_at(t_game *g, float x, float y)
 	return (check_if_wall(g->map.arr[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)]));
 }
 
+bool	has_door_at(t_game *g, float x, float y)
+{
+	if (x < 0 || x > g->map.width * TILE_SIZE || y < 0 || y > g->map.height * TILE_SIZE)
+		return (false);
+	return (g->map.arr[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] == DOOR_CLOSED);
+}
+
 void	check_wall_collision(t_game *g, float dx, float dy)
 {
 	// if (!has_wall_at(g, g->player.pos.x + dx + g->player.turn_direction * (g->player.width / 2), g->player.pos.y))
@@ -127,11 +134,11 @@ int	player_movement(t_game *g)
 	}
 	check_wall_collision(g, dx, dy);
 	if (g->player.rotation_direction == 1)
-		g->player.angle += g->player.rot_speed * g->delta_time;
-		// g->player.angle += g->mouse.angle * g->delta_time;
+		// g->player.angle += g->player.rot_speed * g->delta_time;
+		g->player.angle += g->mouse.angle * g->delta_time;
 	if (g->player.rotation_direction == -1)
-		g->player.angle -= g->player.rot_speed * g->delta_time;
-		// g->player.angle -= g->mouse.angle * g->delta_time;
+		// g->player.angle -= g->player.rot_speed * g->delta_time;
+		g->player.angle -= g->mouse.angle * g->delta_time;
 	g->player.angle = fmod(g->player.angle, TAU);
 	return (RETURN_SUCCESS);
 }
@@ -457,32 +464,14 @@ void	draw_minimap(t_game *g)
 				if (world_x < 0 || world_x > g->map.width * TILE_SIZE || world_y < 0 || world_y > g->map.height * TILE_SIZE)
 					cub_pixel_put(g, CENTER_X + it.j - RADIUS, CENTER_Y + it.i - RADIUS, 0x000000);
 				else if (g->map.arr[(int)(world_y / TILE_SIZE)][(int)(world_x / TILE_SIZE)] == DOOR_CLOSED)
-				{
-					bool top = !has_wall_at(g, world_x, world_y - SCALE_FACTOR);
-					bool bottom = !has_wall_at(g, world_x, world_y + SCALE_FACTOR);
-					bool left = !has_wall_at(g, world_x - SCALE_FACTOR, world_y);
-					bool right = !has_wall_at(g, world_x + SCALE_FACTOR, world_y);
-
-					if (top || bottom || left || right)
-						cub_pixel_put(g, CENTER_X + it.j - RADIUS, CENTER_Y + it.i - RADIUS, 0xFFFFFF);
-					else
-						cub_pixel_put(g, CENTER_X + it.j - RADIUS, CENTER_Y + it.i - RADIUS, 0x003300);
-				}
+					cub_pixel_put(g, CENTER_X + it.j - RADIUS, CENTER_Y + it.i - RADIUS, 0x003300);
 				else if (has_wall_at(g, world_x, world_y))
 				{
-					bool top = !has_wall_at(g, world_x, world_y - SCALE_FACTOR)
-							|| ((world_x < 0 || world_x > g->map.width * TILE_SIZE || world_y - SCALE_FACTOR < 0 || world_y - SCALE_FACTOR > g->map.height * TILE_SIZE)
-								&& g->map.arr[(int)((world_y - SCALE_FACTOR) / TILE_SIZE)][(int)(world_x / TILE_SIZE)] == DOOR_CLOSED);
-					bool bottom = !has_wall_at(g, world_x, world_y + SCALE_FACTOR)
-							|| ((world_x < 0 || world_x > g->map.width * TILE_SIZE || world_y + SCALE_FACTOR < 0 || world_y + SCALE_FACTOR > g->map.height * TILE_SIZE)
-								&& g->map.arr[(int)((world_y + SCALE_FACTOR) / TILE_SIZE)][(int)(world_x / TILE_SIZE)] == DOOR_CLOSED);
-					bool left = !has_wall_at(g, world_x - SCALE_FACTOR, world_y)
-							|| ((world_x < 0 || world_x > g->map.width * TILE_SIZE || world_y - SCALE_FACTOR < 0 || world_y - SCALE_FACTOR > g->map.height * TILE_SIZE)
-								&& g->map.arr[(int)(world_y / TILE_SIZE)][(int)((world_x - SCALE_FACTOR) / TILE_SIZE)] == DOOR_CLOSED);
-					bool right = !has_wall_at(g, world_x + SCALE_FACTOR, world_y)
-							|| ((world_x < 0 || world_x > g->map.width * TILE_SIZE || world_y + SCALE_FACTOR < 0 || world_y + SCALE_FACTOR > g->map.height * TILE_SIZE)
-								&& g->map.arr[(int)(world_y / TILE_SIZE)][(int)((world_x + SCALE_FACTOR) / TILE_SIZE)] == DOOR_CLOSED);
-					
+					bool top = !has_wall_at(g, world_x, world_y - SCALE_FACTOR) || has_door_at(g, world_x, world_y - SCALE_FACTOR);
+					bool bottom = !has_wall_at(g, world_x, world_y + SCALE_FACTOR) || has_door_at(g, world_x, world_y + SCALE_FACTOR);
+					bool left = !has_wall_at(g, world_x - SCALE_FACTOR, world_y) || has_door_at(g, world_x - SCALE_FACTOR, world_y);
+					bool right = !has_wall_at(g, world_x + SCALE_FACTOR, world_y) || has_door_at(g, world_x + SCALE_FACTOR, world_y);
+
 					if (top || bottom || left || right)
 						cub_pixel_put(g, CENTER_X + it.j - RADIUS, CENTER_Y + it.i - RADIUS, 0xFFFFFF);
 					else
@@ -614,34 +603,34 @@ int	cub_render(t_game *g)
 		frames = 0;
 		g->start_time = clock();
 	}
-	// if (g->mouse.enabled)
-	// {
-	// 	int	step_x, x, y;
+	if (g->mouse.enabled)
+	{
+		int	step_x, x, y;
 
-	// 	mlx_mouse_get_pos(g->win.ref, &x, &y);
-	// 	mlx_mouse_hide();
-	// 	if (x != g->mouse.x)
-	// 	{
-	// 		step_x = x - g->mouse.x;
-	// 		g->mouse.angle = atan2(abs(step_x), WIN_WIDTH) * 180 / M_PI;
-	// 		if (step_x < 0)
-	// 			g->player.rotation_direction = -1;
-	// 		else if (step_x >= 0)
-	// 			g->player.rotation_direction = 1;
-	// 		g->mouse.x = x;
-	// 		if (g->mouse.x > WIN_WIDTH || g->mouse.x < 0)
-	// 		{
-	// 			g->mouse.x = WIN_WIDTH / 2;
-	// 			mlx_mouse_move(g->win.ref, WIN_WIDTH / 2, y);
-	// 		}
-	// 		if (y > WIN_HEIGHT || y < 0)
-	// 			mlx_mouse_move(g->win.ref, x, WIN_HEIGHT / 2);
-	// 	}
-	// 	else
-	// 		g->player.rotation_direction = 0;
-	// }
-	// else
-	// 	mlx_mouse_show();
+		mlx_mouse_get_pos(g->win.ref, &x, &y);
+		mlx_mouse_hide();
+		if (x != g->mouse.x)
+		{
+			step_x = x - g->mouse.x;
+			g->mouse.angle = atan2(abs(step_x), WIN_WIDTH) * 180 / M_PI;
+			if (step_x < 0)
+				g->player.rotation_direction = -1;
+			else if (step_x >= 0)
+				g->player.rotation_direction = 1;
+			g->mouse.x = x;
+			if (g->mouse.x > WIN_WIDTH || g->mouse.x < 0)
+			{
+				g->mouse.x = WIN_WIDTH / 2;
+				mlx_mouse_move(g->win.ref, WIN_WIDTH / 2, y);
+			}
+			if (y > WIN_HEIGHT || y < 0)
+				mlx_mouse_move(g->win.ref, x, WIN_HEIGHT / 2);
+		}
+		else
+			g->player.rotation_direction = 0;
+	}
+	else
+		mlx_mouse_show();
 	update(g);
 	if (MINIMAP)
 		display_map(g);

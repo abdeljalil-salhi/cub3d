@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/15 01:44:09 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/15 02:10:50 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,6 @@ typedef struct s_texture
 
 typedef struct s_door
 {
-	int			id;
 	int			x;
 	int			y;
 	int			state;

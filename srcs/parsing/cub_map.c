@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 21:28:45 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/15 01:50:24 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/15 02:11:01 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ static void	cub_map_parse_door(t_game *g,
 	static int	count = 0;
 
 	g->map.arr[i][j] = DOOR_CLOSED;
-	g->doors[count].id = count;
 	g->doors[count].x = j;
 	g->doors[count].y = i;
 	g->doors[count].state = DOOR_CLOSED;
@@ -126,18 +125,8 @@ static int	cub_map_parse_helper(char *line, t_game *g,
 {
 	if (line[s->k] == ' ')
 		g->map.arr[i][s->j] = -1;
-	else if (line[s->k] == '0')
-		g->map.arr[i][s->j] = 0;
-	else if (line[s->k] == '1')
-		g->map.arr[i][s->j] = 1;
-	else if (line[s->k] == '2')
-		g->map.arr[i][s->j] = 2;
-	else if (line[s->k] == '3')
-		g->map.arr[i][s->j] = 3;
-	else if (line[s->k] == '4')
-		g->map.arr[i][s->j] = 4;
-	else if (line[s->k] == '5')
-		g->map.arr[i][s->j] = 5;
+	else if (line[s->k] >= '0' && line[s->k] <= '5')
+		g->map.arr[i][s->j] = line[s->k] - 48;
 	else if (line[s->k] == 'N')
 		cub_map_parse_helper_setter(g, i, s->j, 3 * M_PI / 2);
 	else if (line[s->k] == 'S')
