@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/14 18:28:56 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/15 01:55:59 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,12 +127,12 @@ int	player_movement(t_game *g)
 	}
 	check_wall_collision(g, dx, dy);
 	if (g->player.rotation_direction == 1)
-		// g->player.angle += g->player.rot_speed * g->delta_time;
-		g->player.angle += g->mouse.angle * g->delta_time;
+		g->player.angle += g->player.rot_speed * g->delta_time;
+		// g->player.angle += g->mouse.angle * g->delta_time;
 	if (g->player.rotation_direction == -1)
-		// g->player.angle -= g->player.rot_speed * g->delta_time;
-		g->player.angle -= g->mouse.angle * g->delta_time;
-	g->player.angle = fmod(g->player.angle, 2 * M_PI);
+		g->player.angle -= g->player.rot_speed * g->delta_time;
+		// g->player.angle -= g->mouse.angle * g->delta_time;
+	g->player.angle = fmod(g->player.angle, TAU);
 	return (RETURN_SUCCESS);
 }
 
@@ -441,49 +441,63 @@ void	raycast(t_game *g)
 void	draw_minimap(t_game *g)
 {
 	t_iterators	it;
-	t_iterators	it2;
-	int			tile_size;
 
-	tile_size = 10;
 	it.i = -1;
-	while (++it.i < g->map.height)
+	while (++it.i <= RADIUS * 2)
 	{
 		it.j = -1;
-		while (++it.j < g->map.width)
+		while (++it.j <= RADIUS * 2)
 		{
-			if (check_if_wall(g->map.arr[it.i][it.j]))
+			if (it.i == 0 || it.j == 0 || it.i == RADIUS * 2 || it.j == RADIUS * 2)
+				cub_pixel_put(g, CENTER_X + it.j - RADIUS, CENTER_Y + it.i - RADIUS, 0xFFFFFF);
+			else
 			{
-				it2.i = -1;
-				while (++it2.i < tile_size)
+				float world_x = g->player.pos.x + SCALE_FACTOR * (it.j - RADIUS);
+				float world_y = g->player.pos.y + SCALE_FACTOR * (it.i - RADIUS);
+				if (world_x < 0 || world_x > g->map.width * TILE_SIZE || world_y < 0 || world_y > g->map.height * TILE_SIZE)
+					cub_pixel_put(g, CENTER_X + it.j - RADIUS, CENTER_Y + it.i - RADIUS, 0x000000);
+				else if (g->map.arr[(int)(world_y / TILE_SIZE)][(int)(world_x / TILE_SIZE)] == DOOR_CLOSED)
 				{
-					it2.j = -1;
-					while (++it2.j < tile_size)
-						if (it.i * tile_size + it2.i < g->win.height
-							&& it.j * tile_size + it2.j < g->win.width
-							&& (it2.i == 0 || it2.j == 0
-							|| it2.i == tile_size - 1 || it2.j == tile_size - 1))
-							cub_pixel_put(g, it.j * tile_size + it2.j, it.i * tile_size + it2.i, 0xFFFFFF);
-						else
-						{
-							if (g->map.arr[it.i][it.j] == DOOR_CLOSED)
-								cub_pixel_put(g, it.j * tile_size + it2.j, it.i * tile_size + it2.i, 0x008800);
-							else
-								cub_pixel_put(g, it.j * tile_size + it2.j, it.i * tile_size + it2.i, 0x000000);
-						}
+					bool top = !has_wall_at(g, world_x, world_y - SCALE_FACTOR);
+					bool bottom = !has_wall_at(g, world_x, world_y + SCALE_FACTOR);
+					bool left = !has_wall_at(g, world_x - SCALE_FACTOR, world_y);
+					bool right = !has_wall_at(g, world_x + SCALE_FACTOR, world_y);
+
+					if (top || bottom || left || right)
+						cub_pixel_put(g, CENTER_X + it.j - RADIUS, CENTER_Y + it.i - RADIUS, 0xFFFFFF);
+					else
+						cub_pixel_put(g, CENTER_X + it.j - RADIUS, CENTER_Y + it.i - RADIUS, 0x003300);
+				}
+				else if (has_wall_at(g, world_x, world_y))
+				{
+					bool top = !has_wall_at(g, world_x, world_y - SCALE_FACTOR)
+							|| ((world_x < 0 || world_x > g->map.width * TILE_SIZE || world_y - SCALE_FACTOR < 0 || world_y - SCALE_FACTOR > g->map.height * TILE_SIZE)
+								&& g->map.arr[(int)((world_y - SCALE_FACTOR) / TILE_SIZE)][(int)(world_x / TILE_SIZE)] == DOOR_CLOSED);
+					bool bottom = !has_wall_at(g, world_x, world_y + SCALE_FACTOR)
+							|| ((world_x < 0 || world_x > g->map.width * TILE_SIZE || world_y + SCALE_FACTOR < 0 || world_y + SCALE_FACTOR > g->map.height * TILE_SIZE)
+								&& g->map.arr[(int)((world_y + SCALE_FACTOR) / TILE_SIZE)][(int)(world_x / TILE_SIZE)] == DOOR_CLOSED);
+					bool left = !has_wall_at(g, world_x - SCALE_FACTOR, world_y)
+							|| ((world_x < 0 || world_x > g->map.width * TILE_SIZE || world_y - SCALE_FACTOR < 0 || world_y - SCALE_FACTOR > g->map.height * TILE_SIZE)
+								&& g->map.arr[(int)(world_y / TILE_SIZE)][(int)((world_x - SCALE_FACTOR) / TILE_SIZE)] == DOOR_CLOSED);
+					bool right = !has_wall_at(g, world_x + SCALE_FACTOR, world_y)
+							|| ((world_x < 0 || world_x > g->map.width * TILE_SIZE || world_y + SCALE_FACTOR < 0 || world_y + SCALE_FACTOR > g->map.height * TILE_SIZE)
+								&& g->map.arr[(int)(world_y / TILE_SIZE)][(int)((world_x + SCALE_FACTOR) / TILE_SIZE)] == DOOR_CLOSED);
+					
+					if (top || bottom || left || right)
+						cub_pixel_put(g, CENTER_X + it.j - RADIUS, CENTER_Y + it.i - RADIUS, 0xFFFFFF);
+					else
+						cub_pixel_put(g, CENTER_X + it.j - RADIUS, CENTER_Y + it.i - RADIUS, 0x000000);
 				}
 			}
 		}
 	}
-	t_coords	player_pos;
-	
-	player_pos.x = g->player.pos.x / TILE_SIZE * tile_size;
-	player_pos.y = g->player.pos.y / TILE_SIZE * tile_size;
+
 	it.i = -1;
 	while (++it.i < PLAYER_MINIMAP_HEIGHT)
 	{
 		it.j = -1;
 		while (++it.j < PLAYER_MINIMAP_WIDTH)
-			cub_pixel_put(g, player_pos.x + it.j - PLAYER_MINIMAP_WIDTH / 2, player_pos.y + it.i - PLAYER_MINIMAP_HEIGHT / 2, 0xFF0000);
+			cub_pixel_put(g, CENTER_X + it.j - PLAYER_MINIMAP_WIDTH / 2, CENTER_Y + it.i - PLAYER_MINIMAP_HEIGHT / 2, 0xFF0000);
 	}
 }
 
@@ -535,7 +549,6 @@ void	show_message(t_game *g, char *message)
 {
 	static int	frames = 0;
 	
-	// mlx_string_put(g->mlx, g->win.ref, WIN_WIDTH / 2 - ft_strlen(message) * 5, WIN_HEIGHT / 2, 0xFFFFFF, message);
 	if (frames > 10)
 	{
 		g->tips.open_door = !g->tips.open_door;
@@ -597,38 +610,41 @@ int	cub_render(t_game *g)
 	elapsed_ticks = clock() - g->start_time;
 	if (elapsed_ticks >= CLOCKS_PER_SEC)
 	{
-		printf("FPS: %u\n", frames);
 		last_fps = frames;
 		frames = 0;
 		g->start_time = clock();
 	}
-	int	step_x, x, y;
-	mlx_mouse_get_pos(g->win.ref, &x, &y);
-	mlx_mouse_hide();
-	if (x != g->mouse.x)
-	{
-		step_x = x - g->mouse.x;
-		g->mouse.angle = atan2(abs(step_x), WIN_WIDTH) * 180 / M_PI;
-		if (step_x < 0)
-			g->player.rotation_direction = -1;
-		else if (step_x >= 0)
-			g->player.rotation_direction = 1;
-		g->mouse.x = x;
-		if (g->mouse.x > WIN_WIDTH || g->mouse.x < 0)
-		{
-			g->mouse.x = WIN_WIDTH / 2;
-			mlx_mouse_move(g->win.ref, WIN_WIDTH / 2, y);
-		}
-		if (y > WIN_HEIGHT || y < 0)
-			mlx_mouse_move(g->win.ref, x, WIN_HEIGHT / 2);
-	}
-	else
-		g->player.rotation_direction = 0;
+	// if (g->mouse.enabled)
+	// {
+	// 	int	step_x, x, y;
+
+	// 	mlx_mouse_get_pos(g->win.ref, &x, &y);
+	// 	mlx_mouse_hide();
+	// 	if (x != g->mouse.x)
+	// 	{
+	// 		step_x = x - g->mouse.x;
+	// 		g->mouse.angle = atan2(abs(step_x), WIN_WIDTH) * 180 / M_PI;
+	// 		if (step_x < 0)
+	// 			g->player.rotation_direction = -1;
+	// 		else if (step_x >= 0)
+	// 			g->player.rotation_direction = 1;
+	// 		g->mouse.x = x;
+	// 		if (g->mouse.x > WIN_WIDTH || g->mouse.x < 0)
+	// 		{
+	// 			g->mouse.x = WIN_WIDTH / 2;
+	// 			mlx_mouse_move(g->win.ref, WIN_WIDTH / 2, y);
+	// 		}
+	// 		if (y > WIN_HEIGHT || y < 0)
+	// 			mlx_mouse_move(g->win.ref, x, WIN_HEIGHT / 2);
+	// 	}
+	// 	else
+	// 		g->player.rotation_direction = 0;
+	// }
+	// else
+	// 	mlx_mouse_show();
 	update(g);
 	if (MINIMAP)
 		display_map(g);
-	// else
-	// 	draw_background(g);
 	player_movement(g);
 	raycast(g);
 	if (MINIMAP)
@@ -636,7 +652,6 @@ int	cub_render(t_game *g)
 	else
 		draw_minimap(g);
 	mlx_put_image_to_window(g->mlx, g->win.ref, g->frame.ref, 0, 0);
-	// cub_render_sprite(g);
 	if (!MINIMAP)
 		draw_weapon(g);
 	check_for_doors(g);
@@ -644,7 +659,7 @@ int	cub_render(t_game *g)
 	tmp = ft_itoa(last_fps);
 	fps_str = ft_strjoin("FPS: ", tmp);
 	free(tmp);
-	mlx_string_put(g->mlx, g->win.ref, g->map.width * 10 + 5, 15, 0xFF0000, fps_str);
+	mlx_string_put(g->mlx, g->win.ref, CENTER_X + RADIUS + 5, 15, 0xFF0000, fps_str);
 	free(fps_str);
 	return (RETURN_SUCCESS);
 }

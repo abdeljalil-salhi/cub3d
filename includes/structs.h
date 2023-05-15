@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/14 21:28:43 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/15 01:44:09 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@
 # include <stdbool.h>
 # include <pthread.h>
 
-# define N_OF_OBJECTS 1
-# define OBJECTS_MAX_FRAME 3
+# define N_OF_OBJECTS 3
+# define OBJECTS_MAX_FRAME 1
+
 # define N_OF_WEAPONS 1
 # define WEAPONS_MAX_FRAME 6
 
@@ -197,18 +198,19 @@ typedef struct s_mouse
 {
 	bool		left;
 	bool		right;
+	bool		enabled;
 	int			x;
 	float		angle;
 }	t_mouse;
 
 typedef struct s_object
 {
-	int			id;
 	int			type;
 	t_coords	pos;
 	int			frame;
 	bool		animating;
 	clock_t		last_time;
+	float		dist;
 }	t_object;
 
 typedef struct s_game

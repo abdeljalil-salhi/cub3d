@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 21:28:45 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/14 19:42:01 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/15 01:50:24 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static void	cub_map_parse_door(t_game *g,
 
 bool	is_object(char c)
 {
-	return (c == 'B');
+	return (c == 'B' || c == 'L' || c == 'P' || c == 'F');
 }
 
 void	cub_parse_object(t_game *g, char c, int i, int j)
@@ -106,9 +106,14 @@ void	cub_parse_object(t_game *g, char c, int i, int j)
 	static int	count = 0;
 
 	g->map.arr[i][j] = 0;
-	g->objects[count].id = count;
 	if (c == 'B')
 		g->objects[count].type = OBJECT_BARREL;
+	else if (c == 'P')
+		g->objects[count].type = OBJECT_PILLAR;
+	else if (c == 'L')
+		g->objects[count].type = OBJECT_LAMP;
+	else if (c == 'F')
+		g->objects[count].type = OBJECT_FIRE;
 	g->objects[count].pos.x = j * TILE_SIZE + TILE_SIZE / 2;
 	g->objects[count].pos.y = i * TILE_SIZE + TILE_SIZE / 2;
 	g->objects[count].frame = 0;

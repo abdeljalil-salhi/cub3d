@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/14 19:45:59 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/15 01:44:36 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,11 @@ typedef unsigned long long	t_ull;
 # define PLAYER_SCALE 3
 # define PLAYER_ROTATION_SPEED (90 * (M_PI / 180))
 
+# define CENTER_X 105
+# define CENTER_Y 105
+# define RADIUS 100
+# define SCALE_FACTOR 3
+
 # define RETURN_FAILURE 1
 # define RETURN_SUCCESS 0
 # define RETURN_DEFAULT 1
@@ -108,7 +113,8 @@ enum
 	ARROW_LEFT = 123,
 	ARROW_RIGHT = 124,
 	ARROW_DOWN = 125,
-	ARROW_UP = 126
+	ARROW_UP = 126,
+	KEY_COMMAND = 259,
 };
 
 enum
@@ -134,6 +140,9 @@ enum
 enum
 {
 	OBJECT_BARREL,
+	OBJECT_PILLAR,
+	OBJECT_LAMP,
+	OBJECT_FIRE,
 };
 
 /* --------------------------- UTILS --------------------------- */

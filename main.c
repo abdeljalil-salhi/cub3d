@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:40:50 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/13 22:18:53 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/14 23:04:51 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ int	main(int argc, char **argv)
 	if (cub_init(&g))
 		cub_errors_exit(&g, g.error.message);
 	g.start_time = clock();
+	g.mouse.enabled = true;
 	mlx_hook(g.win.ref, ON_DESTROY, 0L, cub_free_memory, &g);
 	mlx_hook(g.win.ref, ON_KEYDOWN, 0L, cub_key_hook, &g);
 	mlx_hook(g.win.ref, ON_KEYUP, 0L, cub_key_release, &g);

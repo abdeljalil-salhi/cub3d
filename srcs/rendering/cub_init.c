@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 00:20:08 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/14 21:32:14 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/15 01:46:29 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,29 @@ int	cub_init_objects(t_game *g)
 {
 	t_iterators	it;
 
-	// ADD OBJECTS HERE v
 	g->textures.object_path[OBJECT_BARREL][0] = "assets/sprites/static/barrel.xpm";
 	g->textures.object_n_of_frames[OBJECT_BARREL] = 1;
 	g->textures.object_frame_rate[OBJECT_BARREL] = 0;
 	g->textures.object_scale[OBJECT_BARREL] = 1;
+	
+	g->textures.object_path[OBJECT_PILLAR][0] = "assets/sprites/static/pillar.xpm";
+	g->textures.object_n_of_frames[OBJECT_PILLAR] = 1;
+	g->textures.object_frame_rate[OBJECT_PILLAR] = 0;
+	g->textures.object_scale[OBJECT_PILLAR] = 1;
+
+	g->textures.object_path[OBJECT_LAMP][0] = "assets/sprites/static/lamp.xpm";
+	g->textures.object_n_of_frames[OBJECT_LAMP] = 1;
+	g->textures.object_frame_rate[OBJECT_LAMP] = 0;
+	g->textures.object_scale[OBJECT_LAMP] = 1;
+
+	// g->textures.object_path[OBJECT_FIRE][0] = "assets/sprites/fire/0.xpm";
+	// g->textures.object_path[OBJECT_FIRE][1] = "assets/sprites/fire/1.xpm";
+	// g->textures.object_path[OBJECT_FIRE][2] = "assets/sprites/fire/2.xpm";
+	// g->textures.object_path[OBJECT_FIRE][3] = "assets/sprites/fire/3.xpm";
+	// g->textures.object_n_of_frames[OBJECT_FIRE] = 4;
+	// g->textures.object_frame_rate[OBJECT_FIRE] = 0;
+	// g->textures.object_scale[OBJECT_FIRE] = 1;
+
 	it.i = -1;
 	while (++it.i < N_OF_OBJECTS)
 	{

@@ -6,26 +6,78 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 18:29:47 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/14 21:29:40 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/15 01:45:55 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+void	compute_distances(t_game *g)
+{
+	int	i;
+
+	i = -1;
+	while (++i < g->objects_count)
+		g->objects[i].dist = hypot(g->objects[i].pos.x - g->player.pos.x, g->objects[i].pos.y - g->player.pos.y);
+}
+
+void	sort_objects(t_game *g)
+{
+	t_iterators	it;
+	t_object	temp;
+	
+	it.i = 0;
+	while (it.i < g->objects_count)
+	{
+		it.j = it.i + 1;
+		while (it.j < g->objects_count)
+		{
+			if (g->objects[it.j].dist > g->objects[it.i].dist)
+			{
+				temp.dist = g->objects[it.j].dist;
+				temp.animating = g->objects[it.j].animating;
+				temp.frame = g->objects[it.j].frame;
+				temp.pos = g->objects[it.j].pos;
+				temp.type = g->objects[it.j].type;
+				temp.last_time = g->objects[it.j].last_time;
+
+				g->objects[it.j].dist = g->objects[it.i].dist;
+				g->objects[it.j].animating = g->objects[it.i].animating;
+				g->objects[it.j].frame = g->objects[it.i].frame;
+				g->objects[it.j].pos = g->objects[it.i].pos;
+				g->objects[it.j].type = g->objects[it.i].type;
+				g->objects[it.j].last_time = g->objects[it.i].last_time;
+
+
+				g->objects[it.i].dist = temp.dist;
+				g->objects[it.i].animating = temp.animating;
+				g->objects[it.i].frame = temp.frame;
+				g->objects[it.i].pos = temp.pos;
+				g->objects[it.i].type = temp.type;
+				g->objects[it.i].last_time = temp.last_time;
+			}
+			it.j++;
+		}
+		it.i++;
+	}
+}
+
 int	cub_render_sprite(t_game *g)
 {
-	float	angle_sprite_player;
-	float	relative_angle;
-	float	sprite_height, sprite_width;
-	float	dist;
-	float	sprite_bottom_y, sprite_top_y, sprite_left_x, sprite_right_x;
-	float	sprite_angle;
-	float	sprite_pos_x;
-	int		text_x, text_y, i, j;
+	float			angle_sprite_player;
+	float			relative_angle;
+	float			sprite_height, sprite_width;
+	float			dist;
+	float			sprite_bottom_y, sprite_top_y, sprite_left_x, sprite_right_x;
+	float			sprite_angle;
+	float			sprite_pos_x;
+	int				text_x, text_y, i, j;
 	unsigned int	color;
-	t_coords	diff;
-	int		z;
+	t_coords		diff;
+	int				z;
 
+	compute_distances(g);
+	sort_objects(g);
 	z = -1;
 	while (++z < g->objects_count)
 	{
@@ -43,6 +95,7 @@ int	cub_render_sprite(t_game *g)
 		}
 		if (g->objects[z].frame == g->textures.object_n_of_frames[g->objects[z].type])
 			g->objects[z].frame = 0;
+
 		diff.x = g->objects[z].pos.x - g->player.pos.x;
 		diff.y = g->objects[z].pos.y - g->player.pos.y;
 
