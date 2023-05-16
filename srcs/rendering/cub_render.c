@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/16 01:13:39 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/16 06:52:58 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -659,6 +659,26 @@ void	check_for_doors(t_game *g)
 	}
 }
 
+void	put_health(t_game *g)
+{
+	if (g->player.health > 100)
+		g->player.health = 100;
+	if (g->player.health < 0)
+		g->player.health = 0;
+	if (g->player.health == 0)
+		mlx_put_image_to_window(g->mlx, g->win.ref, g->textures.health_bar[5].ref, 5, 1);
+	else if (g->player.health <= 20)
+		mlx_put_image_to_window(g->mlx, g->win.ref, g->textures.health_bar[4].ref, 5, 1);
+	else if (g->player.health <= 40)
+		mlx_put_image_to_window(g->mlx, g->win.ref, g->textures.health_bar[3].ref, 5, 1);
+	else if (g->player.health <= 60)
+		mlx_put_image_to_window(g->mlx, g->win.ref, g->textures.health_bar[2].ref, 5, 1);
+	else if (g->player.health <= 99)
+		mlx_put_image_to_window(g->mlx, g->win.ref, g->textures.health_bar[1].ref, 5, 1);
+	else if (g->player.health <= 100)
+		mlx_put_image_to_window(g->mlx, g->win.ref, g->textures.health_bar[0].ref, 5, 1);
+}
+
 int	cub_render_sprite(t_game *g);
 int	cub_render(t_game *g)
 {
@@ -719,11 +739,12 @@ int	cub_render(t_game *g)
 	if (!MINIMAP && !g->display_map)
 		draw_weapon(g);
 	check_for_doors(g);
+	put_health(g);
 	mlx_destroy_image(g->mlx, g->frame.ref);
 	tmp = ft_itoa(last_fps);
 	fps_str = ft_strjoin("FPS: ", tmp);
 	free(tmp);
-	mlx_string_put(g->mlx, g->win.ref, CENTER_X + RADIUS + 5, 15, 0xFF0000, fps_str);
+	mlx_string_put(g->mlx, g->win.ref, 15, 70, 0xBB0000, fps_str);
 	free(fps_str);
 	return (RETURN_SUCCESS);
 }

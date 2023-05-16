@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 00:20:08 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/16 00:58:45 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/16 06:20:09 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,20 @@ int	cub_init_textures(t_game *g)
 			&g->textures.sides[TEXTURE_WEST].bpp, &g->textures.sides[TEXTURE_WEST].line_length, &g->textures.sides[TEXTURE_WEST].endian);
 	if (!g->textures.sides[TEXTURE_WEST].addr)
 		return (cub_errors_setter(g, "Failed to get data addr of west xpm."));
+
+
+	int		i = -1;
+	char	*path[6] = {"assets/hud/health_bar/0.xpm", "assets/hud/health_bar/1.xpm", "assets/hud/health_bar/2.xpm", "assets/hud/health_bar/3.xpm", "assets/hud/health_bar/4.xpm", "assets/hud/health_bar/5.xpm"};
+	while (++i < 6)
+	{
+		g->textures.health_bar[i].ref = mlx_xpm_file_to_image(g->mlx, path[i], &it.i, &it.j);
+		if (!g->textures.health_bar[i].ref)
+			return (cub_errors_setter(g, "Failed to get data addr of health_bar xpm."));
+		g->textures.health_bar[i].addr = mlx_get_data_addr(g->textures.health_bar[i].ref,
+				&g->textures.health_bar[i].bpp, &g->textures.health_bar[i].line_length, &g->textures.health_bar[i].endian);
+		if (!g->textures.health_bar[i].addr)
+			return (cub_errors_setter(g, "Failed to get data addr of health_bar xpm."));
+	}
 
 	g->textures.wall_1.ref = mlx_xpm_file_to_image(g->mlx, "assets/textures/1.xpm", &it.i, &it.j);
 	if (!g->textures.wall_1.ref)
@@ -141,8 +155,13 @@ int	cub_init_objects(t_game *g)
 	g->textures.object_path[OBJECT_GREEN_LIGHT][2] = "assets/sprites/animated/green_light/2.xpm";
 	g->textures.object_path[OBJECT_GREEN_LIGHT][3] = "assets/sprites/animated/green_light/3.xpm";
 	g->textures.object_n_of_frames[OBJECT_GREEN_LIGHT] = 4;
-	g->textures.object_frame_rate[OBJECT_GREEN_LIGHT] = 100;
+	g->textures.object_frame_rate[OBJECT_GREEN_LIGHT] = 200;
 	g->textures.object_scale[OBJECT_GREEN_LIGHT] = 1;
+
+	g->textures.object_path[OBJECT_MEDKIT][0] = "assets/sprites/medkit.xpm";
+	g->textures.object_n_of_frames[OBJECT_MEDKIT] = 1;
+	g->textures.object_frame_rate[OBJECT_MEDKIT] = 0;
+	g->textures.object_scale[OBJECT_MEDKIT] = 1;
 
 	it.i = -1;
 	while (++it.i < N_OF_OBJECTS)
@@ -171,6 +190,7 @@ int	cub_init(t_game *g)
 	int	x, y;
 
 	mlx_mouse_get_pos(g->win.ref, &x, &y);
+	g->player.health = 50;
 	g->mouse.x = x;
 	g->player.shooting = false;
 	g->display_map = false;

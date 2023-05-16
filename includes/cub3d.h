@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/16 01:03:21 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/16 06:28:28 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,14 @@ typedef unsigned long long	t_ull;
 # define PLAYER_SCALE 3
 # define PLAYER_ROTATION_SPEED (90 * (M_PI / 180))
 
-# define CENTER_X 105
+# define HEALTH_BAR_X 5
+# define HEALTH_BAR_Y 1
+
+# define MEDKIT_HEALING 25
+
 # define CENTER_Y 105
 # define RADIUS 100
+# define CENTER_X (WIN_WIDTH - RADIUS - 5)
 # define SCALE_FACTOR 3
 
 # define RETURN_FAILURE 1
@@ -156,6 +161,7 @@ enum
 	OBJECT_PILLAR,
 	OBJECT_LAMP,
 	OBJECT_GREEN_LIGHT,
+	OBJECT_MEDKIT,
 };
 
 /* --------------------------- UTILS --------------------------- */

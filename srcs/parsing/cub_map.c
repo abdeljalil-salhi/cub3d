@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 21:28:45 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/15 20:27:21 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/16 06:49:33 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ static void	cub_map_parse_door(t_game *g,
 
 bool	is_object(char c)
 {
-	return (c == 'B' || c == 'L' || c == 'P' || c == 'G');
+	return (c == 'B' || c == 'L' || c == 'P' || c == 'G' || c == 'M');
 }
 
 void	cub_parse_object(t_game *g, char c, int i, int j)
@@ -113,10 +113,13 @@ void	cub_parse_object(t_game *g, char c, int i, int j)
 		g->objects[count].type = OBJECT_LAMP;
 	else if (c == 'G')
 		g->objects[count].type = OBJECT_GREEN_LIGHT;
+	else if (c == 'M')
+		g->objects[count].type = OBJECT_MEDKIT;
 	g->objects[count].pos.x = j * TILE_SIZE + TILE_SIZE / 2;
 	g->objects[count].pos.y = i * TILE_SIZE + TILE_SIZE / 2;
 	g->objects[count].frame = 0;
 	g->objects[count].animating = false;
+	g->objects[count].display = true;
 	count++;
 }
 

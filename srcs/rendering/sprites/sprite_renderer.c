@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 18:29:47 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/15 20:48:15 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/16 06:51:22 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	sort_objects(t_game *g)
 				temp.pos = g->objects[it.j].pos;
 				temp.type = g->objects[it.j].type;
 				temp.last_time = g->objects[it.j].last_time;
+				temp.display = g->objects[it.j].display;
 
 				g->objects[it.j].dist = g->objects[it.i].dist;
 				g->objects[it.j].animating = g->objects[it.i].animating;
@@ -47,7 +48,7 @@ void	sort_objects(t_game *g)
 				g->objects[it.j].pos = g->objects[it.i].pos;
 				g->objects[it.j].type = g->objects[it.i].type;
 				g->objects[it.j].last_time = g->objects[it.i].last_time;
-
+				g->objects[it.j].display = g->objects[it.i].display;
 
 				g->objects[it.i].dist = temp.dist;
 				g->objects[it.i].animating = temp.animating;
@@ -55,6 +56,7 @@ void	sort_objects(t_game *g)
 				g->objects[it.i].pos = temp.pos;
 				g->objects[it.i].type = temp.type;
 				g->objects[it.i].last_time = temp.last_time;
+				g->objects[it.i].display = temp.display;
 			}
 			it.j++;
 		}
@@ -62,6 +64,7 @@ void	sort_objects(t_game *g)
 	}
 }
 
+bool	check_for_medkits(t_game *g, int z);
 int	cub_render_sprite(t_game *g)
 {
 	float			angle_sprite_player;
@@ -81,6 +84,8 @@ int	cub_render_sprite(t_game *g)
 	z = -1;
 	while (++z < g->objects_count)
 	{
+		if (g->objects[z].type == OBJECT_MEDKIT && !check_for_medkits(g, z))
+			continue ;
 		if (g->textures.object_n_of_frames[g->objects[z].type] > 1
 			&& g->objects[z].frame == 0 && !g->objects[z].animating)
 		{

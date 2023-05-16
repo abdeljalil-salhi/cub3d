@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/16 00:56:36 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/16 06:49:30 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stdbool.h>
 # include <pthread.h>
 
-# define N_OF_OBJECTS 4
+# define N_OF_OBJECTS 5
 # define OBJECTS_MAX_FRAME 4
 
 # define N_OF_WEAPONS 1
@@ -133,6 +133,7 @@ typedef struct s_player
 	int			turn_direction;
 	int			walk_direction;
 	int			rotation_direction;
+	int			health;
 	bool		opening_door;
 	bool		shooting;
 }	t_player;
@@ -163,6 +164,7 @@ typedef struct s_weapon
 typedef struct s_texture
 {
 	t_image		sides[4];
+	t_image		health_bar[6];
 	t_image		wall_1;
 	t_image		wall_2;
 	t_image		wall_3;
@@ -211,6 +213,7 @@ typedef struct s_object
 	bool		animating;
 	clock_t		last_time;
 	float		dist;
+	bool		display;
 }	t_object;
 
 typedef struct s_game
