@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/15 01:44:36 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/16 01:03:21 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,10 @@ typedef unsigned long long	t_ull;
 
 # ifndef NO_TEXTURES
 #  define NO_TEXTURES 0
+# endif
+
+# ifndef MANDATORY
+#  define MANDATORY 0
 # endif
 
 # ifdef MINIMAP
@@ -91,6 +95,14 @@ typedef unsigned long long	t_ull;
 
 enum
 {
+	TEXTURE_NORTH = 0,
+	TEXTURE_SOUTH,
+	TEXTURE_EAST,
+	TEXTURE_WEST
+};
+
+enum
+{
 	ON_KEYDOWN = 2,
 	ON_KEYUP = 3,
 	ON_MOUSEDOWN = 4,
@@ -108,6 +120,7 @@ enum
 	KEY_W = 13,
 	KEY_E = 14,
 	KEY_P = 35,
+	KEY_M = 46,
 	KEY_SPACE = 49,
 	ESC = 53,
 	ARROW_LEFT = 123,
@@ -142,7 +155,7 @@ enum
 	OBJECT_BARREL,
 	OBJECT_PILLAR,
 	OBJECT_LAMP,
-	OBJECT_FIRE,
+	OBJECT_GREEN_LIGHT,
 };
 
 /* --------------------------- UTILS --------------------------- */

@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 15:32:28 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/15 01:57:05 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/15 21:01:54 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ int	cub_key_release(int keycode, t_game *g)
 		g->player.turn_direction = 0;
 	else if (keycode == KEY_E)
 		g->player.opening_door = false;
+	else if (keycode == KEY_M)
+		g->display_map = !g->display_map;
 	else if (keycode == KEY_COMMAND)
 		g->mouse.enabled = true;
 	// else if (keycode == ARROW_LEFT)

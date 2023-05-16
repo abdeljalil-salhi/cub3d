@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/15 02:11:38 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/16 01:13:39 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -409,13 +409,33 @@ void	raycast(t_game *g)
 			i = wall_top_pixel - 1;
 			while (++i < wall_bottom_pixel)
 			{
+				text_offset_y = (i + (int) proj_height / 2 - HALF_WIN_HEIGHT) * (TILE_SIZE / proj_height);
 				if (NO_TEXTURES)
 					g->rays[it.i].vertical_hit
 						? cub_pixel_put(g, it.i * SCALE, i, 0x00FF00)
 						: cub_pixel_put(g, it.i * SCALE, i, 0xFF0000); 
+				else if (MANDATORY)
+				{
+					if (g->rays[it.i].content_hit == DOOR_CLOSED)
+						textcolor = ((unsigned int *) get_texture(g, it.i).addr)[(text_offset_y * TILE_SIZE) + text_offset_x];
+					else if (g->rays[it.i].vertical_hit)
+					{
+						if (horz_intersection.x > g->player.pos.x)
+							textcolor = ((unsigned int *) g->textures.sides[TEXTURE_EAST].addr)[(text_offset_y * TILE_SIZE) + text_offset_x];
+						else
+							textcolor = ((unsigned int *) g->textures.sides[TEXTURE_WEST].addr)[(text_offset_y * TILE_SIZE) + text_offset_x];
+					}
+					else
+					{
+						if (vert_intersection.y > g->player.pos.y)
+							textcolor = ((unsigned int *) g->textures.sides[TEXTURE_SOUTH].addr)[(text_offset_y * TILE_SIZE) + text_offset_x];
+						else
+							textcolor = ((unsigned int *) g->textures.sides[TEXTURE_NORTH].addr)[(text_offset_y * TILE_SIZE) + text_offset_x];
+					}
+					cub_pixel_put(g, it.i * SCALE, i, textcolor);
+				}
 				else
 				{
-					text_offset_y = (i + (int) proj_height / 2 - HALF_WIN_HEIGHT) * (TILE_SIZE / proj_height);
 					textcolor = ((unsigned int *) get_texture(g, it.i).addr)[(text_offset_y * TILE_SIZE) + text_offset_x];
 					cub_pixel_put(g, it.i * SCALE, i, textcolor);
 				}
@@ -443,6 +463,61 @@ void	raycast(t_game *g)
 		g->buffer[it.i] = depth;
 	}
 	cub_render_sprite(g);
+}
+
+void	draw_map(t_game *g)
+{
+	float	center_x;
+	float	center_y;
+	float	radius_x;
+	float	radius_y;
+	int		scale_factor;
+	t_iterators	it;
+
+	center_x = WIN_WIDTH / 2;
+	center_y = WIN_HEIGHT / 2;
+	radius_x = WIN_WIDTH * 0.3;
+	radius_y = WIN_HEIGHT * 0.3;
+	scale_factor = 2;
+	it.i = -1;
+	while (++it.i <= radius_y * 2)
+	{
+		it.j = -1;
+		while (++it.j <= radius_x * 2)
+		{
+			if (it.i == 0 || it.j == 0 || it.i == radius_y * 2 || it.j == radius_x * 2)
+				cub_pixel_put(g, center_x + it.j - radius_x, center_y + it.i - radius_y, 0xFFFFFF);
+			else
+			{
+				float world_x = g->player.pos.x + scale_factor * (it.j - radius_x);
+				float world_y = g->player.pos.y + scale_factor * (it.i - radius_y);
+				if (world_x < 0 || world_x > g->map.width * TILE_SIZE || world_y < 0 || world_y > g->map.height * TILE_SIZE)
+					cub_pixel_put(g, center_x + it.j - radius_x, center_y + it.i - radius_y, 0x000000);
+				else if (g->map.arr[(int)(world_y / TILE_SIZE)][(int)(world_x / TILE_SIZE)] == DOOR_CLOSED)
+					cub_pixel_put(g, center_x + it.j - radius_x, center_y + it.i - radius_y, 0x003300);
+				else if (has_wall_at(g, world_x, world_y))
+				{
+					bool top = !has_wall_at(g, world_x, world_y - scale_factor) || has_door_at(g, world_x, world_y - scale_factor);
+					bool bottom = !has_wall_at(g, world_x, world_y + scale_factor) || has_door_at(g, world_x, world_y + scale_factor);
+					bool left = !has_wall_at(g, world_x - scale_factor, world_y) || has_door_at(g, world_x - scale_factor, world_y);
+					bool right = !has_wall_at(g, world_x + scale_factor, world_y) || has_door_at(g, world_x + scale_factor, world_y);
+
+					if (top || bottom || left || right)
+						cub_pixel_put(g, center_x + it.j - radius_x, center_y + it.i - radius_y, 0xFFFFFF);
+					else
+						cub_pixel_put(g, center_x + it.j - radius_x, center_y + it.i - radius_y, 0x000000);
+				}
+			}
+		}
+	}
+
+	it.i = -1;
+	while (++it.i < PLAYER_MINIMAP_HEIGHT * 2)
+	{
+		it.j = -1;
+		while (++it.j < PLAYER_MINIMAP_WIDTH * 2)
+			cub_pixel_put(g, center_x + it.j - PLAYER_MINIMAP_WIDTH, center_y + it.i - PLAYER_MINIMAP_HEIGHT, 0xFF0000);
+	}
 }
 
 void	draw_minimap(t_game *g)
@@ -639,9 +714,9 @@ int	cub_render(t_game *g)
 	if (MINIMAP)
 		draw_player(g);
 	else
-		draw_minimap(g);
+		g->display_map ? draw_map(g) : draw_minimap(g);
 	mlx_put_image_to_window(g->mlx, g->win.ref, g->frame.ref, 0, 0);
-	if (!MINIMAP)
+	if (!MINIMAP && !g->display_map)
 		draw_weapon(g);
 	check_for_doors(g);
 	mlx_destroy_image(g->mlx, g->frame.ref);

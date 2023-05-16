@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:40:17 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/14 18:27:51 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/16 00:41:11 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,6 @@ int	cub_free(void *ptr)
 
 int	cub_free_memory(t_game *g)
 {
-	cub_free(g->assets.north);
-	cub_free(g->assets.south);
-	cub_free(g->assets.west);
-	cub_free(g->assets.east);
 	if (g->allocated.map)
 		cub_free_double_int(g->map.arr, g->win.height);
 	if (g->allocated.buffer)

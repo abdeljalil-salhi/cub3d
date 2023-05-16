@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 00:20:08 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/15 01:46:29 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/16 00:58:45 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,35 @@ int	cub_init_sprites(t_game *g)
 int	cub_init_textures(t_game *g)
 {
 	t_iterators	it;
+
+	g->textures.sides[TEXTURE_NORTH].ref = mlx_xpm_file_to_image(g->mlx, g->assets.north, &it.i, &it.j);
+	if (!g->textures.sides[TEXTURE_NORTH].ref)
+		return (cub_errors_setter(g, "Failed to get data addr of north xpm."));
+	g->textures.sides[TEXTURE_NORTH].addr = mlx_get_data_addr(g->textures.sides[TEXTURE_NORTH].ref,
+			&g->textures.sides[TEXTURE_NORTH].bpp, &g->textures.sides[TEXTURE_NORTH].line_length, &g->textures.sides[TEXTURE_NORTH].endian);
+	if (!g->textures.sides[TEXTURE_NORTH].addr)
+		return (cub_errors_setter(g, "Failed to get data addr of north xpm."));
+	g->textures.sides[TEXTURE_SOUTH].ref = mlx_xpm_file_to_image(g->mlx, g->assets.south, &it.i, &it.j);
+	if (!g->textures.sides[TEXTURE_SOUTH].ref)
+		return (cub_errors_setter(g, "Failed to get data addr of south xpm."));
+	g->textures.sides[TEXTURE_SOUTH].addr = mlx_get_data_addr(g->textures.sides[TEXTURE_SOUTH].ref,
+			&g->textures.sides[TEXTURE_SOUTH].bpp, &g->textures.sides[TEXTURE_SOUTH].line_length, &g->textures.sides[TEXTURE_SOUTH].endian);
+	if (!g->textures.sides[TEXTURE_SOUTH].addr)
+		return (cub_errors_setter(g, "Failed to get data addr of south xpm."));
+	g->textures.sides[TEXTURE_EAST].ref = mlx_xpm_file_to_image(g->mlx, g->assets.east, &it.i, &it.j);
+	if (!g->textures.sides[TEXTURE_EAST].ref)
+		return (cub_errors_setter(g, "Failed to get data addr of east xpm."));
+	g->textures.sides[TEXTURE_EAST].addr = mlx_get_data_addr(g->textures.sides[TEXTURE_EAST].ref,
+			&g->textures.sides[TEXTURE_EAST].bpp, &g->textures.sides[TEXTURE_EAST].line_length, &g->textures.sides[TEXTURE_EAST].endian);
+	if (!g->textures.sides[TEXTURE_EAST].addr)
+		return (cub_errors_setter(g, "Failed to get data addr of east xpm."));
+	g->textures.sides[TEXTURE_WEST].ref = mlx_xpm_file_to_image(g->mlx, g->assets.west, &it.i, &it.j);
+	if (!g->textures.sides[TEXTURE_WEST].ref)
+		return (cub_errors_setter(g, "Failed to get data addr of west xpm."));
+	g->textures.sides[TEXTURE_WEST].addr = mlx_get_data_addr(g->textures.sides[TEXTURE_WEST].ref,
+			&g->textures.sides[TEXTURE_WEST].bpp, &g->textures.sides[TEXTURE_WEST].line_length, &g->textures.sides[TEXTURE_WEST].endian);
+	if (!g->textures.sides[TEXTURE_WEST].addr)
+		return (cub_errors_setter(g, "Failed to get data addr of west xpm."));
 
 	g->textures.wall_1.ref = mlx_xpm_file_to_image(g->mlx, "assets/textures/1.xpm", &it.i, &it.j);
 	if (!g->textures.wall_1.ref)
@@ -107,13 +136,13 @@ int	cub_init_objects(t_game *g)
 	g->textures.object_frame_rate[OBJECT_LAMP] = 0;
 	g->textures.object_scale[OBJECT_LAMP] = 1;
 
-	// g->textures.object_path[OBJECT_FIRE][0] = "assets/sprites/fire/0.xpm";
-	// g->textures.object_path[OBJECT_FIRE][1] = "assets/sprites/fire/1.xpm";
-	// g->textures.object_path[OBJECT_FIRE][2] = "assets/sprites/fire/2.xpm";
-	// g->textures.object_path[OBJECT_FIRE][3] = "assets/sprites/fire/3.xpm";
-	// g->textures.object_n_of_frames[OBJECT_FIRE] = 4;
-	// g->textures.object_frame_rate[OBJECT_FIRE] = 0;
-	// g->textures.object_scale[OBJECT_FIRE] = 1;
+	g->textures.object_path[OBJECT_GREEN_LIGHT][0] = "assets/sprites/animated/green_light/0.xpm";
+	g->textures.object_path[OBJECT_GREEN_LIGHT][1] = "assets/sprites/animated/green_light/1.xpm";
+	g->textures.object_path[OBJECT_GREEN_LIGHT][2] = "assets/sprites/animated/green_light/2.xpm";
+	g->textures.object_path[OBJECT_GREEN_LIGHT][3] = "assets/sprites/animated/green_light/3.xpm";
+	g->textures.object_n_of_frames[OBJECT_GREEN_LIGHT] = 4;
+	g->textures.object_frame_rate[OBJECT_GREEN_LIGHT] = 100;
+	g->textures.object_scale[OBJECT_GREEN_LIGHT] = 1;
 
 	it.i = -1;
 	while (++it.i < N_OF_OBJECTS)
@@ -144,6 +173,7 @@ int	cub_init(t_game *g)
 	mlx_mouse_get_pos(g->win.ref, &x, &y);
 	g->mouse.x = x;
 	g->player.shooting = false;
+	g->display_map = false;
 	g->buffer = (float *) malloc(sizeof(float) * NUM_RAYS);
 	if (!g->buffer)
 		return (cub_errors_setter(g, ERR_MALLOC));

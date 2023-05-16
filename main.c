@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:40:50 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/14 23:04:51 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/16 00:55:07 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	cub_print_assets(t_game *g)
 int	cub_mouse_release(int code, int x, int y, t_game *g)
 {
 	(void) x, (void) y;
-	if (code == 1 && !g->player.shooting)
+	if (code == 1 && !g->player.shooting && !g->display_map)
 	{
 		g->player.shooting = true;
 		g->mouse.left = false;
