@@ -6,16 +6,18 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/16 06:52:58 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/16 09:49:36 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+int	cub_render_sprite(t_game *g);
+
 bool	check_if_wall(int content)
 {
 	return (content == 1 || content == 2 || content == 3
-		|| content == 4 || content == 5 || content == DOOR_CLOSED);
+		|| content == 4 || content == 5);
 }
 
 void	display_map(t_game *g)
@@ -86,15 +88,24 @@ bool	has_door_at(t_game *g, float x, float y)
 	return (g->map.arr[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] == DOOR_CLOSED);
 }
 
+bool	has_door2_at(t_game *g, float x, float y)
+{
+	if (x < 0 || x > g->map.width * TILE_SIZE || y < 0 || y > g->map.height * TILE_SIZE)
+		return (false);
+	return (g->map.arr[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] == DOOR_CLOSED);
+}
+
 void	check_wall_collision(t_game *g, float dx, float dy)
 {
 	// if (!has_wall_at(g, g->player.pos.x + dx + g->player.turn_direction * (g->player.width / 2), g->player.pos.y))
 	// 	g->player.pos.x += dx;
 	// if (!has_wall_at(g, g->player.pos.x, g->player.pos.y + dy + g->player.walk_direction * (g->player.height / 2)))
 	// 	g->player.pos.y += dy;
-	if (!has_wall_at(g, g->player.pos.x + dx * PLAYER_SCALE, g->player.pos.y))
+	if (!has_wall_at(g, g->player.pos.x + dx * PLAYER_SCALE, g->player.pos.y)
+		&& !has_door2_at(g, g->player.pos.x + dx * PLAYER_SCALE, g->player.pos.y))
 		g->player.pos.x += dx;
-	if (!has_wall_at(g, g->player.pos.x, g->player.pos.y + dy * PLAYER_SCALE))
+	if (!has_wall_at(g, g->player.pos.x, g->player.pos.y + dy * PLAYER_SCALE)
+		&& !has_door2_at(g, g->player.pos.x, g->player.pos.y + dy * PLAYER_SCALE))
 		g->player.pos.y += dy;
 }
 
@@ -230,8 +241,6 @@ t_image	get_texture(t_game *g, int ind)
 		return (g->textures.wall_4);
 	else if (g->rays[ind].content_hit == 5)
 		return (g->textures.wall_5);
-	else if (g->rays[ind].content_hit == DOOR_CLOSED)
-		return (g->textures.door);
 	else
 		return (g->textures.wall_1);
 }
@@ -609,56 +618,6 @@ void	draw_weapon(t_game *g)
 		g->textures.weapon.pos.x, g->textures.weapon.pos.y);
 }
 
-void	show_message(t_game *g, char *message)
-{
-	static int	frames = 0;
-	
-	if (frames > 10)
-	{
-		g->tips.open_door = !g->tips.open_door;
-		frames = 0;
-	}
-	if (g->tips.open_door)
-	{
-		// t_iterators pos = {WIN_WIDTH / 2 - ft_strlen(message) * 6, WIN_HEIGHT - 20};
-
-		// draw_rect(g, pos, ft_strlen(message) * 6, 20, create_trgb(80, 255, 0, 0));
-		mlx_string_put(g->mlx, g->win.ref, WIN_WIDTH / 2 - ft_strlen(message) * 3, WIN_HEIGHT - 15, 0xFFFFFF, message);
-	}
-	frames++;
-}
-
-void	check_for_doors(t_game *g)
-{
-	int	i;
-
-	i = -1;
-	while (++i < g->doors_count)
-	{
-		float	distance = sqrt(pow(g->player.pos.x - g->doors[i].pos.x, 2) + pow(g->player.pos.y - g->doors[i].pos.y, 2));
-		if (g->doors[i].state == DOOR_CLOSED)
-		{
-			if (distance < 200.0f)
-			{
-				show_message(g, "Press E to open the door");
-				if (g->player.opening_door)
-				{
-					g->doors[i].state = DOOR_OPENED;
-					g->map.arr[g->doors[i].y][g->doors[i].x] = DOOR_OPENED;
-				}
-			}
-		}
-		else if (g->doors[i].state == DOOR_OPENED)
-		{
-			if (distance > 200.0f)
-			{
-				g->doors[i].state = DOOR_CLOSED;
-				g->map.arr[g->doors[i].y][g->doors[i].x] = DOOR_CLOSED;
-			}
-		}
-	}
-}
-
 void	put_health(t_game *g)
 {
 	if (g->player.health > 100)
@@ -679,7 +638,6 @@ void	put_health(t_game *g)
 		mlx_put_image_to_window(g->mlx, g->win.ref, g->textures.health_bar[0].ref, 5, 1);
 }
 
-int	cub_render_sprite(t_game *g);
 int	cub_render(t_game *g)
 {
 	static unsigned int	frames = 0;
@@ -738,7 +696,6 @@ int	cub_render(t_game *g)
 	mlx_put_image_to_window(g->mlx, g->win.ref, g->frame.ref, 0, 0);
 	if (!MINIMAP && !g->display_map)
 		draw_weapon(g);
-	check_for_doors(g);
 	put_health(g);
 	mlx_destroy_image(g->mlx, g->frame.ref);
 	tmp = ft_itoa(last_fps);

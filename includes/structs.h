@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/16 06:49:30 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/16 09:21:20 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stdbool.h>
 # include <pthread.h>
 
-# define N_OF_OBJECTS 5
+# define N_OF_OBJECTS 6
 # define OBJECTS_MAX_FRAME 4
 
 # define N_OF_WEAPONS 1
@@ -173,7 +173,6 @@ typedef struct s_texture
 	t_image		floor;
 	t_image		ceil;
 	t_weapon	weapon;
-	t_image		door;
 	t_image		object_image[N_OF_OBJECTS][OBJECTS_MAX_FRAME];
 	char		*object_path[N_OF_OBJECTS][OBJECTS_MAX_FRAME];
 	t_iterators	object_dimension[N_OF_OBJECTS];
@@ -182,14 +181,6 @@ typedef struct s_texture
 	clock_t		object_last_time[N_OF_OBJECTS];
 	float		object_scale[N_OF_OBJECTS];
 }	t_texture;
-
-typedef struct s_door
-{
-	int			x;
-	int			y;
-	int			state;
-	t_coords	pos;
-}	t_door;
 
 typedef struct s_tips
 {
@@ -207,7 +198,10 @@ typedef struct s_mouse
 
 typedef struct s_object
 {
+	int			x;
+	int			y;
 	int			type;
+	int			state;
 	t_coords	pos;
 	int			frame;
 	bool		animating;
@@ -235,9 +229,7 @@ typedef struct s_game
 	t_alloc		allocated;
 	t_tips		tips;
 	t_texture	textures;
-	t_door		*doors;
 	t_object	*objects;
-	int			doors_count;
 	int			objects_count;
 	t_mouse		mouse;
 	float		*buffer;

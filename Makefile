@@ -6,7 +6,7 @@
 #    By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/19 21:24:26 by absalhi           #+#    #+#              #
-#    Updated: 2023/05/16 07:11:00 by absalhi          ###   ########.fr        #
+#    Updated: 2023/05/16 09:33:32 by absalhi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ _PARSING	=	cub_parser.c cub_file_parser.c cub_file_checker.c		\
 				cub_file_line.c cub_map.c cub_check.c cub_map_norm.c
 PARSING		=	$(addprefix parsing/, $(_PARSING))
 
-_SPRITES	=	weapon.c sprite_renderer.c medkit.c
+_SPRITES	=	weapon.c sprite_renderer.c medkit.c door.c
 SPRITES	=	$(addprefix rendering/sprites/, $(_SPRITES))
 
 _RENDERING	=	cub_render.c cub_init.c

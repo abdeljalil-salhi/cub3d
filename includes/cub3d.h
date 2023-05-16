@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/16 06:28:28 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/16 09:17:50 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,8 @@ enum
 
 enum
 {
-	DOOR_OPENED = 97,
+	DOOR_TOGGLING = 96,
+	DOOR_OPENED,
 	DOOR_CLOSED,
 	PLAYER
 };
@@ -162,6 +163,7 @@ enum
 	OBJECT_LAMP,
 	OBJECT_GREEN_LIGHT,
 	OBJECT_MEDKIT,
+	OBJECT_DOOR,
 };
 
 /* --------------------------- UTILS --------------------------- */

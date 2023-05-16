@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 00:20:08 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/16 06:20:09 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/16 09:23:23 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,14 +103,6 @@ int	cub_init_textures(t_game *g)
 			&g->textures.wall_5.bpp, &g->textures.wall_5.line_length, &g->textures.wall_5.endian);
 	if (!g->textures.wall_5.addr)
 		return (cub_errors_setter(g, "Failed to get data addr of wall_5 xpm."));
-		
-	g->textures.door.ref = mlx_xpm_file_to_image(g->mlx, "assets/textures/door.xpm", &it.i, &it.j);
-	if (!g->textures.door.ref)
-		return (cub_errors_setter(g, "Failed to get data addr of door xpm."));
-	g->textures.door.addr = mlx_get_data_addr(g->textures.door.ref,
-			&g->textures.door.bpp, &g->textures.door.line_length, &g->textures.door.endian);
-	if (!g->textures.door.addr)
-		return (cub_errors_setter(g, "Failed to get data addr of door xpm."));
 
 	g->textures.ceil.ref = mlx_xpm_file_to_image(g->mlx, "assets/textures/1.xpm", &it.i, &it.j);
 	if (!g->textures.ceil.ref)
@@ -157,6 +149,14 @@ int	cub_init_objects(t_game *g)
 	g->textures.object_n_of_frames[OBJECT_GREEN_LIGHT] = 4;
 	g->textures.object_frame_rate[OBJECT_GREEN_LIGHT] = 200;
 	g->textures.object_scale[OBJECT_GREEN_LIGHT] = 1;
+
+	g->textures.object_path[OBJECT_DOOR][0] = "assets/door/0.xpm";
+	g->textures.object_path[OBJECT_DOOR][1] = "assets/door/1.xpm";
+	g->textures.object_path[OBJECT_DOOR][2] = "assets/door/2.xpm";
+	g->textures.object_path[OBJECT_DOOR][3] = "assets/door/3.xpm";
+	g->textures.object_n_of_frames[OBJECT_DOOR] = 4;
+	g->textures.object_frame_rate[OBJECT_DOOR] = 200;
+	g->textures.object_scale[OBJECT_DOOR] = 1;
 
 	g->textures.object_path[OBJECT_MEDKIT][0] = "assets/sprites/medkit.xpm";
 	g->textures.object_n_of_frames[OBJECT_MEDKIT] = 1;

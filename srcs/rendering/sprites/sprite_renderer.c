@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 18:29:47 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/16 06:51:22 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/16 09:38:41 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	sort_objects(t_game *g)
 }
 
 bool	check_for_medkits(t_game *g, int z);
+void	check_for_doors(t_game *g, int z);
 int	cub_render_sprite(t_game *g)
 {
 	float			angle_sprite_player;
@@ -86,6 +87,8 @@ int	cub_render_sprite(t_game *g)
 	{
 		if (g->objects[z].type == OBJECT_MEDKIT && !check_for_medkits(g, z))
 			continue ;
+		if (g->objects[z].type == OBJECT_DOOR)
+			check_for_doors(g, z);
 		if (g->textures.object_n_of_frames[g->objects[z].type] > 1
 			&& g->objects[z].frame == 0 && !g->objects[z].animating)
 		{

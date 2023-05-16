@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 01:09:49 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/14 19:17:33 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/16 09:21:56 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@ void	cub_map_init_norm(t_game *g, t_cub_map_init *s)
 	while (s->quick_line[s->it.j]
 		&& s->quick_line[s->it.j] != ' ' && s->quick_line[s->it.j] != '\n')
 	{
-		if (s->quick_line[s->it.j] == 'D')
-			g->doors_count++;
-		else if (is_object(s->quick_line[s->it.j]))
+		if (is_object(s->quick_line[s->it.j]))
 			g->objects_count++;
 		s->it.j++;
 	}
