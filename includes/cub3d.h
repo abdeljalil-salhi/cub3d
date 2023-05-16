@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/16 09:17:50 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/16 20:53:17 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,5 +268,9 @@ int		cub_count_int_occurences(int *arr, size_t size, int n);
 bool	cub_line_empty(char *line);
 int		cub_file_open(t_game *g, int *fd, char *filename);
 t_ull	current_time_ms(void);
+
+/* --------------------------- TEXT --------------------------- */
+
+# define DOOR_TIP "Press E to open the door"
 
 #endif

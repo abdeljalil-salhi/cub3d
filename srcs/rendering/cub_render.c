@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/16 09:49:36 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/16 20:53:27 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -618,6 +618,13 @@ void	draw_weapon(t_game *g)
 		g->textures.weapon.pos.x, g->textures.weapon.pos.y);
 }
 
+void	put_tips(t_game *g)
+{
+	if (g->tips.open_door)
+		mlx_string_put(g->mlx, g->win.ref, WIN_WIDTH / 2 - ft_strlen(DOOR_TIP) * 3,
+			WIN_HEIGHT - 15, 0xFFFFFF, DOOR_TIP);
+}
+
 void	put_health(t_game *g)
 {
 	if (g->player.health > 100)
@@ -696,6 +703,7 @@ int	cub_render(t_game *g)
 	mlx_put_image_to_window(g->mlx, g->win.ref, g->frame.ref, 0, 0);
 	if (!MINIMAP && !g->display_map)
 		draw_weapon(g);
+	put_tips(g);
 	put_health(g);
 	mlx_destroy_image(g->mlx, g->frame.ref);
 	tmp = ft_itoa(last_fps);

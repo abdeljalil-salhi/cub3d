@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 18:29:47 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/16 09:38:41 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/16 20:47:56 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@ void	sort_objects(t_game *g)
 				temp.type = g->objects[it.j].type;
 				temp.last_time = g->objects[it.j].last_time;
 				temp.display = g->objects[it.j].display;
+				temp.x = g->objects[it.j].x;
+				temp.y = g->objects[it.j].y;
+				temp.state = g->objects[it.j].state;
 
 				g->objects[it.j].dist = g->objects[it.i].dist;
 				g->objects[it.j].animating = g->objects[it.i].animating;
@@ -49,6 +52,9 @@ void	sort_objects(t_game *g)
 				g->objects[it.j].type = g->objects[it.i].type;
 				g->objects[it.j].last_time = g->objects[it.i].last_time;
 				g->objects[it.j].display = g->objects[it.i].display;
+				g->objects[it.j].x = g->objects[it.i].x;
+				g->objects[it.j].y = g->objects[it.i].y;
+				g->objects[it.j].state = g->objects[it.i].state;
 
 				g->objects[it.i].dist = temp.dist;
 				g->objects[it.i].animating = temp.animating;
@@ -57,6 +63,9 @@ void	sort_objects(t_game *g)
 				g->objects[it.i].type = temp.type;
 				g->objects[it.i].last_time = temp.last_time;
 				g->objects[it.i].display = temp.display;
+				g->objects[it.i].x = temp.x;
+				g->objects[it.i].y = temp.y;
+				g->objects[it.i].state = temp.state;
 			}
 			it.j++;
 		}
@@ -89,20 +98,24 @@ int	cub_render_sprite(t_game *g)
 			continue ;
 		if (g->objects[z].type == OBJECT_DOOR)
 			check_for_doors(g, z);
-		if (g->textures.object_n_of_frames[g->objects[z].type] > 1
-			&& g->objects[z].frame == 0 && !g->objects[z].animating)
+
+		if (g->objects[z].type != OBJECT_DOOR)
 		{
-			g->objects[z].animating = true;
-			g->objects[z].last_time = current_time_ms();
+			if (g->textures.object_n_of_frames[g->objects[z].type] > 1
+				&& g->objects[z].frame == 0 && !g->objects[z].animating)
+			{
+				g->objects[z].animating = true;
+				g->objects[z].last_time = current_time_ms();
+			}
+			if (current_time_ms() - g->objects[z].last_time
+				> g->textures.object_frame_rate[g->objects[z].type])
+			{
+				g->objects[z].frame++;
+				g->objects[z].last_time = current_time_ms();
+			}
+			if (g->objects[z].frame == g->textures.object_n_of_frames[g->objects[z].type])
+				g->objects[z].frame = 0;
 		}
-		if (current_time_ms() - g->objects[z].last_time
-			> g->textures.object_frame_rate[g->objects[z].type])
-		{
-			g->objects[z].frame++;
-			g->objects[z].last_time = current_time_ms();
-		}
-		if (g->objects[z].frame == g->textures.object_n_of_frames[g->objects[z].type])
-			g->objects[z].frame = 0;
 
 		diff.x = g->objects[z].pos.x - g->player.pos.x;
 		diff.y = g->objects[z].pos.y - g->player.pos.y;
