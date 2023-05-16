@@ -6,7 +6,7 @@
 #    By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/19 21:24:26 by absalhi           #+#    #+#              #
-#    Updated: 2023/05/16 06:20:57 by absalhi          ###   ########.fr        #
+#    Updated: 2023/05/16 07:11:00 by absalhi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,22 +70,30 @@ mandatory	:	re
 help		:
 				@printf "\n"
 				@echo $(NONE)$(ITALIC)$(GREEN) "     ~ Usage:" $(GRAY)
-				@echo "     - ./"$(NAME) $(NONE)$(ITALIC)$(GREEN) "[map].cub" $(NONE)$(GRAY) "to run the game."
+				@echo "     - ./"$(NAME)$(NONE)$(ITALIC)$(GREEN) "[map].cub" $(NONE)$(GRAY) "to run the game."
 				@printf "\n"
-				@echo $(NONE)$(ITALIC)$(GREEN) "     ~ Available options:" $(GRAY)
+				@echo $(NONE)$(ITALIC)$(GREEN) "     ~ Available options:" $(NONE)$(GRAY)
 				@echo "     - make" $(NONE)$(ITALIC)$(GREEN) "all" $(NONE)$(GRAY) "to compile the project."
 				@echo "     - make" $(NONE)$(ITALIC)$(GREEN) "debug" $(NONE)$(GRAY) "to compile the project with debug flags."
 				@echo "     - make" $(NONE)$(ITALIC)$(GREEN) "minimap" $(NONE)$(GRAY) "to compile the project with minimap."
 				@echo "     - make" $(NONE)$(ITALIC)$(GREEN) "no_textures" $(NONE)$(GRAY) "to compile the project without textures."
+				@echo "     - make" $(NONE)$(ITALIC)$(GREEN) "mandatory" $(NONE)$(GRAY) "to compile the project with the mandatory part flags."
 				@echo "     - make" $(NONE)$(ITALIC)$(GREEN) "clean" $(NONE)$(GRAY) "to remove object files."
 				@echo "     - make" $(NONE)$(ITALIC)$(GREEN) "fclean" $(NONE)$(GRAY) "to remove object files and $(NAME)."
 				@echo "     - make" $(NONE)$(ITALIC)$(GREEN) "re" $(NONE)$(GRAY) "to recompile the project."
 				@echo "     - make" $(NONE)$(ITALIC)$(GREEN) "norm" $(NONE)$(GRAY) "to check norminette."
 				@echo "     - make" $(NONE)$(ITALIC)$(GREEN) "help" $(NONE)$(GRAY) "to show this help." $(NONE)
 				@printf "\n"
-				@echo $(NONE)$(ITALIC)$(GREEN) "     ~ Map editing:" $(GREEN)
-				@echo "     - [1]" $(NONE)$(ITALIC)$(GRAY) " Wall" $(NONE)$(GREEN)
-				@echo "     - [2]" $(NONE)$(ITALIC)$(GRAY) " Sprite" $(NONE)$(GREEN)
+				@echo $(NONE)$(ITALIC)$(GREEN) "     ~ Map editing:" $(NONE)$(GRAY)
+				@echo "     - [ "$(NONE)$(GREEN)"1"$(NONE)$(GRAY)" -> "$(NONE)$(GREEN)"5"$(NONE)$(GRAY)" ] Wall"
+				@echo "     - [ "$(NONE)$(GREEN)"N"$(NONE)$(GRAY)" / "$(NONE)$(GREEN)"S"$(NONE)$(GRAY)" / "$(NONE)$(GREEN)"E"$(NONE)$(GRAY)" / "$(NONE)$(GREEN)"W"$(NONE)$(GRAY)" ] Player"
+				@echo "     - [ "$(NONE)$(GREEN)"0"$(NONE)$(GRAY)" ] Empty space (floor)"
+				@echo "     - [ "$(NONE)$(GREEN)"D"$(NONE)$(GRAY)" ] Door"
+				@echo "     - [ "$(NONE)$(GREEN)"B"$(NONE)$(GRAY)" ] Barrel"
+				@echo "     - [ "$(NONE)$(GREEN)"L"$(NONE)$(GRAY)" ] Lamp"
+				@echo "     - [ "$(NONE)$(GREEN)"P"$(NONE)$(GRAY)" ] Pillar"
+				@echo "     - [ "$(NONE)$(GREEN)"G"$(NONE)$(GRAY)" ] Green fire lamp"
+				@echo "     - [ "$(NONE)$(GREEN)"M"$(NONE)$(GRAY)" ] Medkit"
 
 clean		:
 				@echo $(ITALIC)$(GRAY) "     - Removing object files..." $(NONE)
