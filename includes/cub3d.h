@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 11:23:25 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 13:34:24 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef unsigned long long	t_ull;
 # define NAME "cub3D"
 # define TMP "assets/sounds/.tmp"
 
-# define LEAKS 1
+# define LEAKS 0
 
 # ifndef DEBUG
 #  define DEBUG 0
@@ -174,6 +174,10 @@ enum
 	OBJECT_SOLDIER_DAMAGED,
 	OBJECT_SOLDIER_ATTACK,
 	OBJECT_SOLDIER_DEATH,
+	OBJECT_CYBERDEMON_WALK,
+	OBJECT_CYBERDEMON_DAMAGED,
+	OBJECT_CYBERDEMON_ATTACK,
+	OBJECT_CYBERDEMON_DEATH,
 };
 
 enum
@@ -308,5 +312,6 @@ t_ull	current_time_ms(void);
 /* --------------------------- TEXT --------------------------- */
 
 # define DOOR_TIP "Press [E] to open the door"
+# define GAME_OVER "Press [ESC] to quit"
 
 #endif

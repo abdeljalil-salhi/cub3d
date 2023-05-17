@@ -6,16 +6,16 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 08:43:52 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 09:23:28 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 11:40:31 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	show_message(t_game *g)
+void	show_door_tip(t_game *g)
 {
 	static int	frames = 0;
-	
+
 	if (frames > 10)
 	{
 		g->tips.open_door = !g->tips.open_door;
@@ -49,7 +49,7 @@ void	check_for_doors(t_game *g, int z)
 		}
 		else if (distance < 200.0f)
 		{
-			show_message(g);
+			show_door_tip(g);
 			if (g->player.opening_door && g->objects[z].frame == 0)
 			{
 				play_sound_effect(g, SOUND_DOOR_OPEN);

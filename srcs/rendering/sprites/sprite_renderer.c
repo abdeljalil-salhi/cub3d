@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 18:29:47 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 11:03:36 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 13:46:52 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ void	sort_objects(t_game *g)
 	}
 }
 
+bool	is_enemy(int type);
+bool	is_enemy_dead(int type);
 bool	check_for_medkits(t_game *g, int z);
 void	check_for_doors(t_game *g, int z);
 void	check_for_enemies(t_game *g, int z);
@@ -110,11 +112,11 @@ int	cub_render_sprite(t_game *g)
 			continue ;
 		if (g->objects[z].type == OBJECT_DOOR)
 			check_for_doors(g, z);
-		if (g->objects[z].type == OBJECT_SOLDIER_WALK || g->objects[z].type == OBJECT_SOLDIER_DAMAGED
-			|| g->objects[z].type == OBJECT_SOLDIER_ATTACK || g->objects[z].type == OBJECT_SOLDIER_DEATH)
+		if (is_enemy(g->objects[z].type))
 			check_for_enemies(g, z);
 
-		if (g->objects[z].type != OBJECT_DOOR && !(g->objects[z].type == OBJECT_SOLDIER_DEATH && g->objects[z].frame == 8))
+		if (g->objects[z].type != OBJECT_DOOR
+			&& !(is_enemy_dead(g->objects[z].type) && g->objects[z].frame == 8))
 		{
 			if (g->textures.object_n_of_frames[g->objects[z].type] > 1
 				&& g->objects[z].frame == 0 && !g->objects[z].animating)

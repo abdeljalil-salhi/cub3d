@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 21:28:45 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 09:32:37 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 13:34:17 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static void	cub_map_parse_helper_setter(t_game *g,
 bool	is_object(char c)
 {
 	return (c == 'B' || c == 'L' || c == 'P' || c == 'G'
-		|| c == 'M' || c == 'D' || c == 'V');
+		|| c == 'M' || c == 'D' || c == 'V' || c == 'C');
 }
 
 void	cub_parse_object(t_game *g, char c, int i, int j)
@@ -114,6 +114,14 @@ void	cub_parse_object(t_game *g, char c, int i, int j)
 		g->objects[count].infos[ENEMY_BOUNTY] = 100;
 		g->objects[count].infos[ENEMY_PRECISION] = 20;
 		g->objects[count].infos[ENEMY_DAMAGE] = 10;
+	}
+	else if (c == 'C')
+	{
+		g->objects[count].type = OBJECT_CYBERDEMON_WALK;
+		g->objects[count].infos[ENEMY_HEALTH] = 200;
+		g->objects[count].infos[ENEMY_BOUNTY] = 500;
+		g->objects[count].infos[ENEMY_PRECISION] = 30;
+		g->objects[count].infos[ENEMY_DAMAGE] = 30;
 	}
 	g->objects[count].pos.x = j * TILE_SIZE + TILE_SIZE / 2;
 	g->objects[count].pos.y = i * TILE_SIZE + TILE_SIZE / 2;

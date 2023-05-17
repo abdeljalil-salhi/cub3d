@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 00:20:08 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 08:11:25 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 13:50:30 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,14 @@ int	cub_init_textures(t_game *g)
 	if (!g->textures.splash[GREEN_SPLASH].addr)
 		return (cub_errors_setter(g, "Failed to get data addr of green splash xpm."));
 
+	g->textures.game_over.ref = mlx_xpm_file_to_image(g->mlx, "assets/hud/the_end.xpm", &it.i, &it.j);
+	if (!g->textures.game_over.ref)
+		return (cub_errors_setter(g, "Failed to get data addr of game over xpm."));
+	g->textures.game_over.addr = mlx_get_data_addr(g->textures.game_over.ref,
+			&g->textures.game_over.bpp, &g->textures.game_over.line_length, &g->textures.game_over.endian);
+	if (!g->textures.game_over.addr)
+		return (cub_errors_setter(g, "Failed to get data addr of game over xpm."));
+
 	return (RETURN_SUCCESS);
 }
 
@@ -187,6 +195,40 @@ int	cub_init_objects(t_game *g)
 	g->textures.object_n_of_frames[OBJECT_SOLDIER_DEATH] = 9;
 	g->textures.object_frame_rate[OBJECT_SOLDIER_DEATH] = 50;
 	g->textures.object_scale[OBJECT_SOLDIER_DEATH] = 0.8;
+
+	g->textures.object_path[OBJECT_CYBERDEMON_WALK][0] = "assets/sprites/enemy/cyberdemon/walk/0.xpm";
+	g->textures.object_path[OBJECT_CYBERDEMON_WALK][1] = "assets/sprites/enemy/cyberdemon/walk/1.xpm";
+	g->textures.object_path[OBJECT_CYBERDEMON_WALK][2] = "assets/sprites/enemy/cyberdemon/walk/2.xpm";
+	g->textures.object_path[OBJECT_CYBERDEMON_WALK][3] = "assets/sprites/enemy/cyberdemon/walk/3.xpm";
+	g->textures.object_path[OBJECT_CYBERDEMON_WALK][4] = "assets/sprites/enemy/cyberdemon/walk/4.xpm";
+	g->textures.object_n_of_frames[OBJECT_CYBERDEMON_WALK] = 5;
+	g->textures.object_frame_rate[OBJECT_CYBERDEMON_WALK] = 200;
+	g->textures.object_scale[OBJECT_CYBERDEMON_WALK] = 1;
+
+	g->textures.object_path[OBJECT_CYBERDEMON_DAMAGED][0] = "assets/sprites/enemy/cyberdemon/damaged/0.xpm";
+	g->textures.object_path[OBJECT_CYBERDEMON_DAMAGED][1] = "assets/sprites/enemy/cyberdemon/damaged/1.xpm";
+	g->textures.object_n_of_frames[OBJECT_CYBERDEMON_DAMAGED] = 2;
+	g->textures.object_frame_rate[OBJECT_CYBERDEMON_DAMAGED] = 200;
+	g->textures.object_scale[OBJECT_CYBERDEMON_DAMAGED] = 1;
+
+	g->textures.object_path[OBJECT_CYBERDEMON_ATTACK][0] = "assets/sprites/enemy/cyberdemon/attack/0.xpm";
+	g->textures.object_path[OBJECT_CYBERDEMON_ATTACK][1] = "assets/sprites/enemy/cyberdemon/attack/1.xpm";
+	g->textures.object_n_of_frames[OBJECT_CYBERDEMON_ATTACK] = 2;
+	g->textures.object_frame_rate[OBJECT_CYBERDEMON_ATTACK] = 200;
+	g->textures.object_scale[OBJECT_CYBERDEMON_ATTACK] = 1;
+
+	g->textures.object_path[OBJECT_CYBERDEMON_DEATH][0] = "assets/sprites/enemy/cyberdemon/death/0.xpm";
+	g->textures.object_path[OBJECT_CYBERDEMON_DEATH][1] = "assets/sprites/enemy/cyberdemon/death/1.xpm";
+	g->textures.object_path[OBJECT_CYBERDEMON_DEATH][2] = "assets/sprites/enemy/cyberdemon/death/2.xpm";
+	g->textures.object_path[OBJECT_CYBERDEMON_DEATH][3] = "assets/sprites/enemy/cyberdemon/death/3.xpm";
+	g->textures.object_path[OBJECT_CYBERDEMON_DEATH][4] = "assets/sprites/enemy/cyberdemon/death/4.xpm";
+	g->textures.object_path[OBJECT_CYBERDEMON_DEATH][5] = "assets/sprites/enemy/cyberdemon/death/5.xpm";
+	g->textures.object_path[OBJECT_CYBERDEMON_DEATH][6] = "assets/sprites/enemy/cyberdemon/death/6.xpm";
+	g->textures.object_path[OBJECT_CYBERDEMON_DEATH][7] = "assets/sprites/enemy/cyberdemon/death/7.xpm";
+	g->textures.object_path[OBJECT_CYBERDEMON_DEATH][8] = "assets/sprites/enemy/cyberdemon/death/8.xpm";
+	g->textures.object_n_of_frames[OBJECT_CYBERDEMON_DEATH] = 9;
+	g->textures.object_frame_rate[OBJECT_CYBERDEMON_DEATH] = 50;
+	g->textures.object_scale[OBJECT_CYBERDEMON_DEATH] = 1;
 
 	it.i = -1;
 	while (++it.i < N_OF_OBJECTS)

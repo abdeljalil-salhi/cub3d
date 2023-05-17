@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 09:32:13 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 13:34:22 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 # define N_OF_SOUNDS 8
 
-# define N_OF_OBJECTS 10
+# define N_OF_OBJECTS 14
 # define OBJECTS_MAX_FRAME 9
 
 # define N_OF_WEAPONS 1
@@ -179,6 +179,7 @@ typedef struct s_texture
 	t_image		floor;
 	t_image		ceil;
 	t_image		splash[2];
+	t_image		game_over;
 	t_weapon	weapon;
 	t_image		object_image[N_OF_OBJECTS][OBJECTS_MAX_FRAME];
 	char		*object_path[N_OF_OBJECTS][OBJECTS_MAX_FRAME];
@@ -192,6 +193,7 @@ typedef struct s_texture
 typedef struct s_tips
 {
 	bool		open_door;
+	bool		game_over;
 }	t_tips;
 
 typedef struct s_mouse

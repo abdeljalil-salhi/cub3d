@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 11:19:50 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 13:37:35 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,7 +241,8 @@ t_image	get_texture(t_game *g, int ind)
 
 bool	is_enemy(int type)
 {
-	return (type >= OBJECT_SOLDIER_WALK && type <= OBJECT_SOLDIER_DEATH);
+	return ((type >= OBJECT_SOLDIER_WALK && type <= OBJECT_SOLDIER_DEATH)
+		|| (type >= OBJECT_CYBERDEMON_WALK && type <= OBJECT_CYBERDEMON_DEATH));
 }
 
 void	check_if_enemy(t_game *g, int x, int y)
@@ -658,7 +659,10 @@ void	draw_weapon(t_game *g)
 
 void	put_tips(t_game *g)
 {
-	if (g->tips.open_door)
+	if (g->tips.game_over)
+		mlx_string_put(g->mlx, g->win.ref, WIN_WIDTH / 2 - ft_strlen(GAME_OVER) * 3,
+			WIN_HEIGHT - 15, 0xFFFFFF, GAME_OVER);
+	else if (g->tips.open_door)
 		mlx_string_put(g->mlx, g->win.ref, WIN_WIDTH / 2 - ft_strlen(DOOR_TIP) * 3,
 			WIN_HEIGHT - 15, 0xFFFFFF, DOOR_TIP);
 }
@@ -683,11 +687,28 @@ void	put_health(t_game *g)
 		mlx_put_image_to_window(g->mlx, g->win.ref, g->textures.health_bar[0].ref, 5, 1);
 }
 
+void	show_game_over_tip(t_game *g)
+{
+	static int	frames = 0;
+
+	if (frames > 10)
+	{
+		g->tips.game_over = !g->tips.game_over;
+		frames = 0;
+	}
+	frames++;
+}
+
 void	display_enemy_splash(t_game *g);
 void	display_medkit_splash(t_game *g);
 void	put_upper_layer(t_game *g)
 {
-	if (g->player.taking_damage)
+	if (g->game_over)
+	{
+		show_game_over_tip(g);
+		mlx_put_image_to_window(g->mlx, g->win.ref, g->textures.game_over.ref, 0, 0);
+	}
+	else if (g->player.taking_damage)
 	{
 		display_enemy_splash(g);
 		mlx_put_image_to_window(g->mlx, g->win.ref, g->textures.splash[RED_SPLASH].ref, 0, 0);
