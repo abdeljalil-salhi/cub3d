@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 08:43:52 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 01:35:16 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 06:50:46 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	check_for_doors(t_game *g, int z)
 				g->tips.open_door = false;
 				g->objects[z].animating = false;
 				g->objects[z].state = DOOR_OPENED;
-				g->map.arr[g->objects[z].y][g->objects[z].x] = DOOR_OPENED;
+				g->map.arr[(int)g->objects[z].pos.y / TILE_SIZE][(int)g->objects[z].pos.x / TILE_SIZE] = DOOR_OPENED;
 			}
 		}
 		else if (distance < 200.0f)
@@ -69,7 +69,7 @@ void	check_for_doors(t_game *g, int z)
 			{
 				g->objects[z].animating = false;
 				g->objects[z].state = DOOR_CLOSED;
-				g->map.arr[g->objects[z].y][g->objects[z].x] = DOOR_CLOSED;
+				g->map.arr[(int)g->objects[z].pos.y / TILE_SIZE][(int)g->objects[z].pos.x / TILE_SIZE] = DOOR_CLOSED;
 			}
 		}
 		else if (distance > 200.0f && g->objects[z].frame == g->textures.object_n_of_frames[OBJECT_DOOR] - 1)

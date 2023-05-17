@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 01:36:39 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 07:04:24 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,13 +146,14 @@ int	player_movement(t_game *g)
 		dy += -speed_cos;
 	}
 	check_wall_collision(g, dx, dy);
-	if (g->player.rotation_direction == 1)
+	if (g->player.rotation_direction == 1 && !g->paused)
 		// g->player.angle += g->player.rot_speed * g->delta_time;
 		g->player.angle += g->mouse.angle * g->delta_time;
-	if (g->player.rotation_direction == -1)
+	if (g->player.rotation_direction == -1 && !g->paused)
 		// g->player.angle -= g->player.rot_speed * g->delta_time;
 		g->player.angle -= g->mouse.angle * g->delta_time;
-	g->player.angle = fmod(g->player.angle, TAU);
+	if (!g->paused)
+		g->player.angle = fmod(g->player.angle, TAU);
 	return (RETURN_SUCCESS);
 }
 
@@ -233,18 +234,41 @@ void	draw_ray_rect(t_game *g, t_coords start, int width, int height, int color)
 
 t_image	get_texture(t_game *g, int ind)
 {
-	if (g->rays[ind].content_hit == 1)
-		return (g->textures.wall_1);
-	else if (g->rays[ind].content_hit == 2)
-		return (g->textures.wall_2);
-	else if (g->rays[ind].content_hit == 3)
-		return (g->textures.wall_3);
-	else if (g->rays[ind].content_hit == 4)
-		return (g->textures.wall_4);
-	else if (g->rays[ind].content_hit == 5)
-		return (g->textures.wall_5);
-	else
-		return (g->textures.wall_1);
+	if (g->rays[ind].content_hit >= 1 && g->rays[ind].content_hit <= 5)
+		return (g->textures.walls[g->rays[ind].content_hit - 1]);
+	return (g->textures.walls[0]);
+}
+
+bool	is_enemy(int type)
+{
+	return (type >= OBJECT_SOLDIER_WALK && type <= OBJECT_SOLDIER_DEATH);
+}
+
+void	check_if_enemy(t_game *g, int x, int y)
+{
+	int	i;
+
+	i = -1;
+	while (++i < g->objects_count)
+	{
+		if (is_enemy(g->objects[i].type))
+		{
+			if ((int)(g->objects[i].pos.x / TILE_SIZE) == x && (int)(g->objects[i].pos.y / TILE_SIZE) == y
+				&& g->player.shooting && g->player.damaging
+				&& hypot(g->objects[i].pos.x - g->player.pos.x, g->objects[i].pos.y - g->player.pos.y) <= g->textures.weapon.range[g->textures.weapon.type])
+			{
+				g->player.damaging = false;
+				g->objects[i].state = ENEMY_DAMAGED;
+				g->objects[i].health -= g->textures.weapon.damage[g->textures.weapon.type];
+				if (g->objects[i].health <= 0)
+				{
+					g->objects[i].health = 0;
+					g->objects[i].state = ENEMY_DEATH;
+					g->player.score += g->objects[i].bounty;
+				}
+			}
+		}
+	}
 }
 
 // PYTHONIC WAY
@@ -300,11 +324,12 @@ void	raycast(t_game *g)
 			horz_tile.y = (int)(horz_intersection.y / TILE_SIZE);
 			if (abs((int)(horz_tile.y)) >= g->map.height || abs((int)(horz_tile.x)) >= g->map.width)
 				break ;
+			if (it.i == (int) NUM_RAYS / 2)
+				check_if_enemy(g, abs((int)(horz_tile.x)), abs((int)(horz_tile.y)));
 			if (check_if_wall(g->map.arr[abs((int)(horz_tile.y))][abs((int)(horz_tile.x))]))
 			{
 				horz_wall_content = g->map.arr[abs((int)(horz_tile.y))][abs((int)(horz_tile.x))];
-				if (horz_wall_content != DOOR_OPENED)
-					break ;
+				break ;
 			}
 			horz_intersection.x += distance.x;
 			horz_intersection.y += distance.y;
@@ -327,11 +352,12 @@ void	raycast(t_game *g)
 			vert_tile.y = (int)(vert_intersection.y / TILE_SIZE);
 			if (abs((int)(vert_tile.y)) >= g->map.height || abs((int)(vert_tile.x)) >= g->map.width)
 				break ;
+			if (it.i == (int) NUM_RAYS / 2)
+				check_if_enemy(g, abs((int)(vert_tile.x)), abs((int)(vert_tile.y)));
 			if (check_if_wall(g->map.arr[abs((int)(vert_tile.y))][abs((int)(vert_tile.x))]))
 			{
 				vert_wall_content = g->map.arr[abs((int)(vert_tile.y))][abs((int)(vert_tile.x))];
-				if (vert_wall_content != DOOR_OPENED)
-					break ;
+				break ;
 			}
 			vert_intersection.x += distance.x;
 			vert_intersection.y += distance.y;
@@ -599,6 +625,7 @@ void	draw_weapon(t_game *g)
 	{
 		if (g->textures.weapon.frame == 0 && !g->textures.weapon.animating)
 		{
+			g->player.damaging = true;
 			g->textures.weapon.animating = true;
 			g->textures.weapon.last_time = current_time_ms();
 		}
@@ -611,6 +638,7 @@ void	draw_weapon(t_game *g)
 		{
 			g->textures.weapon.animating = false;
 			g->player.shooting = false;
+			g->player.damaging = false;
 			g->textures.weapon.frame = 0;
 		}
 	}
@@ -647,11 +675,15 @@ void	put_health(t_game *g)
 		mlx_put_image_to_window(g->mlx, g->win.ref, g->textures.health_bar[0].ref, 5, 1);
 }
 
+void	display_enemy_splash(t_game *g);
 void	display_medkit_splash(t_game *g);
 void	put_upper_layer(t_game *g)
 {
 	if (g->player.taking_damage)
+	{
+		display_enemy_splash(g);
 		mlx_put_image_to_window(g->mlx, g->win.ref, g->textures.splash[RED_SPLASH].ref, 0, 0);
+	}
 	else if (g->player.taking_medkit)
 	{
 		display_medkit_splash(g);
@@ -685,19 +717,22 @@ int	cub_render(t_game *g)
 		mlx_mouse_hide();
 		if (x != g->mouse.x)
 		{
-			step_x = x - g->mouse.x;
-			g->mouse.angle = atan2(abs(step_x), WIN_WIDTH) * 180 / M_PI;
-			if (step_x < 0)
-				g->player.rotation_direction = -1;
-			else if (step_x >= 0)
-				g->player.rotation_direction = 1;
-			g->mouse.x = x;
-			if (g->mouse.x > WIN_WIDTH || g->mouse.x < 0)
+			if (!g->paused)
+			{
+				step_x = x - g->mouse.x;
+				g->mouse.angle = atan2(abs(step_x), WIN_WIDTH) * 180 / M_PI;
+				if (step_x < 0)
+					g->player.rotation_direction = -1;
+				else if (step_x >= 0)
+					g->player.rotation_direction = 1;
+				g->mouse.x = x;
+			}
+			if ((g->mouse.x > WIN_WIDTH || g->mouse.x < 0) || g->paused)
 			{
 				g->mouse.x = WIN_WIDTH / 2;
 				mlx_mouse_move(g->win.ref, WIN_WIDTH / 2, y);
 			}
-			if (y > WIN_HEIGHT || y < 0)
+			if ((y > WIN_HEIGHT || y < 0) || g->paused)
 				mlx_mouse_move(g->win.ref, x, WIN_HEIGHT / 2);
 		}
 		else

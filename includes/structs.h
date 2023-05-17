@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 01:21:47 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 06:58:27 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # include <stdbool.h>
 # include <pthread.h>
 
-# define N_OF_OBJECTS 6
-# define OBJECTS_MAX_FRAME 4
+# define N_OF_OBJECTS 10
+# define OBJECTS_MAX_FRAME 9
 
 # define N_OF_WEAPONS 1
 # define WEAPONS_MAX_FRAME 6
@@ -134,8 +134,10 @@ typedef struct s_player
 	int			walk_direction;
 	int			rotation_direction;
 	int			health;
+	int			score;
 	bool		opening_door;
 	bool		shooting;
+	bool		damaging;
 	bool		taking_damage;
 	bool		taking_medkit;
 }	t_player;
@@ -161,17 +163,15 @@ typedef struct s_weapon
 	clock_t		last_time;
 	int			animating;
 	t_coords	pos;
+	int			damage[N_OF_WEAPONS];
+	float		range[N_OF_WEAPONS];
 }	t_weapon;
 
 typedef struct s_texture
 {
 	t_image		sides[4];
 	t_image		health_bar[6];
-	t_image		wall_1;
-	t_image		wall_2;
-	t_image		wall_3;
-	t_image		wall_4;
-	t_image		wall_5;
+	t_image		walls[5];
 	t_image		floor;
 	t_image		ceil;
 	t_image		splash[2];
@@ -201,8 +201,8 @@ typedef struct s_mouse
 
 typedef struct s_object
 {
-	int			x;
-	int			y;
+	int			health;
+	int			bounty;
 	int			type;
 	int			state;
 	t_coords	pos;

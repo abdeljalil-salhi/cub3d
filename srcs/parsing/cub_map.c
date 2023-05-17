@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 21:28:45 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/16 09:21:18 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 06:51:40 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ static void	cub_map_parse_helper_setter(t_game *g,
 
 bool	is_object(char c)
 {
-	return (c == 'B' || c == 'L' || c == 'P' || c == 'G' || c == 'M' || c == 'D');
+	return (c == 'B' || c == 'L' || c == 'P' || c == 'G'
+		|| c == 'M' || c == 'D' || c == 'V');
 }
 
 void	cub_parse_object(t_game *g, char c, int i, int j)
@@ -88,6 +89,8 @@ void	cub_parse_object(t_game *g, char c, int i, int j)
 	static int	count = 0;
 
 	g->map.arr[i][j] = 0;
+	g->objects[count].state = 0;
+	g->objects[count].health = 1;
 	if (c == 'B')
 		g->objects[count].type = OBJECT_BARREL;
 	else if (c == 'P')
@@ -104,8 +107,11 @@ void	cub_parse_object(t_game *g, char c, int i, int j)
 		g->objects[count].type = OBJECT_DOOR;
 		g->objects[count].state = DOOR_CLOSED;
 	}
-	g->objects[count].x = j;
-	g->objects[count].y = i;
+	else if (c == 'V')
+	{
+		g->objects[count].type = OBJECT_SOLDIER_WALK;
+		g->objects[count].health = 50;
+	}
 	g->objects[count].pos.x = j * TILE_SIZE + TILE_SIZE / 2;
 	g->objects[count].pos.y = i * TILE_SIZE + TILE_SIZE / 2;
 	g->objects[count].frame = 0;

@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 01:15:37 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 04:53:50 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,10 +145,14 @@ enum
 
 enum
 {
-	DOOR_TOGGLING = 96,
+	DOOR_TOGGLING = 95,
 	DOOR_OPENED,
 	DOOR_CLOSED,
 	PLAYER,
+	ENEMY_WALK,
+	ENEMY_DAMAGED,
+	ENEMY_ATTACK,
+	ENEMY_DEATH,
 };
 
 enum
@@ -164,6 +168,10 @@ enum
 	OBJECT_GREEN_LIGHT,
 	OBJECT_MEDKIT,
 	OBJECT_DOOR,
+	OBJECT_SOLDIER_WALK,
+	OBJECT_SOLDIER_DAMAGED,
+	OBJECT_SOLDIER_ATTACK,
+	OBJECT_SOLDIER_DEATH,
 };
 
 enum

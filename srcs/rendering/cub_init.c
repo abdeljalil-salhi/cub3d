@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 00:20:08 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 01:22:58 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 06:45:18 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,41 +68,18 @@ int	cub_init_textures(t_game *g)
 			return (cub_errors_setter(g, "Failed to get data addr of health_bar xpm."));
 	}
 
-	g->textures.wall_1.ref = mlx_xpm_file_to_image(g->mlx, "assets/textures/1.xpm", &it.i, &it.j);
-	if (!g->textures.wall_1.ref)
-		return (cub_errors_setter(g, "Failed to get data addr of wall_1 xpm."));
-	g->textures.wall_1.addr = mlx_get_data_addr(g->textures.wall_1.ref,
-			&g->textures.wall_1.bpp, &g->textures.wall_1.line_length, &g->textures.wall_1.endian);
-	if (!g->textures.wall_1.addr)
-		return (cub_errors_setter(g, "Failed to get data addr of wall_1 xpm."));
-	g->textures.wall_2.ref = mlx_xpm_file_to_image(g->mlx, "assets/textures/2.xpm", &it.i, &it.j);
-	if (!g->textures.wall_2.ref)
-		return (cub_errors_setter(g, "Failed to get data addr of wall_2 xpm."));
-	g->textures.wall_2.addr = mlx_get_data_addr(g->textures.wall_2.ref,
-			&g->textures.wall_2.bpp, &g->textures.wall_2.line_length, &g->textures.wall_2.endian);
-	if (!g->textures.wall_2.addr)
-		return (cub_errors_setter(g, "Failed to get data addr of wall_2 xpm."));
-	g->textures.wall_3.ref = mlx_xpm_file_to_image(g->mlx, "assets/textures/3.xpm", &it.i, &it.j);
-	if (!g->textures.wall_3.ref)
-		return (cub_errors_setter(g, "Failed to get data addr of wall_3 xpm."));
-	g->textures.wall_3.addr = mlx_get_data_addr(g->textures.wall_3.ref,
-			&g->textures.wall_3.bpp, &g->textures.wall_3.line_length, &g->textures.wall_3.endian);
-	if (!g->textures.wall_3.addr)
-		return (cub_errors_setter(g, "Failed to get data addr of wall_3 xpm."));
-	g->textures.wall_4.ref = mlx_xpm_file_to_image(g->mlx, "assets/textures/4.xpm", &it.i, &it.j);
-	if (!g->textures.wall_4.ref)
-		return (cub_errors_setter(g, "Failed to get data addr of wall_4 xpm."));
-	g->textures.wall_4.addr = mlx_get_data_addr(g->textures.wall_4.ref,
-			&g->textures.wall_4.bpp, &g->textures.wall_3.line_length, &g->textures.wall_4.endian);
-	if (!g->textures.wall_4.addr)
-		return (cub_errors_setter(g, "Failed to get data addr of wall_4 xpm."));
-	g->textures.wall_5.ref = mlx_xpm_file_to_image(g->mlx, "assets/textures/5.xpm", &it.i, &it.j);
-	if (!g->textures.wall_5.ref)
-		return (cub_errors_setter(g, "Failed to get data addr of wall_5 xpm."));
-	g->textures.wall_5.addr = mlx_get_data_addr(g->textures.wall_5.ref,
-			&g->textures.wall_5.bpp, &g->textures.wall_5.line_length, &g->textures.wall_5.endian);
-	if (!g->textures.wall_5.addr)
-		return (cub_errors_setter(g, "Failed to get data addr of wall_5 xpm."));
+	i = -1;
+	char *path_walls[5] = {"assets/textures/1.xpm", "assets/textures/2.xpm", "assets/textures/3.xpm", "assets/textures/4.xpm", "assets/textures/5.xpm"};
+	while (++i < 5)
+	{
+		g->textures.walls[i].ref = mlx_xpm_file_to_image(g->mlx, path_walls[i], &it.i, &it.j);
+		if (!g->textures.walls[i].ref)
+			return (cub_errors_setter(g, "Failed to get data addr of walls xpm."));
+		g->textures.walls[i].addr = mlx_get_data_addr(g->textures.walls[i].ref,
+				&g->textures.walls[i].bpp, &g->textures.walls[i].line_length, &g->textures.walls[i].endian);
+		if (!g->textures.walls[i].addr)
+			return (cub_errors_setter(g, "Failed to get data addr of walls xpm."));
+	}
 
 	g->textures.ceil.ref = mlx_xpm_file_to_image(g->mlx, "assets/textures/1.xpm", &it.i, &it.j);
 	if (!g->textures.ceil.ref)
@@ -178,6 +155,38 @@ int	cub_init_objects(t_game *g)
 	g->textures.object_n_of_frames[OBJECT_MEDKIT] = 1;
 	g->textures.object_frame_rate[OBJECT_MEDKIT] = 0;
 	g->textures.object_scale[OBJECT_MEDKIT] = 1;
+
+	g->textures.object_path[OBJECT_SOLDIER_WALK][0] = "assets/sprites/enemy/soldier/walk/0.xpm";
+	g->textures.object_path[OBJECT_SOLDIER_WALK][1] = "assets/sprites/enemy/soldier/walk/1.xpm";
+	g->textures.object_path[OBJECT_SOLDIER_WALK][2] = "assets/sprites/enemy/soldier/walk/2.xpm";
+	g->textures.object_path[OBJECT_SOLDIER_WALK][3] = "assets/sprites/enemy/soldier/walk/3.xpm";
+	g->textures.object_n_of_frames[OBJECT_SOLDIER_WALK] = 4;
+	g->textures.object_frame_rate[OBJECT_SOLDIER_WALK] = 200;
+	g->textures.object_scale[OBJECT_SOLDIER_WALK] = 0.8;
+
+	g->textures.object_path[OBJECT_SOLDIER_DAMAGED][0] = "assets/sprites/enemy/soldier/damaged/0.xpm";
+	g->textures.object_n_of_frames[OBJECT_SOLDIER_DAMAGED] = 1;
+	g->textures.object_frame_rate[OBJECT_SOLDIER_DAMAGED] = 0;
+	g->textures.object_scale[OBJECT_SOLDIER_DAMAGED] = 0.8;
+
+	g->textures.object_path[OBJECT_SOLDIER_ATTACK][0] = "assets/sprites/enemy/soldier/attack/0.xpm";
+	g->textures.object_path[OBJECT_SOLDIER_ATTACK][1] = "assets/sprites/enemy/soldier/attack/1.xpm";
+	g->textures.object_n_of_frames[OBJECT_SOLDIER_ATTACK] = 2;
+	g->textures.object_frame_rate[OBJECT_SOLDIER_ATTACK] = 200;
+	g->textures.object_scale[OBJECT_SOLDIER_ATTACK] = 0.8;
+
+	g->textures.object_path[OBJECT_SOLDIER_DEATH][0] = "assets/sprites/enemy/soldier/death/0.xpm";
+	g->textures.object_path[OBJECT_SOLDIER_DEATH][1] = "assets/sprites/enemy/soldier/death/1.xpm";
+	g->textures.object_path[OBJECT_SOLDIER_DEATH][2] = "assets/sprites/enemy/soldier/death/2.xpm";
+	g->textures.object_path[OBJECT_SOLDIER_DEATH][3] = "assets/sprites/enemy/soldier/death/3.xpm";
+	g->textures.object_path[OBJECT_SOLDIER_DEATH][4] = "assets/sprites/enemy/soldier/death/4.xpm";
+	g->textures.object_path[OBJECT_SOLDIER_DEATH][5] = "assets/sprites/enemy/soldier/death/5.xpm";
+	g->textures.object_path[OBJECT_SOLDIER_DEATH][6] = "assets/sprites/enemy/soldier/death/6.xpm";
+	g->textures.object_path[OBJECT_SOLDIER_DEATH][7] = "assets/sprites/enemy/soldier/death/7.xpm";
+	g->textures.object_path[OBJECT_SOLDIER_DEATH][8] = "assets/sprites/enemy/soldier/death/8.xpm";
+	g->textures.object_n_of_frames[OBJECT_SOLDIER_DEATH] = 9;
+	g->textures.object_frame_rate[OBJECT_SOLDIER_DEATH] = 50;
+	g->textures.object_scale[OBJECT_SOLDIER_DEATH] = 0.8;
 
 	it.i = -1;
 	while (++it.i < N_OF_OBJECTS)

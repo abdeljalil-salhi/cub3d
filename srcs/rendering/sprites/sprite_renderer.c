@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 18:29:47 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 00:53:49 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 06:48:16 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ void	sort_objects(t_game *g)
 				temp.type = g->objects[it.j].type;
 				temp.last_time = g->objects[it.j].last_time;
 				temp.display = g->objects[it.j].display;
-				temp.x = g->objects[it.j].x;
-				temp.y = g->objects[it.j].y;
+				temp.health = g->objects[it.j].health;
 				temp.state = g->objects[it.j].state;
 
 				g->objects[it.j].dist = g->objects[it.i].dist;
@@ -54,8 +53,7 @@ void	sort_objects(t_game *g)
 				g->objects[it.j].type = g->objects[it.i].type;
 				g->objects[it.j].last_time = g->objects[it.i].last_time;
 				g->objects[it.j].display = g->objects[it.i].display;
-				g->objects[it.j].x = g->objects[it.i].x;
-				g->objects[it.j].y = g->objects[it.i].y;
+				g->objects[it.j].health = g->objects[it.i].health;
 				g->objects[it.j].state = g->objects[it.i].state;
 
 				g->objects[it.i].dist = temp.dist;
@@ -65,8 +63,7 @@ void	sort_objects(t_game *g)
 				g->objects[it.i].type = temp.type;
 				g->objects[it.i].last_time = temp.last_time;
 				g->objects[it.i].display = temp.display;
-				g->objects[it.i].x = temp.x;
-				g->objects[it.i].y = temp.y;
+				g->objects[it.i].health = temp.health;
 				g->objects[it.i].state = temp.state;
 			}
 			it.j++;
@@ -77,6 +74,7 @@ void	sort_objects(t_game *g)
 
 bool	check_for_medkits(t_game *g, int z);
 void	check_for_doors(t_game *g, int z);
+void	check_for_enemies(t_game *g, int z);
 int	cub_render_sprite(t_game *g)
 {
 	float			angle_sprite_player;
@@ -100,8 +98,11 @@ int	cub_render_sprite(t_game *g)
 			continue ;
 		if (g->objects[z].type == OBJECT_DOOR)
 			check_for_doors(g, z);
+		if (g->objects[z].type == OBJECT_SOLDIER_WALK || g->objects[z].type == OBJECT_SOLDIER_DAMAGED
+			|| g->objects[z].type == OBJECT_SOLDIER_ATTACK || g->objects[z].type == OBJECT_SOLDIER_DEATH)
+			check_for_enemies(g, z);
 
-		if (g->objects[z].type != OBJECT_DOOR)
+		if (g->objects[z].type != OBJECT_DOOR && !(g->objects[z].type == OBJECT_SOLDIER_DEATH && g->objects[z].frame == 8))
 		{
 			if (g->textures.object_n_of_frames[g->objects[z].type] > 1
 				&& g->objects[z].frame == 0 && !g->objects[z].animating)
@@ -110,12 +111,13 @@ int	cub_render_sprite(t_game *g)
 				g->objects[z].last_time = current_time_ms();
 			}
 			if (current_time_ms() - g->objects[z].last_time
-				> g->textures.object_frame_rate[g->objects[z].type])
+				> g->textures.object_frame_rate[g->objects[z].type] && g->objects[z].animating)
 			{
 				g->objects[z].frame++;
 				g->objects[z].last_time = current_time_ms();
 			}
-			if (g->objects[z].frame == g->textures.object_n_of_frames[g->objects[z].type])
+			if (g->objects[z].frame == g->textures.object_n_of_frames[g->objects[z].type]
+				&& g->objects[z].animating)
 				g->objects[z].frame = 0;
 		}
 

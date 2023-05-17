@@ -15,6 +15,8 @@ int	cub_init_weapon(t_game *g)
 	g->textures.weapon.frame = 0;
 	g->textures.weapon.n_of_frames[WEAPON_SHOTGUN] = WEAPON_SHOTGUN_FRAMES;
 	g->textures.weapon.frame_rate[WEAPON_SHOTGUN] = 80;
+	g->textures.weapon.damage[WEAPON_SHOTGUN] = 30;
+	g->textures.weapon.range[WEAPON_SHOTGUN] = 300.0f;
 	i = -1;
 	while (++i < WEAPON_SHOTGUN_FRAMES)
 	{

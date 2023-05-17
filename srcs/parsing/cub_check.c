@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 17:19:06 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/31 23:43:59 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 04:52:42 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	cub_check_occurences(t_game *g)
 	occur = 0;
 	i = -1;
 	while (++i < g->map.height)
-		occur += cub_count_int_occurences(g->map.arr[i], g->map.width, 99);
+		occur += cub_count_int_occurences(g->map.arr[i], g->map.width, PLAYER);
 	if (!occur)
 		return (cub_errors_setter(g, MAP_NO_PLAYERS));
 	else if (occur > 1)
