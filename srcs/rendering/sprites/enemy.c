@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 03:20:03 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 22:01:01 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/18 00:08:01 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ bool	is_enemy_dead(int type)
 }
 
 bool	has_wall_at(t_game *g, float x, float y);
+bool	has_door2_at(t_game *g, float x, float y);
 void    enemy_movement(t_game *g, int z)
 {
     t_coords	player_dir;
@@ -57,9 +58,11 @@ void    enemy_movement(t_game *g, int z)
     player_dir.x /= normalize_magn;
     player_dir.y /= normalize_magn;
 
-	if (!has_wall_at(g, g->objects[z].pos.x + g->objects[z].infos[ENEMY_SPEED] * player_dir.x * g->delta_time, g->objects[z].pos.y))
+	if (!has_wall_at(g, g->objects[z].pos.x + g->objects[z].infos[ENEMY_SPEED] * player_dir.x * g->delta_time, g->objects[z].pos.y)
+		&& !has_door2_at(g, g->objects[z].pos.x + g->objects[z].infos[ENEMY_SPEED] * player_dir.x * g->delta_time, g->objects[z].pos.y))
 		g->objects[z].pos.x += g->objects[z].infos[ENEMY_SPEED] * player_dir.x * g->delta_time;
-	if (!has_wall_at(g, g->objects[z].pos.x , g->objects[z].pos.y + g->objects[z].infos[ENEMY_SPEED] * player_dir.y * g->delta_time))
+	if (!has_wall_at(g, g->objects[z].pos.x , g->objects[z].pos.y + g->objects[z].infos[ENEMY_SPEED] * player_dir.y * g->delta_time)
+		&& !has_door2_at(g, g->objects[z].pos.x, g->objects[z].pos.y + g->objects[z].infos[ENEMY_SPEED] * player_dir.y * g->delta_time))
 		g->objects[z].pos.y += g->objects[z].infos[ENEMY_SPEED] * player_dir.y * g->delta_time;
 }
 
@@ -142,8 +145,8 @@ void	check_for_enemies(t_game *g, int z)
 				g->objects[z].state = ENEMY_WALK;
 				g->objects[z].frame = 0;
 			}
-			if (distance > (float) g->objects[z].infos[ENEMY_RANGE])
-				enemy_movement(g, z);
 		}
+		if (distance > (float) g->objects[z].infos[ENEMY_RANGE])
+			enemy_movement(g, z);
 	}
 }

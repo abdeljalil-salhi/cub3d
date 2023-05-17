@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 21:28:45 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 22:00:34 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 22:59:24 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ static void	cub_map_parse_helper_setter(t_game *g,
 bool	is_object(char c)
 {
 	return (c == 'B' || c == 'L' || c == 'P' || c == 'G'
-		|| c == 'M' || c == 'D' || c == 'V' || c == 'C');
+		|| c == 'M' || c == 'D' || c == 'V' || c == 'C'
+		|| c == 'H');
 }
 
 void	cub_parse_object(t_game *g, char c, int i, int j)
@@ -127,6 +128,8 @@ void	cub_parse_object(t_game *g, char c, int i, int j)
 		g->objects[count].infos[ENEMY_RANGE] = 500;
 		g->objects[count].infos[ENEMY_SPEED] = 70;
 	}
+	else if (c == 'H')
+		g->objects[count].type = OBJECT_WEAPON_SHOTGUN;
 	g->objects[count].pos.x = j * TILE_SIZE + TILE_SIZE / 2;
 	g->objects[count].pos.y = i * TILE_SIZE + TILE_SIZE / 2;
 	g->objects[count].frame = 0;

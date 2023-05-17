@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 00:20:08 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 13:50:30 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 23:02:29 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,6 +229,16 @@ int	cub_init_objects(t_game *g)
 	g->textures.object_n_of_frames[OBJECT_CYBERDEMON_DEATH] = 9;
 	g->textures.object_frame_rate[OBJECT_CYBERDEMON_DEATH] = 50;
 	g->textures.object_scale[OBJECT_CYBERDEMON_DEATH] = 1;
+
+	g->textures.object_path[OBJECT_WEAPON_SHOTGUN][0] = "assets/sprites/drop_weapon/shotgun/0.xpm";
+	g->textures.object_path[OBJECT_WEAPON_SHOTGUN][1] = "assets/sprites/drop_weapon/shotgun/1.xpm";
+	g->textures.object_path[OBJECT_WEAPON_SHOTGUN][2] = "assets/sprites/drop_weapon/shotgun/2.xpm";
+	g->textures.object_path[OBJECT_WEAPON_SHOTGUN][3] = "assets/sprites/drop_weapon/shotgun/3.xpm";
+	g->textures.object_path[OBJECT_WEAPON_SHOTGUN][4] = "assets/sprites/drop_weapon/shotgun/4.xpm";
+	g->textures.object_path[OBJECT_WEAPON_SHOTGUN][5] = "assets/sprites/drop_weapon/shotgun/5.xpm";
+	g->textures.object_n_of_frames[OBJECT_WEAPON_SHOTGUN] = 6;
+	g->textures.object_frame_rate[OBJECT_WEAPON_SHOTGUN] = 200;
+	g->textures.object_scale[OBJECT_WEAPON_SHOTGUN] = 0.8;
 
 	it.i = -1;
 	while (++it.i < N_OF_OBJECTS)

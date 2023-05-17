@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 21:57:30 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/18 00:17:51 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,15 @@
 # include <stdbool.h>
 # include <pthread.h>
 
-# define N_OF_SOUNDS 8
+# define N_OF_SOUNDS 11
 
-# define N_OF_OBJECTS 14
+# define N_OF_OBJECTS 15
 # define OBJECTS_MAX_FRAME 9
 
-# define N_OF_WEAPONS 1
+# define N_OF_WEAPONS 2
 # define WEAPONS_MAX_FRAME 6
 
+# define WEAPON_KNIFE_FRAMES 4
 # define WEAPON_SHOTGUN_FRAMES 6
 
 /* --------------------------- UTILS --------------------------- */
@@ -143,6 +144,7 @@ typedef struct s_player
 	bool		damaging;
 	bool		taking_damage;
 	bool		taking_medkit;
+	bool		switching_weapon;
 }	t_player;
 
 typedef struct s_image
@@ -169,6 +171,7 @@ typedef struct s_weapon
 	int			damage[N_OF_WEAPONS];
 	float		range[N_OF_WEAPONS];
 	int			sound[N_OF_WEAPONS];
+	bool		collected[N_OF_WEAPONS];
 }	t_weapon;
 
 typedef struct s_texture

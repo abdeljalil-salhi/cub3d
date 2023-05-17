@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 22:03:16 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/18 00:03:58 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -624,7 +624,7 @@ void	update(t_game *g)
 void	play_sound_effect(t_game *g, int sound);
 void	draw_weapon(t_game *g)
 {
-	
+	static int	switching_frames = 0;
 	int	type;
 	int	frame;
 
@@ -649,6 +649,15 @@ void	draw_weapon(t_game *g)
 			g->player.shooting = false;
 			g->player.damaging = false;
 			g->textures.weapon.frame = 0;
+		}
+	}
+	if (g->player.switching_weapon)
+	{
+		switching_frames++;
+		if (switching_frames > 5)
+		{
+			switching_frames = 0;
+			g->player.switching_weapon = false;
 		}
 	}
 	frame = g->textures.weapon.frame;

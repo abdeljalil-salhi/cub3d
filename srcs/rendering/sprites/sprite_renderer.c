@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 18:29:47 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 22:01:24 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 23:04:26 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void	sort_objects(t_game *g)
 bool	is_enemy(int type);
 bool	is_enemy_dead(int type);
 bool	check_for_medkits(t_game *g, int z);
+bool	check_for_weapon_drops(t_game *g, int z);
 void	check_for_doors(t_game *g, int z);
 void	check_for_enemies(t_game *g, int z);
 int	cub_render_sprite(t_game *g)
@@ -116,6 +117,8 @@ int	cub_render_sprite(t_game *g)
 	while (++z < g->objects_count)
 	{
 		if (g->objects[z].type == OBJECT_MEDKIT && !check_for_medkits(g, z))
+			continue ;
+		else if (g->objects[z].type == OBJECT_WEAPON_SHOTGUN && !check_for_weapon_drops(g, z))
 			continue ;
 		if (g->objects[z].type == OBJECT_DOOR)
 			check_for_doors(g, z);

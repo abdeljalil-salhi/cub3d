@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 15:32:28 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 11:46:45 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/18 00:21:19 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,21 @@ int	cub_key_hook(int keycode, t_game *g)
 	return (RETURN_SUCCESS);
 }
 
+void	play_sound_effect(t_game *g, int sound);
+void	switch_weapon(t_game *g, int type)
+{
+	if (type != g->textures.weapon.type && g->textures.weapon.collected[type])
+	{
+		if (type == WEAPON_KNIFE)
+			play_sound_effect(g, SOUND_KNIFE_SWITCH);
+		else if (type == WEAPON_SHOTGUN)
+			play_sound_effect(g, SOUND_SHOTGUN_SWITCH);
+		g->player.switching_weapon = true;
+		g->textures.weapon.type = type;
+		g->textures.weapon.frame = 0;
+	}
+}
+
 int	cub_key_release(int keycode, t_game *g)
 {
 	if (keycode == KEY_W)
@@ -53,6 +68,10 @@ int	cub_key_release(int keycode, t_game *g)
 		g->paused = !g->paused;
 	else if (keycode == KEY_COMMAND)
 		g->mouse.enabled = true;
+	else if (keycode == KEY_1 && !g->paused && !g->player.switching_weapon)
+		switch_weapon(g, WEAPON_KNIFE);
+	else if (keycode == KEY_2 && !g->paused && !g->player.switching_weapon)
+		switch_weapon(g, WEAPON_SHOTGUN);
 	// else if (keycode == ARROW_LEFT)
 	// 	g->player.rotation_direction = 0;
 	// else if (keycode == ARROW_RIGHT)

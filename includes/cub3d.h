@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 21:57:40 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/18 00:18:32 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,9 @@ enum
 	KEY_E = 14,
 	KEY_P = 35,
 	KEY_M = 46,
+	KEY_1 = 18,
+	KEY_2 = 19,
+	KEY_3 = 20,
 	KEY_SPACE = 49,
 	ESC = 53,
 	ARROW_LEFT = 123,
@@ -159,6 +162,7 @@ enum
 
 enum
 {
+	WEAPON_KNIFE,
 	WEAPON_SHOTGUN,
 };
 
@@ -178,6 +182,7 @@ enum
 	OBJECT_CYBERDEMON_DAMAGED,
 	OBJECT_CYBERDEMON_ATTACK,
 	OBJECT_CYBERDEMON_DEATH,
+	OBJECT_WEAPON_SHOTGUN,
 };
 
 enum
@@ -206,6 +211,9 @@ enum
 	SOUND_SHOTGUN,
 	SOUND_DOOR_CLOSE,
 	SOUND_DOOR_OPEN,
+	SOUND_SHOTGUN_SWITCH,
+	SOUND_KNIFE,
+	SOUND_KNIFE_SWITCH,
 };
 
 /* --------------------------- UTILS --------------------------- */

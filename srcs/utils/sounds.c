@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 07:43:28 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 09:18:51 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/18 00:19:22 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@ int	init_sounds(t_game *g)
 	g->sound[SOUND_DOOR_CLOSE].volume = "1";
 	g->sound[SOUND_DOOR_OPEN].path = " assets/sounds/effects/door_open.wav";
 	g->sound[SOUND_DOOR_OPEN].volume = "1";
+	g->sound[SOUND_SHOTGUN_SWITCH].path = " assets/sounds/effects/shotgun_switch.wav";
+	g->sound[SOUND_SHOTGUN_SWITCH].volume = "1";
+	g->sound[SOUND_KNIFE].path = " assets/sounds/effects/knife.wav";
+	g->sound[SOUND_KNIFE].volume = "1";
+	g->sound[SOUND_KNIFE_SWITCH].path = " assets/sounds/effects/knife_switch.wav";
+	g->sound[SOUND_KNIFE_SWITCH].volume = "1";
 	return (RETURN_SUCCESS);
 }
 
