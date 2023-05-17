@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 18:29:47 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 06:48:16 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 07:29:36 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ void	sort_objects(t_game *g)
 				temp.type = g->objects[it.j].type;
 				temp.last_time = g->objects[it.j].last_time;
 				temp.display = g->objects[it.j].display;
-				temp.health = g->objects[it.j].health;
+				temp.infos[ENEMY_HEALTH] = g->objects[it.j].infos[ENEMY_HEALTH];
+				temp.infos[ENEMY_BOUNTY] = g->objects[it.j].infos[ENEMY_BOUNTY];
+				temp.infos[ENEMY_PRECISION] = g->objects[it.j].infos[ENEMY_PRECISION];
+				temp.infos[ENEMY_DAMAGE] = g->objects[it.j].infos[ENEMY_DAMAGE];
 				temp.state = g->objects[it.j].state;
 
 				g->objects[it.j].dist = g->objects[it.i].dist;
@@ -53,7 +56,10 @@ void	sort_objects(t_game *g)
 				g->objects[it.j].type = g->objects[it.i].type;
 				g->objects[it.j].last_time = g->objects[it.i].last_time;
 				g->objects[it.j].display = g->objects[it.i].display;
-				g->objects[it.j].health = g->objects[it.i].health;
+				g->objects[it.j].infos[ENEMY_HEALTH] = g->objects[it.i].infos[ENEMY_HEALTH];
+				g->objects[it.j].infos[ENEMY_BOUNTY] = g->objects[it.i].infos[ENEMY_BOUNTY];
+				g->objects[it.j].infos[ENEMY_PRECISION] = g->objects[it.i].infos[ENEMY_PRECISION];
+				g->objects[it.j].infos[ENEMY_DAMAGE] = g->objects[it.i].infos[ENEMY_DAMAGE];
 				g->objects[it.j].state = g->objects[it.i].state;
 
 				g->objects[it.i].dist = temp.dist;
@@ -63,7 +69,10 @@ void	sort_objects(t_game *g)
 				g->objects[it.i].type = temp.type;
 				g->objects[it.i].last_time = temp.last_time;
 				g->objects[it.i].display = temp.display;
-				g->objects[it.i].health = temp.health;
+				g->objects[it.i].infos[ENEMY_HEALTH] = temp.infos[ENEMY_HEALTH];
+				g->objects[it.i].infos[ENEMY_BOUNTY] = temp.infos[ENEMY_BOUNTY];
+				g->objects[it.i].infos[ENEMY_PRECISION] = temp.infos[ENEMY_PRECISION];
+				g->objects[it.i].infos[ENEMY_DAMAGE] = temp.infos[ENEMY_DAMAGE];
 				g->objects[it.i].state = temp.state;
 			}
 			it.j++;

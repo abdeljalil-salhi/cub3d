@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 03:20:03 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 07:03:54 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 07:27:30 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,31 @@ bool	is_enemy_dead(int type)
 
 void	check_for_enemies(t_game *g, int z)
 {
-	float	distance;
+	float		distance;
+	static int	bullet_frames = 0;
 
 	if (!is_enemy_dead(g->objects[z].type))
 	{
 		distance = hypot(g->player.pos.x - g->objects[z].pos.x, g->player.pos.y - g->objects[z].pos.y);
 		if (g->objects[z].state == ENEMY_DAMAGED && g->player.shooting)
 		{
-			g->objects[z].type = OBJECT_SOLDIER_DAMAGED;
-			g->objects[z].frame = 0;
+			bullet_frames++;
+			if (bullet_frames > 5)
+			{
+				g->objects[z].type = OBJECT_SOLDIER_DAMAGED;
+				g->objects[z].frame = 0;
+				bullet_frames = 0;
+			}
 		}
 		else if (g->objects[z].state == ENEMY_DEATH)
 		{
-			g->objects[z].type = OBJECT_SOLDIER_DEATH;
-			g->objects[z].frame = 0;
+			bullet_frames++;
+			if (bullet_frames > 5)
+			{
+				g->objects[z].type = OBJECT_SOLDIER_DEATH;
+				g->objects[z].frame = 0;
+				bullet_frames = 0;
+			}
 		}
 		else if (!g->player.shooting)
 		{
@@ -53,9 +64,9 @@ void	check_for_enemies(t_game *g, int z)
 				g->objects[z].type = OBJECT_SOLDIER_ATTACK;
 				g->objects[z].state = ENEMY_ATTACK;
 				g->objects[z].frame = 0;
-				if (rand() % 100 < 5)
+				if (rand() % 100 < g->objects[z].infos[ENEMY_PRECISION])
 				{
-					g->player.health -= 10;
+					g->player.health -= g->objects[z].infos[ENEMY_DAMAGE];
 					g->player.taking_damage = true;
 				}
 			}

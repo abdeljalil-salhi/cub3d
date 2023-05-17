@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 07:04:24 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 07:30:18 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,12 +259,12 @@ void	check_if_enemy(t_game *g, int x, int y)
 			{
 				g->player.damaging = false;
 				g->objects[i].state = ENEMY_DAMAGED;
-				g->objects[i].health -= g->textures.weapon.damage[g->textures.weapon.type];
-				if (g->objects[i].health <= 0)
+				g->objects[i].infos[ENEMY_HEALTH] -= g->textures.weapon.damage[g->textures.weapon.type];
+				if (g->objects[i].infos[ENEMY_HEALTH] <= 0)
 				{
-					g->objects[i].health = 0;
+					g->objects[i].infos[ENEMY_HEALTH] = 0;
 					g->objects[i].state = ENEMY_DEATH;
-					g->player.score += g->objects[i].bounty;
+					g->player.score += g->objects[i].infos[ENEMY_BOUNTY];
 				}
 			}
 		}

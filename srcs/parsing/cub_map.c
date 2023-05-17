@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 21:28:45 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 06:51:40 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 07:26:58 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	cub_parse_object(t_game *g, char c, int i, int j)
 
 	g->map.arr[i][j] = 0;
 	g->objects[count].state = 0;
-	g->objects[count].health = 1;
+	g->objects[count].infos[ENEMY_HEALTH] = 1;
 	if (c == 'B')
 		g->objects[count].type = OBJECT_BARREL;
 	else if (c == 'P')
@@ -110,7 +110,10 @@ void	cub_parse_object(t_game *g, char c, int i, int j)
 	else if (c == 'V')
 	{
 		g->objects[count].type = OBJECT_SOLDIER_WALK;
-		g->objects[count].health = 50;
+		g->objects[count].infos[ENEMY_HEALTH] = 50;
+		g->objects[count].infos[ENEMY_BOUNTY] = 100;
+		g->objects[count].infos[ENEMY_PRECISION] = 20;
+		g->objects[count].infos[ENEMY_DAMAGE] = 10;
 	}
 	g->objects[count].pos.x = j * TILE_SIZE + TILE_SIZE / 2;
 	g->objects[count].pos.y = i * TILE_SIZE + TILE_SIZE / 2;

@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 04:53:50 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 07:27:48 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,14 @@ enum
 {
 	RED_SPLASH,
 	GREEN_SPLASH,
+};
+
+enum
+{
+	ENEMY_HEALTH,
+	ENEMY_BOUNTY,
+	ENEMY_PRECISION,
+	ENEMY_DAMAGE,
 };
 
 /* --------------------------- UTILS --------------------------- */
