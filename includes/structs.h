@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 09:08:37 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 09:23:59 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stdbool.h>
 # include <pthread.h>
 
-# define N_OF_SOUNDS 6
+# define N_OF_SOUNDS 8
 
 # define N_OF_OBJECTS 10
 # define OBJECTS_MAX_FRAME 9

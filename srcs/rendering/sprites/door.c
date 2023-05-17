@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 08:43:52 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 06:50:46 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 09:23:28 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	show_message(t_game *g)
 	frames++;
 }
 
+void	play_sound_effect(t_game *g, int sound);
 void	check_for_doors(t_game *g, int z)
 {
 	float	distance;
@@ -51,6 +52,7 @@ void	check_for_doors(t_game *g, int z)
 			show_message(g);
 			if (g->player.opening_door && g->objects[z].frame == 0)
 			{
+				play_sound_effect(g, SOUND_DOOR_OPEN);
 				g->objects[z].animating = true;
 				g->objects[z].last_time = current_time_ms();
 			}
@@ -74,6 +76,7 @@ void	check_for_doors(t_game *g, int z)
 		}
 		else if (distance > 200.0f && g->objects[z].frame == g->textures.object_n_of_frames[OBJECT_DOOR] - 1)
 		{
+			play_sound_effect(g, SOUND_DOOR_CLOSE);
 			g->objects[z].animating = true;
 			g->objects[z].last_time = current_time_ms();
 		}

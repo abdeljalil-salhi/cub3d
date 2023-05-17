@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 08:41:46 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 09:19:00 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,6 +198,8 @@ enum
 	SOUND_NPC_DAMAGED,
 	SOUND_PLAYER_DAMAGED,
 	SOUND_SHOTGUN,
+	SOUND_DOOR_CLOSE,
+	SOUND_DOOR_OPEN,
 };
 
 /* --------------------------- UTILS --------------------------- */
