@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 00:20:08 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 06:45:18 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 08:11:25 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,6 +210,7 @@ int	cub_init_objects(t_game *g)
 	return (RETURN_SUCCESS);
 }
 
+int	init_sounds(t_game *g);
 int	cub_init(t_game *g)
 {
 	int	x, y;
@@ -226,6 +227,8 @@ int	cub_init(t_game *g)
 	if (cub_init_textures(g))
 		return (RETURN_FAILURE);
 	if (cub_init_sprites(g))
+		return (RETURN_FAILURE);
+	if (init_sounds(g))
 		return (RETURN_FAILURE);
 	return (RETURN_SUCCESS);
 }

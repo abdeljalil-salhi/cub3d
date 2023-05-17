@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 07:24:48 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 09:08:37 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <stdbool.h>
 # include <pthread.h>
+
+# define N_OF_SOUNDS 6
 
 # define N_OF_OBJECTS 10
 # define OBJECTS_MAX_FRAME 9
@@ -74,6 +76,7 @@ typedef struct s_alloc
 	bool	weapon;
 	bool	candlebra;
 	bool	buffer;
+	bool	soundtrack;
 }	t_alloc;
 
 typedef struct s_color
@@ -165,6 +168,7 @@ typedef struct s_weapon
 	t_coords	pos;
 	int			damage[N_OF_WEAPONS];
 	float		range[N_OF_WEAPONS];
+	int			sound[N_OF_WEAPONS];
 }	t_weapon;
 
 typedef struct s_texture
@@ -212,6 +216,19 @@ typedef struct s_object
 	bool		display;
 }	t_object;
 
+typedef struct s_sound
+{
+	char	*path;
+	char	*volume;
+}	t_sound;
+
+typedef struct s_pid
+{
+	pid_t	soundtrack;
+	pid_t	soundeffect[10];
+	pid_t	playing_soundeffect[10];
+}	t_pid;
+
 typedef struct s_game
 {
 	void		*mlx;
@@ -234,6 +251,8 @@ typedef struct s_game
 	t_object	*objects;
 	int			objects_count;
 	t_mouse		mouse;
+	t_sound		sound[N_OF_SOUNDS];
+	t_pid		pid;
 	float		*buffer;
 	bool		display_map;
 }	t_game;

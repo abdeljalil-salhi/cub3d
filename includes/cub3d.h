@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 07:27:48 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 08:41:46 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <math.h>
 # include <time.h>
 # include <mlx.h>
+# include <signal.h>
 
 typedef unsigned long		t_ul;
 typedef unsigned long long	t_ull;
@@ -28,6 +29,7 @@ typedef unsigned long long	t_ull;
 # include "errors.h"
 
 # define NAME "cub3D"
+# define TMP "assets/sounds/.tmp"
 
 # define LEAKS 0
 
@@ -188,6 +190,16 @@ enum
 	ENEMY_DAMAGE,
 };
 
+enum
+{
+	SOUND_THEME,
+	SOUND_NPC_ATTACK,
+	SOUND_NPC_DEATH,
+	SOUND_NPC_DAMAGED,
+	SOUND_PLAYER_DAMAGED,
+	SOUND_SHOTGUN,
+};
+
 /* --------------------------- UTILS --------------------------- */
 
 /*
@@ -293,6 +305,6 @@ t_ull	current_time_ms(void);
 
 /* --------------------------- TEXT --------------------------- */
 
-# define DOOR_TIP "Press E to open the door"
+# define DOOR_TIP "Press [E] to open the door"
 
 #endif

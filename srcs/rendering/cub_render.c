@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 07:30:18 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 09:01:11 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -614,6 +614,7 @@ void	update(t_game *g)
 	ticks_last_frame = (float) current_time_ms();
 }
 
+void	play_sound_effect(t_game *g, int sound);
 void	draw_weapon(t_game *g)
 {
 	
@@ -625,6 +626,7 @@ void	draw_weapon(t_game *g)
 	{
 		if (g->textures.weapon.frame == 0 && !g->textures.weapon.animating)
 		{
+			play_sound_effect(g, g->textures.weapon.sound[g->textures.weapon.type]);
 			g->player.damaging = true;
 			g->textures.weapon.animating = true;
 			g->textures.weapon.last_time = current_time_ms();

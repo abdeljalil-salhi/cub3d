@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:40:17 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/16 00:41:11 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 08:11:48 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	cub_free(void *ptr)
 	return (RETURN_DEFAULT);
 }
 
+void	stop_sound_track(t_game *g);
 int	cub_free_memory(t_game *g)
 {
 	if (g->allocated.map)
@@ -49,5 +50,9 @@ int	cub_free_memory(t_game *g)
 	if (LEAKS)
 		system("leaks cub3D");
 	mlx_mouse_show();
+	if (open(TMP, O_CREAT | O_WRONLY | O_TRUNC, 0644) < 0)
+		exit(EXIT_FAILURE);
+	stop_sound_track(g);
+	unlink(TMP);
 	exit(EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 23:58:34 by absalhi           #+#    #+#             */
-/*   Updated: 2023/03/31 23:43:36 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 07:59:26 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # define ERR_MALLOC "Malloc failed"
 # define ERR_GNL "get_next_line failed"
+# define ERR_FORK "Fork failed"
 
 # define CONFIG_NOT_FOUND "UHH... Where is your config file ??"
 

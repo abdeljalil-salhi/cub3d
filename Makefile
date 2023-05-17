@@ -6,7 +6,7 @@
 #    By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/19 21:24:26 by absalhi           #+#    #+#              #
-#    Updated: 2023/05/17 03:20:29 by absalhi          ###   ########.fr        #
+#    Updated: 2023/05/17 09:10:38 by absalhi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ ITALIC		=	'\033[3m'
 _LIBCUB		=	cub_occurences.c cub_line.c cub_file.c cub_time.c
 LIBCUB		=	$(addprefix libcub/, $(_LIBCUB))
 
-_UTILS		=	cub_errors.c cub_free.c cub_keys.c cub_pixel_put.c cub_scale_img.c
+_UTILS		=	cub_errors.c cub_free.c cub_keys.c cub_pixel_put.c cub_scale_img.c sounds.c
 UTILS		=	$(addprefix utils/, $(_UTILS))
 
 _PARSING	=	cub_parser.c cub_file_parser.c cub_file_checker.c		\
@@ -94,6 +94,7 @@ help		:
 				@echo "     - [ "$(NONE)$(GREEN)"P"$(NONE)$(GRAY)" ] Pillar"
 				@echo "     - [ "$(NONE)$(GREEN)"G"$(NONE)$(GRAY)" ] Green fire lamp"
 				@echo "     - [ "$(NONE)$(GREEN)"M"$(NONE)$(GRAY)" ] Medkit"
+				@echo "     - [ "$(NONE)$(GREEN)"V"$(NONE)$(GRAY)" ] Enemy - Soldier"
 
 clean		:
 				@echo $(ITALIC)$(GRAY) "     - Removing object files..." $(NONE)

@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:40:50 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 04:00:36 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 09:01:07 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int	cub_mouse_hook(int code, int x, int y, t_game *g)
 	return (RETURN_SUCCESS);
 }
 
+void	play_sound_track(t_game *g);
 int	main(int argc, char **argv)
 {
 	t_game	g;
@@ -86,6 +87,9 @@ int	main(int argc, char **argv)
 	g.win.ref = mlx_new_window(g.mlx, g.win.width, g.win.height, NAME);
 	if (cub_init(&g))
 		cub_errors_exit(&g, g.error.message);
+	g.allocated.soundtrack = true;
+	play_sound_track(&g);
+	srand((unsigned int) time(NULL));
 	g.start_time = clock();
 	g.mouse.enabled = true;
 	mlx_hook(g.win.ref, ON_DESTROY, 0L, cub_free_memory, &g);

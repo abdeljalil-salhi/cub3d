@@ -6,12 +6,13 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:36:14 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/14 18:28:10 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 08:08:47 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+void	stop_sound_track(t_game *g);
 void	cub_errors_exit(t_game *g, char *err)
 {
 	ft_putstr_fd(ERROR "Error\n" RESET, STDERR_FILENO);
@@ -21,9 +22,13 @@ void	cub_errors_exit(t_game *g, char *err)
 		cub_free_double_int(g->map.arr, (size_t) g->win.height);
 	if (g->allocated.buffer)
 		cub_free(g->buffer);
+	mlx_mouse_show();
 	if (LEAKS)
 		system("leaks cub3D");
-	mlx_mouse_show();
+	if (open(TMP, O_CREAT | O_WRONLY | O_TRUNC, 0644) < 0)
+		exit(EXIT_FAILURE);
+	stop_sound_track(g);
+	unlink(TMP);
 	exit(EXIT_FAILURE);
 }
 
