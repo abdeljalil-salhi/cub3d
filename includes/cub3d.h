@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 13:34:24 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 21:57:40 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,6 +192,8 @@ enum
 	ENEMY_BOUNTY,
 	ENEMY_PRECISION,
 	ENEMY_DAMAGE,
+	ENEMY_RANGE,
+	ENEMY_SPEED,
 };
 
 enum

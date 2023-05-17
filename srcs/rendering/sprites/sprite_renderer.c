@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 18:29:47 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 14:59:57 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 22:01:24 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	sort_objects(t_game *g)
 				temp.infos[ENEMY_BOUNTY] = g->objects[it.j].infos[ENEMY_BOUNTY];
 				temp.infos[ENEMY_PRECISION] = g->objects[it.j].infos[ENEMY_PRECISION];
 				temp.infos[ENEMY_DAMAGE] = g->objects[it.j].infos[ENEMY_DAMAGE];
+				temp.infos[ENEMY_RANGE] = g->objects[it.j].infos[ENEMY_RANGE];
+				temp.infos[ENEMY_SPEED] = g->objects[it.j].infos[ENEMY_SPEED];
 				temp.state = g->objects[it.j].state;
 				temp.visible = g->objects[it.j].visible;
 
@@ -61,6 +63,8 @@ void	sort_objects(t_game *g)
 				g->objects[it.j].infos[ENEMY_BOUNTY] = g->objects[it.i].infos[ENEMY_BOUNTY];
 				g->objects[it.j].infos[ENEMY_PRECISION] = g->objects[it.i].infos[ENEMY_PRECISION];
 				g->objects[it.j].infos[ENEMY_DAMAGE] = g->objects[it.i].infos[ENEMY_DAMAGE];
+				g->objects[it.j].infos[ENEMY_RANGE] = g->objects[it.i].infos[ENEMY_RANGE];
+				g->objects[it.j].infos[ENEMY_SPEED] = g->objects[it.i].infos[ENEMY_SPEED];
 				g->objects[it.j].state = g->objects[it.i].state;
 				g->objects[it.j].visible = g->objects[it.i].visible;
 
@@ -75,6 +79,8 @@ void	sort_objects(t_game *g)
 				g->objects[it.i].infos[ENEMY_BOUNTY] = temp.infos[ENEMY_BOUNTY];
 				g->objects[it.i].infos[ENEMY_PRECISION] = temp.infos[ENEMY_PRECISION];
 				g->objects[it.i].infos[ENEMY_DAMAGE] = temp.infos[ENEMY_DAMAGE];
+				g->objects[it.i].infos[ENEMY_RANGE] = temp.infos[ENEMY_RANGE];
+				g->objects[it.i].infos[ENEMY_SPEED] = temp.infos[ENEMY_SPEED];
 				g->objects[it.i].state = temp.state;
 				g->objects[it.i].visible = temp.visible;
 			}
@@ -102,6 +108,7 @@ int	cub_render_sprite(t_game *g)
 	unsigned int	color;
 	t_coords		diff;
 	int				z;
+	float			ground_level;
 
 	compute_distances(g);
 	sort_objects(g);
@@ -156,9 +163,10 @@ int	cub_render_sprite(t_game *g)
 			sprite_height = (TILE_SIZE / dist) * SCREEN_DIST * g->textures.object_scale[g->objects[z].type];
 			sprite_width = sprite_height;
 
-			sprite_top_y = HALF_WIN_HEIGHT - sprite_height / 2;
+			ground_level = (TILE_SIZE / dist) * SCREEN_DIST * (1 - g->textures.object_scale[g->objects[z].type]);
+			sprite_top_y = HALF_WIN_HEIGHT - sprite_height / 2 + ground_level;
 			if (sprite_top_y < 0) sprite_top_y = 0;
-			sprite_bottom_y = HALF_WIN_HEIGHT + sprite_height / 2;
+			sprite_bottom_y = HALF_WIN_HEIGHT + sprite_height / 2 + ground_level;
 			if (sprite_bottom_y > WIN_HEIGHT) sprite_bottom_y = WIN_HEIGHT;
 
 			sprite_angle = atan2(diff.y, diff.x) - g->player.angle;
@@ -176,7 +184,7 @@ int	cub_render_sprite(t_game *g)
 				{
 					if (i > 0 && i < WIN_WIDTH && j > 0 && j < WIN_HEIGHT)
 					{
-						text_y = (j + sprite_height / 2 - HALF_WIN_HEIGHT) * (TILE_SIZE / sprite_height);
+						text_y = (j - ground_level + sprite_height / 2 - HALF_WIN_HEIGHT) * (TILE_SIZE / sprite_height);
 						color = ((unsigned int *) g->textures.object_image[g->objects[z].type][g->objects[z].frame].addr)[text_y * TILE_SIZE + text_x] & COLOR;
 						if ((color  & 0xFFFF00FF) != 0 && dist < g->buffer[i])
 								cub_pixel_put(g, i * SCALE, j, color);

@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 03:20:03 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 15:08:12 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 22:01:01 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,23 @@ bool	is_enemy_dead(int type)
 	return (type == OBJECT_SOLDIER_DEATH || type == OBJECT_CYBERDEMON_DEATH);
 }
 
-float	get_enemy_range(int type)
+bool	has_wall_at(t_game *g, float x, float y);
+void    enemy_movement(t_game *g, int z)
 {
-	if (type >= OBJECT_SOLDIER_WALK && type <= OBJECT_SOLDIER_DEATH)
-		return (300.0f);
-	else if (type >= OBJECT_CYBERDEMON_WALK && type <= OBJECT_CYBERDEMON_DEATH)
-		return (500.0f);
-	return (0.0f);
+    t_coords	player_dir;
+    float		normalize_magn;
+
+    player_dir.x = g->player.pos.x - g->objects[z].pos.x;
+    player_dir.y = g->player.pos.y - g->objects[z].pos.y;
+
+    normalize_magn = hypot(player_dir.x, player_dir.y);
+    player_dir.x /= normalize_magn;
+    player_dir.y /= normalize_magn;
+
+	if (!has_wall_at(g, g->objects[z].pos.x + g->objects[z].infos[ENEMY_SPEED] * player_dir.x * g->delta_time, g->objects[z].pos.y))
+		g->objects[z].pos.x += g->objects[z].infos[ENEMY_SPEED] * player_dir.x * g->delta_time;
+	if (!has_wall_at(g, g->objects[z].pos.x , g->objects[z].pos.y + g->objects[z].infos[ENEMY_SPEED] * player_dir.y * g->delta_time))
+		g->objects[z].pos.y += g->objects[z].infos[ENEMY_SPEED] * player_dir.y * g->delta_time;
 }
 
 void	play_sound_effect(t_game *g, int sound);
@@ -96,7 +106,7 @@ void	check_for_enemies(t_game *g, int z)
 		}
 		else if (!g->player.shooting)
 		{
-			if (distance < get_enemy_range(g->objects[z].type))
+			if (distance < (float) g->objects[z].infos[ENEMY_RANGE])
 			{
 				if (is_enemy_walking(g->objects[z].type))
 					g->objects[z].type += 2;
@@ -131,8 +141,9 @@ void	check_for_enemies(t_game *g, int z)
 					g->objects[z].type--;
 				g->objects[z].state = ENEMY_WALK;
 				g->objects[z].frame = 0;
-				// enemy movement
 			}
+			if (distance > (float) g->objects[z].infos[ENEMY_RANGE])
+				enemy_movement(g, z);
 		}
 	}
 }

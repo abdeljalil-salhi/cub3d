@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 13:34:22 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 21:57:30 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ typedef struct s_mouse
 
 typedef struct s_object
 {
-	int			infos[4];
+	int			infos[6];
 	int			type;
 	int			state;
 	t_coords	pos;

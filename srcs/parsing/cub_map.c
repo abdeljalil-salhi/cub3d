@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 21:28:45 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 13:34:17 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 22:00:34 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,8 @@ void	cub_parse_object(t_game *g, char c, int i, int j)
 		g->objects[count].infos[ENEMY_BOUNTY] = 100;
 		g->objects[count].infos[ENEMY_PRECISION] = 20;
 		g->objects[count].infos[ENEMY_DAMAGE] = 10;
+		g->objects[count].infos[ENEMY_RANGE] = 200;
+		g->objects[count].infos[ENEMY_SPEED] = 150;
 	}
 	else if (c == 'C')
 	{
@@ -122,6 +124,8 @@ void	cub_parse_object(t_game *g, char c, int i, int j)
 		g->objects[count].infos[ENEMY_BOUNTY] = 500;
 		g->objects[count].infos[ENEMY_PRECISION] = 30;
 		g->objects[count].infos[ENEMY_DAMAGE] = 30;
+		g->objects[count].infos[ENEMY_RANGE] = 500;
+		g->objects[count].infos[ENEMY_SPEED] = 70;
 	}
 	g->objects[count].pos.x = j * TILE_SIZE + TILE_SIZE / 2;
 	g->objects[count].pos.y = i * TILE_SIZE + TILE_SIZE / 2;

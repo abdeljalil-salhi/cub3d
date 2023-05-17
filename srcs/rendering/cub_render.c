@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 13:37:35 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 22:03:16 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -662,7 +662,7 @@ void	put_tips(t_game *g)
 	if (g->tips.game_over)
 		mlx_string_put(g->mlx, g->win.ref, WIN_WIDTH / 2 - ft_strlen(GAME_OVER) * 3,
 			WIN_HEIGHT - 15, 0xFFFFFF, GAME_OVER);
-	else if (g->tips.open_door)
+	else if (g->tips.open_door && !g->game_over)
 		mlx_string_put(g->mlx, g->win.ref, WIN_WIDTH / 2 - ft_strlen(DOOR_TIP) * 3,
 			WIN_HEIGHT - 15, 0xFFFFFF, DOOR_TIP);
 }
