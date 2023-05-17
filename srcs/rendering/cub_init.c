@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 00:20:08 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 23:02:29 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/18 00:41:48 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,19 @@ int	cub_init_textures(t_game *g)
 			&g->textures.game_over.bpp, &g->textures.game_over.line_length, &g->textures.game_over.endian);
 	if (!g->textures.game_over.addr)
 		return (cub_errors_setter(g, "Failed to get data addr of game over xpm."));
+
+	i = -1;
+	char	*path_digits[10] = {"assets/hud/digits/0.xpm", "assets/hud/digits/1.xpm", "assets/hud/digits/2.xpm", "assets/hud/digits/3.xpm", "assets/hud/digits/4.xpm", "assets/hud/digits/5.xpm", "assets/hud/digits/6.xpm", "assets/hud/digits/7.xpm", "assets/hud/digits/8.xpm", "assets/hud/digits/9.xpm"};
+	while (++i < 10)
+	{
+		g->textures.digits[i].ref = mlx_xpm_file_to_image(g->mlx, path_digits[i], &it.i, &it.j);
+		if (!g->textures.digits[i].ref)
+			return (cub_errors_setter(g, "Failed to get data addr of digits xpm."));
+		g->textures.digits[i].addr = mlx_get_data_addr(g->textures.digits[i].ref,
+				&g->textures.digits[i].bpp, &g->textures.digits[i].line_length, &g->textures.digits[i].endian);
+		if (!g->textures.digits[i].addr)
+			return (cub_errors_setter(g, "Failed to get data addr of digits xpm."));
+	}
 
 	return (RETURN_SUCCESS);
 }

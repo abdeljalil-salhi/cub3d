@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/18 00:03:58 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/18 00:42:01 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -676,7 +676,24 @@ void	put_tips(t_game *g)
 			WIN_HEIGHT - 15, 0xFFFFFF, DOOR_TIP);
 }
 
-void	put_health(t_game *g)
+void	draw_score(t_game *g)
+{
+	int	i;
+	int	len;
+	int	score;
+
+	len = ft_nblen(g->player.score);
+	score = g->player.score;
+	i = -1;
+	while (++i < len)
+	{
+		mlx_put_image_to_window(g->mlx, g->win.ref, g->textures.digits[score % 10].ref,
+			280 - 20 - i * 20, 60);
+		score /= 10;
+	}
+}
+
+void	put_player_infos(t_game *g)
 {
 	if (g->player.health > 100)
 		g->player.health = 100;
@@ -694,6 +711,7 @@ void	put_health(t_game *g)
 		mlx_put_image_to_window(g->mlx, g->win.ref, g->textures.health_bar[1].ref, 5, 1);
 	else if (g->player.health <= 100)
 		mlx_put_image_to_window(g->mlx, g->win.ref, g->textures.health_bar[0].ref, 5, 1);
+	draw_score(g);
 }
 
 void	show_game_over_tip(t_game *g)
@@ -791,7 +809,7 @@ int	cub_render(t_game *g)
 	if (!MINIMAP && !g->display_map)
 		draw_weapon(g);
 	put_tips(g);
-	put_health(g);
+	put_player_infos(g);
 	put_upper_layer(g);
 	mlx_destroy_image(g->mlx, g->frame.ref);
 	tmp = ft_itoa(last_fps);
