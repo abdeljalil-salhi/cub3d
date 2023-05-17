@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 08:43:52 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/16 23:51:08 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 01:35:16 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	check_for_doors(t_game *g, int z)
 			}
 			else
 			{
+				g->tips.open_door = false;
 				g->objects[z].animating = false;
 				g->objects[z].state = DOOR_OPENED;
 				g->map.arr[g->objects[z].y][g->objects[z].x] = DOOR_OPENED;

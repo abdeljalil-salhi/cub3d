@@ -6,11 +6,13 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/16 20:53:27 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 01:36:39 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+#define COLOR 0xFFFFFF
 
 int	cub_render_sprite(t_game *g);
 
@@ -406,7 +408,7 @@ void	raycast(t_game *g)
 					ceil.y = g->player.pos.y - sin_a * dist;
 					text_offset_x = (int) ceil.x % TILE_SIZE;
 					text_offset_y = (int) ceil.y % TILE_SIZE;
-					ceil_textcolor = ((unsigned int *) g->textures.ceil.addr)[text_offset_y * TILE_SIZE + text_offset_x];
+					ceil_textcolor = ((unsigned int *) g->textures.ceil.addr)[text_offset_y * TILE_SIZE + text_offset_x] & COLOR;
 					cub_pixel_put(g, it.i * SCALE, i, ceil_textcolor);
 				}
 			}
@@ -445,7 +447,7 @@ void	raycast(t_game *g)
 				}
 				else
 				{
-					textcolor = ((unsigned int *) get_texture(g, it.i).addr)[(text_offset_y * TILE_SIZE) + text_offset_x];
+					textcolor = ((unsigned int *) get_texture(g, it.i).addr)[(text_offset_y * TILE_SIZE) + text_offset_x] & COLOR;
 					cub_pixel_put(g, it.i * SCALE, i, textcolor);
 				}
 			}
@@ -463,7 +465,7 @@ void	raycast(t_game *g)
 					floor.y = g->player.pos.y + sin_a * dist;
 					text_offset_x = (int) floor.x % TILE_SIZE;
 					text_offset_y = (int) floor.y % TILE_SIZE;
-					floor_textcolor = ((unsigned int *) g->textures.floor.addr)[text_offset_y * TILE_SIZE + text_offset_x];
+					floor_textcolor = ((unsigned int *) g->textures.floor.addr)[text_offset_y * TILE_SIZE + text_offset_x] & COLOR;
 					cub_pixel_put(g, it.i * SCALE, i, floor_textcolor);
 				}
 			}
@@ -645,6 +647,18 @@ void	put_health(t_game *g)
 		mlx_put_image_to_window(g->mlx, g->win.ref, g->textures.health_bar[0].ref, 5, 1);
 }
 
+void	display_medkit_splash(t_game *g);
+void	put_upper_layer(t_game *g)
+{
+	if (g->player.taking_damage)
+		mlx_put_image_to_window(g->mlx, g->win.ref, g->textures.splash[RED_SPLASH].ref, 0, 0);
+	else if (g->player.taking_medkit)
+	{
+		display_medkit_splash(g);
+		mlx_put_image_to_window(g->mlx, g->win.ref, g->textures.splash[GREEN_SPLASH].ref, 0, 0);
+	}
+}
+
 int	cub_render(t_game *g)
 {
 	static unsigned int	frames = 0;
@@ -705,6 +719,7 @@ int	cub_render(t_game *g)
 		draw_weapon(g);
 	put_tips(g);
 	put_health(g);
+	put_upper_layer(g);
 	mlx_destroy_image(g->mlx, g->frame.ref);
 	tmp = ft_itoa(last_fps);
 	fps_str = ft_strjoin("FPS: ", tmp);

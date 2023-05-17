@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/16 20:46:26 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 01:21:47 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,8 @@ typedef struct s_player
 	int			health;
 	bool		opening_door;
 	bool		shooting;
+	bool		taking_damage;
+	bool		taking_medkit;
 }	t_player;
 
 typedef struct s_image
@@ -172,6 +174,7 @@ typedef struct s_texture
 	t_image		wall_5;
 	t_image		floor;
 	t_image		ceil;
+	t_image		splash[2];
 	t_weapon	weapon;
 	t_image		object_image[N_OF_OBJECTS][OBJECTS_MAX_FRAME];
 	char		*object_path[N_OF_OBJECTS][OBJECTS_MAX_FRAME];

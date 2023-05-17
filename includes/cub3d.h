@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/16 20:53:17 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 01:15:37 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ enum
 	TEXTURE_NORTH = 0,
 	TEXTURE_SOUTH,
 	TEXTURE_EAST,
-	TEXTURE_WEST
+	TEXTURE_WEST,
 };
 
 enum
@@ -114,7 +114,7 @@ enum
 	ON_MOUSEUP = 5,
 	ON_MOUSEMOVE = 6,
 	ON_EXPOSE = 12,
-	ON_DESTROY = 17
+	ON_DESTROY = 17,
 };
 
 enum
@@ -140,7 +140,7 @@ enum
 	RAY_FACING_UP = 1,
 	RAY_FACING_DOWN,
 	RAY_FACING_LEFT,
-	RAY_FACING_RIGHT
+	RAY_FACING_RIGHT,
 };
 
 enum
@@ -148,7 +148,7 @@ enum
 	DOOR_TOGGLING = 96,
 	DOOR_OPENED,
 	DOOR_CLOSED,
-	PLAYER
+	PLAYER,
 };
 
 enum
@@ -164,6 +164,12 @@ enum
 	OBJECT_GREEN_LIGHT,
 	OBJECT_MEDKIT,
 	OBJECT_DOOR,
+};
+
+enum
+{
+	RED_SPLASH,
+	GREEN_SPLASH,
 };
 
 /* --------------------------- UTILS --------------------------- */

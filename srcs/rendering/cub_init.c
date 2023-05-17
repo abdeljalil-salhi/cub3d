@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 00:20:08 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/16 09:23:23 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 01:22:58 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,23 @@ int	cub_init_textures(t_game *g)
 			&g->textures.floor.bpp, &g->textures.floor.line_length, &g->textures.floor.endian);
 	if (!g->textures.floor.addr)
 		return (cub_errors_setter(g, "Failed to get data addr of floor xpm."));
-	
+
+	g->textures.splash[RED_SPLASH].ref = mlx_xpm_file_to_image(g->mlx, "assets/hud/splash/red.xpm", &it.i, &it.j);
+	if (!g->textures.splash[RED_SPLASH].ref)
+		return (cub_errors_setter(g, "Failed to get data addr of red splash xpm."));
+	g->textures.splash[RED_SPLASH].addr = mlx_get_data_addr(g->textures.splash[RED_SPLASH].ref,
+			&g->textures.splash[RED_SPLASH].bpp, &g->textures.splash[RED_SPLASH].line_length, &g->textures.splash[RED_SPLASH].endian);
+	if (!g->textures.splash[RED_SPLASH].addr)
+		return (cub_errors_setter(g, "Failed to get data addr of red splash xpm."));
+
+	g->textures.splash[GREEN_SPLASH].ref = mlx_xpm_file_to_image(g->mlx, "assets/hud/splash/green.xpm", &it.i, &it.j);
+	if (!g->textures.splash[GREEN_SPLASH].ref)
+		return (cub_errors_setter(g, "Failed to get data addr of green splash xpm."));
+	g->textures.splash[GREEN_SPLASH].addr = mlx_get_data_addr(g->textures.splash[GREEN_SPLASH].ref,
+			&g->textures.splash[GREEN_SPLASH].bpp, &g->textures.splash[GREEN_SPLASH].line_length, &g->textures.splash[GREEN_SPLASH].endian);
+	if (!g->textures.splash[GREEN_SPLASH].addr)
+		return (cub_errors_setter(g, "Failed to get data addr of green splash xpm."));
+
 	return (RETURN_SUCCESS);
 }
 

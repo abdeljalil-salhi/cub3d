@@ -6,11 +6,13 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 18:29:47 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/16 20:47:56 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 00:53:49 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+#define COLOR 0xFFFFFF
 
 void	compute_distances(t_game *g)
 {
@@ -159,7 +161,7 @@ int	cub_render_sprite(t_game *g)
 					if (i > 0 && i < WIN_WIDTH && j > 0 && j < WIN_HEIGHT)
 					{
 						text_y = (j + sprite_height / 2 - HALF_WIN_HEIGHT) * (TILE_SIZE / sprite_height);
-						color = ((unsigned int *) g->textures.object_image[g->objects[z].type][g->objects[z].frame].addr)[text_y * TILE_SIZE + text_x];
+						color = ((unsigned int *) g->textures.object_image[g->objects[z].type][g->objects[z].frame].addr)[text_y * TILE_SIZE + text_x] & COLOR;
 					if ((color  & 0xFFFF00FF) != 0 && dist < g->buffer[i])
 							cub_pixel_put(g, i * SCALE, j, color);
 					}
