@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 09:01:11 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 11:19:50 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,20 +251,23 @@ void	check_if_enemy(t_game *g, int x, int y)
 	i = -1;
 	while (++i < g->objects_count)
 	{
-		if (is_enemy(g->objects[i].type))
+		if ((int)(g->objects[i].pos.x / TILE_SIZE) == x && (int)(g->objects[i].pos.y / TILE_SIZE) == y)
 		{
-			if ((int)(g->objects[i].pos.x / TILE_SIZE) == x && (int)(g->objects[i].pos.y / TILE_SIZE) == y
-				&& g->player.shooting && g->player.damaging
-				&& hypot(g->objects[i].pos.x - g->player.pos.x, g->objects[i].pos.y - g->player.pos.y) <= g->textures.weapon.range[g->textures.weapon.type])
+			g->objects[i].visible = true;
+			if (is_enemy(g->objects[i].type))
 			{
-				g->player.damaging = false;
-				g->objects[i].state = ENEMY_DAMAGED;
-				g->objects[i].infos[ENEMY_HEALTH] -= g->textures.weapon.damage[g->textures.weapon.type];
-				if (g->objects[i].infos[ENEMY_HEALTH] <= 0)
+				if (g->player.shooting && g->player.damaging
+					&& hypot(g->objects[i].pos.x - g->player.pos.x, g->objects[i].pos.y - g->player.pos.y) <= g->textures.weapon.range[g->textures.weapon.type])
 				{
-					g->objects[i].infos[ENEMY_HEALTH] = 0;
-					g->objects[i].state = ENEMY_DEATH;
-					g->player.score += g->objects[i].infos[ENEMY_BOUNTY];
+					g->player.damaging = false;
+					g->objects[i].state = ENEMY_DAMAGED;
+					g->objects[i].infos[ENEMY_HEALTH] -= g->textures.weapon.damage[g->textures.weapon.type];
+					if (g->objects[i].infos[ENEMY_HEALTH] <= 0)
+					{
+						g->objects[i].infos[ENEMY_HEALTH] = 0;
+						g->objects[i].state = ENEMY_DEATH;
+						g->player.score += g->objects[i].infos[ENEMY_BOUNTY];
+					}
 				}
 			}
 		}
@@ -296,6 +299,9 @@ void	raycast(t_game *g)
 	map_pos.x = (int)(origin.x / TILE_SIZE);
 	map_pos.y = (int)(origin.y / TILE_SIZE);
 	ray_angle = g->player.angle - HALF_FOV + 0.0001;
+	it.i = -1;
+	while (++it.i < g->objects_count)
+		g->objects[it.i].visible = false;
 	it.i = -1;
 	while (++it.i < NUM_RAYS)
 	{

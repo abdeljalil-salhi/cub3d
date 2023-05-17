@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 03:20:03 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 09:05:12 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 11:16:04 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	check_for_enemies(t_game *g, int z)
 	static int	bullet_frames = 0;
 	static int	attacking_frames = 0;
 
-	if (!is_enemy_dead(g->objects[z].type))
+	if (!is_enemy_dead(g->objects[z].type) && g->objects[z].visible)
 	{
 		distance = hypot(g->player.pos.x - g->objects[z].pos.x, g->player.pos.y - g->objects[z].pos.y);
 		if (g->objects[z].state == ENEMY_DAMAGED && g->player.shooting)

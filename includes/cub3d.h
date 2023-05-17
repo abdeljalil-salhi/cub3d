@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 09:19:00 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 11:23:25 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef unsigned long long	t_ull;
 # define NAME "cub3D"
 # define TMP "assets/sounds/.tmp"
 
-# define LEAKS 0
+# define LEAKS 1
 
 # ifndef DEBUG
 #  define DEBUG 0

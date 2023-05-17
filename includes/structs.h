@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 09:23:59 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 09:32:13 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,6 +214,7 @@ typedef struct s_object
 	clock_t		last_time;
 	float		dist;
 	bool		display;
+	bool		visible;
 }	t_object;
 
 typedef struct s_sound

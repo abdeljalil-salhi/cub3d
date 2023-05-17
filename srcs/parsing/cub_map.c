@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 21:28:45 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 08:32:46 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 09:32:37 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ void	cub_parse_object(t_game *g, char c, int i, int j)
 	g->objects[count].pos.y = i * TILE_SIZE + TILE_SIZE / 2;
 	g->objects[count].frame = 0;
 	g->objects[count].animating = false;
+	g->objects[count].visible = false;
 	g->objects[count].display = true;
 	count++;
 }

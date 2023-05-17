@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 18:29:47 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 07:29:36 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 11:03:36 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	sort_objects(t_game *g)
 				temp.infos[ENEMY_PRECISION] = g->objects[it.j].infos[ENEMY_PRECISION];
 				temp.infos[ENEMY_DAMAGE] = g->objects[it.j].infos[ENEMY_DAMAGE];
 				temp.state = g->objects[it.j].state;
+				temp.visible = g->objects[it.j].visible;
 
 				g->objects[it.j].dist = g->objects[it.i].dist;
 				g->objects[it.j].animating = g->objects[it.i].animating;
@@ -61,6 +62,7 @@ void	sort_objects(t_game *g)
 				g->objects[it.j].infos[ENEMY_PRECISION] = g->objects[it.i].infos[ENEMY_PRECISION];
 				g->objects[it.j].infos[ENEMY_DAMAGE] = g->objects[it.i].infos[ENEMY_DAMAGE];
 				g->objects[it.j].state = g->objects[it.i].state;
+				g->objects[it.j].visible = g->objects[it.i].visible;
 
 				g->objects[it.i].dist = temp.dist;
 				g->objects[it.i].animating = temp.animating;
@@ -74,6 +76,7 @@ void	sort_objects(t_game *g)
 				g->objects[it.i].infos[ENEMY_PRECISION] = temp.infos[ENEMY_PRECISION];
 				g->objects[it.i].infos[ENEMY_DAMAGE] = temp.infos[ENEMY_DAMAGE];
 				g->objects[it.i].state = temp.state;
+				g->objects[it.i].visible = temp.visible;
 			}
 			it.j++;
 		}
