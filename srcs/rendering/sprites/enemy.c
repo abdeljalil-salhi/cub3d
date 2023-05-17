@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 03:20:03 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 13:50:42 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 14:04:50 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ bool	is_enemy_dead(int type)
 float	get_enemy_range(int type)
 {
 	if (type >= OBJECT_SOLDIER_WALK && type <= OBJECT_SOLDIER_DEATH)
-		return (200.0f);
+		return (300.0f);
 	else if (type >= OBJECT_CYBERDEMON_WALK && type <= OBJECT_CYBERDEMON_DEATH)
 		return (500.0f);
 	return (0.0f);

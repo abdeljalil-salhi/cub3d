@@ -6,7 +6,7 @@
 #    By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/19 21:24:26 by absalhi           #+#    #+#              #
-#    Updated: 2023/05/17 09:10:38 by absalhi          ###   ########.fr        #
+#    Updated: 2023/05/17 13:58:46 by absalhi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -95,6 +95,7 @@ help		:
 				@echo "     - [ "$(NONE)$(GREEN)"G"$(NONE)$(GRAY)" ] Green fire lamp"
 				@echo "     - [ "$(NONE)$(GREEN)"M"$(NONE)$(GRAY)" ] Medkit"
 				@echo "     - [ "$(NONE)$(GREEN)"V"$(NONE)$(GRAY)" ] Enemy - Soldier"
+				@echo "     - [ "$(NONE)$(GREEN)"C"$(NONE)$(GRAY)" ] Enemy - Cyberdemon"
 
 clean		:
 				@echo $(ITALIC)$(GRAY) "     - Removing object files..." $(NONE)

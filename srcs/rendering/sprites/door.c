@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 08:43:52 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 11:40:31 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 14:06:13 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	check_for_doors(t_game *g, int z)
 			play_sound_effect(g, SOUND_DOOR_CLOSE);
 			g->objects[z].animating = true;
 			g->objects[z].last_time = current_time_ms();
+			g->tips.open_door = false;
 		}
 	}
 }
