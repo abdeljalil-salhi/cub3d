@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 03:20:03 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 14:04:50 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/17 15:08:12 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ void	check_for_enemies(t_game *g, int z)
 					g->objects[z].type--;
 				g->objects[z].state = ENEMY_WALK;
 				g->objects[z].frame = 0;
+				// enemy movement
 			}
 		}
 	}
