@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   weapon.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: isalhi <isalhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 05:52:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/20 02:10:16 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/20 16:13:02 by isalhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ bool	check_for_weapon_drops(t_game *g, int z)
 void	draw_weapon(t_game *g)
 {
 	static int	switching_frames = 0;
-	int	type;
-	int	frame;
+	int			type;
+	int			frame;
 
 	type = g->textures.weapon.type;
 	if (g->player.shooting)

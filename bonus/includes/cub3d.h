@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: isalhi <isalhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/20 02:22:38 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/20 16:25:56 by isalhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,6 +224,7 @@ int		hook_key_release(int keycode, t_game *g);
 */
 int		hook_mouse_press(int code, int x, int y, t_game *g);
 int		hook_mouse_release(int code, int x, int y, t_game *g);
+void	mouse_state(t_game *g);
 
 /*
 ** pixel_put.c
@@ -235,12 +236,17 @@ void	rect_put(t_game *g, t_iterators pos, t_iterators dimension, int color);
 /*
 ** sounds.c
 */
-int		init_sounds(t_game *g);
+void	init_sounds(t_game *g);
 int		afplay(t_game *g, int sound);
 void	play_sound_track(t_game *g);
 void	play_sound_effect(t_game *g, int sound);
 void	stop_sound_track(t_game *g);
 
+/*
+** fps_put.c
+*/
+
+void	put_fps(t_game *g, unsigned int last_fps);
 /* --------------------------- PARSING --------------------------- */
 
 typedef struct s_parsing_analyzer
@@ -285,6 +291,17 @@ int		player_movement(t_game *g);
 void	draw_minimap(t_game *g);
 void	draw_map(t_game *g);
 int		render(t_game *g);
+
+/* ------------------ RAYCASTING --------------------- */
+
+void	find_hor_steps(t_game *g, int i, t_coords *dist, float *depth);
+void	find_vert_steps(t_game *g, int i, t_coords *dist, float *depth);
+void	check_vert_inters(t_game *g, int i, t_coords dist, float depth);
+void	check_horz_inters(t_game *g, int i, t_coords dist, float depth);
+void	final_inters(t_game *g, int i);
+
+/* ------------------ walls textures mapping --------------------- */
+void	draw_world(t_game *g, t_iterators it, float ray_angle);
 
 /* ------------------ RENDERING - SPRITES --------------------- */
 /*

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   raycasting.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: isalhi <isalhi@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/19 11:45:39 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/20 14:55:18 by isalhi           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "cub3d.h"
 
 void	find_hor_steps(t_game *g, int i, t_coords *dist, float *depth)
@@ -64,6 +52,8 @@ void	check_horz_inters(t_game *g, int i, t_coords dist, float depth)
 		horz_tile.i = abs((int)(g->rays[i].horz_inters.y / TILE_SIZE));
 		if (horz_tile.i >= g->map.height || horz_tile.j >= g->map.width)
 			break ;
+		if (i == (int) NUM_RAYS / 2)
+			check_if_enemy(g, horz_tile.j, horz_tile.i);
 		if (check_if_wall(g->map.arr[horz_tile.i][horz_tile.j]))
 		{
 			g->rays[i].horz_wall_content = g->map.arr[horz_tile.i][horz_tile.j];
@@ -87,6 +77,8 @@ void	check_vert_inters(t_game *g, int i, t_coords dist, float depth)
 		vert_tile.i = abs((int)(g->rays[i].vert_inters.y / TILE_SIZE));
 		if (vert_tile.i >= g->map.height || vert_tile.j >= g->map.width)
 			break ;
+		if (i == (int) NUM_RAYS / 2)
+			check_if_enemy(g, vert_tile.j, vert_tile.i);
 		if (check_if_wall(g->map.arr[vert_tile.i][vert_tile.j]))
 		{
 			g->rays[i].vert_wall_content = g->map.arr[vert_tile.i][vert_tile.j];

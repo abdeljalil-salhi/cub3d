@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+         #
+#    By: isalhi <isalhi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/19 21:24:26 by absalhi           #+#    #+#              #
-#    Updated: 2023/05/20 02:23:45 by absalhi          ###   ########.fr        #
+#    Updated: 2023/05/20 16:24:15 by isalhi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,8 @@ _LIBCUB		=	cub_occurences.c		cub_line.c		cub_file.c		cub_time.c		\
 				cub_color.c
 LIBCUB		=	$(addprefix libcub/, $(_LIBCUB))
 
-_UTILS		=	cub_errors.c	cub_free.c		cub_keys.c		cub_pixel_put.c 
+_UTILS		=	cub_errors.c	cub_free.c		cub_keys.c		cub_pixel_put.c
+				
 UTILS		=	$(addprefix utils/, $(_UTILS))
 
 _PARSING	=	cub_parser.c		cub_file_parser.c		cub_file_checker.c			\
@@ -39,7 +40,7 @@ _PARSING	=	cub_parser.c		cub_file_parser.c		cub_file_checker.c			\
 PARSING		=	$(addprefix parsing/, $(_PARSING))
 
 _RENDERING	=	cub_render.c		cub_init.c		raycasting.c		draw_walls.c	\
-				player_movement.c	minimap_mode.c
+				player_movement.c
 RENDERING	=	$(addprefix rendering/, $(_RENDERING))
 
 _SRCS		=	$(LIBCUB) $(UTILS) $(PARSING) $(RENDERING)
@@ -51,8 +52,8 @@ OBJS		=	$(SRCS:.c=.o)
 _BLIBCUB	=	count_occurences.c		line_utils.c	file_open.c			time.c
 B_LIBCUB	=	$(addprefix libcub/, $(_BLIBCUB))
 
-_BUTILS		=	errors.c		free_memory.c	image_scaling.c		keyboard_hooks.c	\
-				mouse_hooks.c	pixel_put.c		sounds.c
+_BUTILS		=	errors.c		free_memory.c	keyboard_hooks.c	mouse_hooks.c		\
+				pixel_put.c		sounds.c fps_put.c	mouse_state.c
 B_UTILS		=	$(addprefix utils/, $(_BUTILS))
 
 _BPARSING	=	parser.c 		object_setter.c											\
@@ -75,7 +76,8 @@ _BITEXTURES	=	$(addprefix init/,														\
 B_TEXTURES	=	$(addprefix textures/, $(_BTEXTURES) $(_BITEXTURES))
 
 _BRENDERING	=	render.c		init.c		movement_checker.c		player.c			\
-				minimap.c		map.c		hud.c					utils.c
+				minimap.c		map.c		hud.c					utils.c				\
+				raycasting.c	mapping_textures.c
 B_RENDERING	=	$(addprefix rendering/, $(_BRENDERING) $(B_SPRITES) $(B_TEXTURES))
 
 _BSRCS		=	$(B_LIBCUB) $(B_UTILS) $(B_PARSING) $(B_RENDERING)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: isalhi <isalhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/20 01:56:05 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/20 15:28:33 by isalhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,14 +110,24 @@ typedef struct s_ray
 	float		angle;
 	float		depth;
 	bool		vertical_hit;
+	int			content_hit;
+	float		sin_a;
+	float		cos_a;
+	t_coords	horz_inters;
+	t_coords	vert_inters;
+	float		depth_horz;
+	float		depth_vert;
+	float		horz_wall_content;
+	float		vert_wall_content;
 	bool		door_opened;
 	t_coords	door_pos;
-	int			content_hit;
+
 }	t_ray;
 
 typedef struct s_player
 {
 	t_coords	pos;
+	t_coords	map_pos;
 	int			width;
 	int			height;
 	float		angle;

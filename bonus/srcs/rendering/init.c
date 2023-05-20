@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: isalhi <isalhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 00:20:08 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/19 02:39:04 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/20 16:17:59 by isalhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ int	init_game(t_game *g)
 		return (RETURN_FAILURE);
 	if (init_sprites(g))
 		return (RETURN_FAILURE);
-	if (init_sounds(g))
-		return (RETURN_FAILURE);
+	init_sounds(g);
 	return (RETURN_SUCCESS);
 }

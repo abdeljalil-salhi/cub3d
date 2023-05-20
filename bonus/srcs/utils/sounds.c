@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   sounds.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: isalhi <isalhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 07:43:28 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/20 01:08:46 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/20 16:16:43 by isalhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	init_sounds(t_game *g)
+void	init_sounds(t_game *g)
 {
 	g->sound[SOUND_THEME].path = " assets/sounds/theme.wav";
 	g->sound[SOUND_THEME].volume = "0.7";
@@ -22,7 +22,8 @@ int	init_sounds(t_game *g)
 	g->sound[SOUND_NPC_DEATH].volume = "1";
 	g->sound[SOUND_NPC_DAMAGED].path = " assets/sounds/effects/npc_pain.wav";
 	g->sound[SOUND_NPC_DAMAGED].volume = "1";
-	g->sound[SOUND_PLAYER_DAMAGED].path = " assets/sounds/effects/player_pain.wav";
+	g->sound[SOUND_PLAYER_DAMAGED].path
+		= " assets/sounds/effects/player_pain.wav";
 	g->sound[SOUND_PLAYER_DAMAGED].volume = "2";
 	g->sound[SOUND_SHOTGUN].path = " assets/sounds/effects/shotgun.wav";
 	g->sound[SOUND_SHOTGUN].volume = "1";
@@ -30,13 +31,14 @@ int	init_sounds(t_game *g)
 	g->sound[SOUND_DOOR_CLOSE].volume = "1";
 	g->sound[SOUND_DOOR_OPEN].path = " assets/sounds/effects/door_open.wav";
 	g->sound[SOUND_DOOR_OPEN].volume = "1";
-	g->sound[SOUND_SHOTGUN_SWITCH].path = " assets/sounds/effects/shotgun_switch.wav";
+	g->sound[SOUND_SHOTGUN_SWITCH].path
+		= " assets/sounds/effects/shotgun_switch.wav";
 	g->sound[SOUND_SHOTGUN_SWITCH].volume = "1";
 	g->sound[SOUND_KNIFE].path = " assets/sounds/effects/knife.wav";
 	g->sound[SOUND_KNIFE].volume = "1";
-	g->sound[SOUND_KNIFE_SWITCH].path = " assets/sounds/effects/knife_switch.wav";
+	g->sound[SOUND_KNIFE_SWITCH].path
+		= " assets/sounds/effects/knife_switch.wav";
 	g->sound[SOUND_KNIFE_SWITCH].volume = "1";
-	return (RETURN_SUCCESS);
 }
 
 int	afplay(t_game *g, int sound)
