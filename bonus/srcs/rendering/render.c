@@ -6,7 +6,7 @@
 /*   By: isalhi <isalhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/20 16:13:24 by isalhi           ###   ########.fr       */
+/*   Updated: 2023/05/20 21:04:40 by isalhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	update(t_game *g)
 	ticks_last_frame = (float) current_time_ms();
 	player_movement(g);
 	raycast(g);
+	mlx_put_image_to_window(g->mlx, g->win.ref, g->frame.ref, 0, 0);
 	if (g->display_map)
 		draw_map(g);
 	else
@@ -84,8 +85,7 @@ int	render(t_game *g)
 	}
 	mouse_state(g);
 	update(g);
-	put_fps(g, last_fps);
-	mlx_put_image_to_window(g->mlx, g->win.ref, g->frame.ref, 0, 0);
 	mlx_destroy_image(g->mlx, g->frame.ref);
+	put_fps(g, last_fps);
 	return (RETURN_SUCCESS);
 }
