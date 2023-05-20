@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/19 11:40:24 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/20 01:56:05 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <stdbool.h>
 # include <pthread.h>
+
+typedef unsigned long		t_ul;
 
 # define N_OF_SOUNDS 11
 
@@ -145,7 +147,7 @@ typedef struct s_image
 typedef struct s_weapon
 {
 	int			type;
-    t_image		image[N_OF_WEAPONS][WEAPONS_MAX_FRAME];
+	t_image		image[N_OF_WEAPONS][WEAPONS_MAX_FRAME];
 	char		*path[N_OF_WEAPONS][WEAPONS_MAX_FRAME];
 	t_iterators	dimension[N_OF_WEAPONS];
 	int			frame;
@@ -222,6 +224,21 @@ typedef struct s_pid
 	pid_t	playing_soundeffect[10];
 }	t_pid;
 
+typedef struct s_constants
+{
+	float	frame_rate;
+	float	half_win_width;
+	float	half_win_height;
+	float	fov;
+	float	half_fov;
+	float	screen_dist;
+	int		num_rays;
+	float	half_num_rays;
+	float	scale;
+	float	delta_angle;
+	float	tau;
+}	t_constants;
+
 typedef struct s_game
 {
 	void		*mlx;
@@ -246,6 +263,7 @@ typedef struct s_game
 	t_mouse		mouse;
 	t_sound		sound[N_OF_SOUNDS];
 	t_pid		pid;
+	t_constants	constants;
 	float		*buffer;
 	bool		display_map;
 }	t_game;

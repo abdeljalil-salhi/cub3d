@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/19 11:28:44 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/20 02:22:38 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@
 # include <mlx.h>
 # include <signal.h>
 
-typedef unsigned long		t_ul;
-typedef unsigned long long	t_ull;
-
 # include "libft.h"
 # include "structs.h"
 # include "errors.h"
 # include "paths.h"
+
+typedef unsigned long		t_ul;
+typedef unsigned long long	t_ull;
 
 # define NAME "cub3D"
 # define TMP "assets/sounds/.tmp"
@@ -47,20 +47,9 @@ typedef unsigned long long	t_ull;
 #  define PLAYER_SPEED 250
 # endif
 
-# define FRAME_RATE (1000 / FPS)
-
 # define WIN_WIDTH 1600
 # define WIN_HEIGHT 900
-# define HALF_WIN_WIDTH (WIN_WIDTH / 2)
-# define HALF_WIN_HEIGHT (WIN_HEIGHT / 2)
-
-# define FOV (60 * (M_PI / 180))
-# define HALF_FOV (FOV / 2)
-# define SCREEN_DIST HALF_WIN_WIDTH / tan(HALF_FOV)
 # define NUM_RAYS WIN_WIDTH
-# define HALF_NUM_RAYS NUM_RAYS / 2
-# define SCALE (WIN_WIDTH / NUM_RAYS)
-# define DELTA_ANGLE (FOV / NUM_RAYS)
 # define MAX_DEPTH 100
 
 # define PLAYER_WIDTH 10
@@ -71,13 +60,11 @@ typedef unsigned long long	t_ull;
 
 # define HEALTH_BAR_X 5
 # define HEALTH_BAR_Y 1
-
 # define MEDKIT_HEALING 25
 
-# define CENTER_Y 105
 # define RADIUS 100
-# define CENTER_X (WIN_WIDTH - RADIUS - 5)
 # define SCALE_FACTOR 3
+# define INJECTED_COLOR 0xFFFFFF
 
 # define RETURN_FAILURE 1
 # define RETURN_SUCCESS 0
@@ -87,8 +74,6 @@ typedef unsigned long long	t_ull;
 # define GREEN "\033[0;32m" 
 # define YELLOW "\033[0;33m"
 # define RESET "\033[0m"
-
-# define TAU 2 * M_PI
 
 enum
 {
@@ -283,9 +268,6 @@ int		check_player_occurences(t_game *g);
 
 /* -------------------------------- RENDERING ------------------------------- */
 
-/*
-** rendering/
-*/
 int		init_textures(t_game *g);
 int		init_sprites(t_game *g);
 int		init_game(t_game *g);
@@ -293,12 +275,44 @@ bool	check_if_wall(int content);
 bool	has_wall_at(t_game *g, float x, float y);
 bool	has_door_at(t_game *g, float x, float y);
 void	check_wall_collision(t_game *g, float dx, float dy);
+int		create_trgb(int t, int r, int g, int b);
+t_image	get_texture(t_game *g, int ind);
+void	put_tips(t_game *g);
+void	draw_score(t_game *g);
+void	put_player_infos(t_game *g);
+void	put_upper_layer(t_game *g);
+int		player_movement(t_game *g);
+void	draw_minimap(t_game *g);
+void	draw_map(t_game *g);
+int		render(t_game *g);
 
 /* ------------------ RENDERING - SPRITES --------------------- */
-
 /*
 ** rendering/sprites/
 */
+typedef struct s_sprite_renderer
+{
+	float			angle_sprite_player;
+	float			relative_angle;
+	float			sprite_height;
+	float			sprite_width;
+	float			dist;
+	float			sprite_bottom_y;
+	float			sprite_top_y;
+	float			sprite_left_x;
+	float			sprite_right_x;
+	float			sprite_angle;
+	float			sprite_pos_x;
+	int				text_x;
+	int				text_y;
+	int				i;
+	int				j;
+	unsigned int	color;
+	int				z;
+	float			ground_level;
+	t_coords		diff;
+}	t_sprite_renderer;
+
 int		init_weapon(t_game *g);
 int		init_objects(t_game *g);
 void	init_soldier(t_game *g);
@@ -312,25 +326,22 @@ void	show_door_tip(t_game *g, int z);
 void	show_game_over_tip(t_game *g);
 void	sort_objects(t_game *g);
 void	compute_distances(t_game *g);
-
-/*
-** rendering/sprites/enemy/
-*/
 bool	is_enemy(int type);
 bool	is_enemy_walking(int type);
 bool	is_enemy_damaged(int type);
 bool	is_enemy_attacking(int type);
 bool	is_enemy_dead(int type);
-void    enemy_movement(t_game *g, int z);
+void	enemy_movement(t_game *g, int z);
+void	check_if_enemy(t_game *g, int x, int y);
 void	display_enemy_splash(t_game *g);
+void	display_medkit_splash(t_game *g);
 void	frame_enemy_walk(t_game *g, int z);
 void	frame_enemy_damaged(t_game *g, int z);
 void	frame_enemy_attack(t_game *g, int z);
 void	frame_enemy_death(t_game *g, int z);
-
-/*
-** rendering/textures/
-*/
+void	draw_sprite(t_game *g, t_sprite_renderer *s);
+void	draw_weapon(t_game *g);
+int		render_sprite(t_game *g);
 
 /*
 ** rendering/textures/init/
@@ -343,9 +354,6 @@ int		init_floor(t_game *g);
 int		init_red_splash(t_game *g);
 int		init_green_splash(t_game *g);
 int		init_game_over(t_game *g);
-
-int		cub_render(t_game *g);
-int		player_movement(t_game *g);
 
 /* --------------------------- LIBCUB --------------------------- */
 

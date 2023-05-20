@@ -6,7 +6,7 @@
 #    By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/19 21:24:26 by absalhi           #+#    #+#              #
-#    Updated: 2023/05/19 11:57:18 by absalhi          ###   ########.fr        #
+#    Updated: 2023/05/20 02:23:45 by absalhi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,17 +26,20 @@ ITALIC		=	'\033[3m'
 
 # -------------------------------- MANDATORY --------------------------------- #
 
-_LIBCUB		=	cub_occurences.c cub_line.c cub_file.c cub_time.c cub_color.c
+_LIBCUB		=	cub_occurences.c		cub_line.c		cub_file.c		cub_time.c		\
+				cub_color.c
 LIBCUB		=	$(addprefix libcub/, $(_LIBCUB))
 
-_UTILS		=	cub_errors.c cub_free.c cub_keys.c cub_pixel_put.c 
+_UTILS		=	cub_errors.c	cub_free.c		cub_keys.c		cub_pixel_put.c 
 UTILS		=	$(addprefix utils/, $(_UTILS))
 
-_PARSING	=	cub_parser.c cub_file_parser.c cub_file_checker.c						\
-				cub_file_line.c cub_map.c cub_check.c cub_map_norm.c
+_PARSING	=	cub_parser.c		cub_file_parser.c		cub_file_checker.c			\
+				cub_file_line.c		cub_map.c				cub_check.c					\
+				cub_map_norm.c
 PARSING		=	$(addprefix parsing/, $(_PARSING))
 
-_RENDERING	=	cub_render.c cub_init.c raycasting.c draw_walls.c player_movement.c
+_RENDERING	=	cub_render.c		cub_init.c		raycasting.c		draw_walls.c	\
+				player_movement.c	minimap_mode.c
 RENDERING	=	$(addprefix rendering/, $(_RENDERING))
 
 _SRCS		=	$(LIBCUB) $(UTILS) $(PARSING) $(RENDERING)
@@ -71,7 +74,8 @@ _BITEXTURES	=	$(addprefix init/,														\
 				hud.c			walls.c													)
 B_TEXTURES	=	$(addprefix textures/, $(_BTEXTURES) $(_BITEXTURES))
 
-_BRENDERING	=	render.c		init.c		movement_checker.c
+_BRENDERING	=	render.c		init.c		movement_checker.c		player.c			\
+				minimap.c		map.c		hud.c					utils.c
 B_RENDERING	=	$(addprefix rendering/, $(_BRENDERING) $(B_SPRITES) $(B_TEXTURES))
 
 _BSRCS		=	$(B_LIBCUB) $(B_UTILS) $(B_PARSING) $(B_RENDERING)
@@ -103,12 +107,6 @@ $(B_NAME)	:	$(B_OBJS)
 				@echo $(ITALIC)$(GRAY) "     - Compiling $(B_NAME)..." $(NONE)
 				@$(CC) $(CFLAGS) $(MXFLAGS) -Llibft -lft $(B_OBJS) -o $(B_NAME)
 
-minimap		:	CFLAGS += -D MINIMAP
-minimap		:	re
-
-no_textures	:	CFLAGS += -D NO_TEXTURES
-no_textures	:	re
-
 help		:
 				@printf "\n"
 				@echo $(NONE)$(ITALIC)$(GREEN) "     ~ Usage:" $(GRAY)
@@ -117,12 +115,10 @@ help		:
 				@echo $(NONE)$(ITALIC)$(GREEN) "     ~ Available options:" $(NONE)$(GRAY)
 				@echo "     - make" $(NONE)$(ITALIC)$(GREEN) "all" $(NONE)$(GRAY) "to compile the project (mandatory part)."
 				@echo "     - make" $(NONE)$(ITALIC)$(GREEN) "bonus" $(NONE)$(GRAY) "to compile the project (bonus part)."
-				@echo "     - make" $(NONE)$(ITALIC)$(GREEN) "debug" $(NONE)$(GRAY) "to compile the project with debug flags."
-				@echo "     - make" $(NONE)$(ITALIC)$(GREEN) "minimap" $(NONE)$(GRAY) "to compile the project with minimap."
-				@echo "     - make" $(NONE)$(ITALIC)$(GREEN) "no_textures" $(NONE)$(GRAY) "to compile the project without textures."
 				@echo "     - make" $(NONE)$(ITALIC)$(GREEN) "clean" $(NONE)$(GRAY) "to remove object files."
 				@echo "     - make" $(NONE)$(ITALIC)$(GREEN) "fclean" $(NONE)$(GRAY) "to remove object files and $(NAME)."
 				@echo "     - make" $(NONE)$(ITALIC)$(GREEN) "re" $(NONE)$(GRAY) "to recompile the project."
+				@echo "     - make" $(NONE)$(ITALIC)$(GREEN) "re_bonus" $(NONE)$(GRAY) "to recompile the project (bonus part)."
 				@echo "     - make" $(NONE)$(ITALIC)$(GREEN) "norm" $(NONE)$(GRAY) "to check norminette."
 				@echo "     - make" $(NONE)$(ITALIC)$(GREEN) "help" $(NONE)$(GRAY) "to show this help." $(NONE)
 				@printf "\n"
@@ -167,4 +163,4 @@ norm		:
 				@echo $(NONE)$(ITALIC)$(GREEN) "     ~ Checking source files norminette..." $(GRAY)
 				@norminette $(B_SRCS)
 
-.PHONY		:	all bonus minimap no_textures help clean fclean re re_bonus norm
+.PHONY		:	all bonus help clean fclean re re_bonus norm

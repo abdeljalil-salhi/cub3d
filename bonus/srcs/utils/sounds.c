@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 07:43:28 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/18 05:29:03 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/20 01:08:46 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	afplay(t_game *g, int sound)
 	char	**afplays;
 
 	afplays = (char *[]){"afplay -v ", g->sound[sound].volume,
-			g->sound[sound].path, NULL};
+		g->sound[sound].path, NULL};
 	command = ft_strjoin(afplays[0], afplays[1]);
 	if (!command)
 		return (errors_setter(g, ERR_MALLOC));

@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 11:02:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/19 11:16:06 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/20 00:13:10 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	swap_objects(t_object *object1, t_object *object2)
 void	sort_objects(t_game *g)
 {
 	t_iterators	it;
-	
+
 	it.i = -1;
 	while (++it.i < g->objects_count)
 	{

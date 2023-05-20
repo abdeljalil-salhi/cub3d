@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 11:45:47 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/19 12:09:40 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/20 00:41:16 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,30 +62,35 @@ void	draw_stripe(t_game *g, t_iterators it, int wall_top, int wall_bottom)
 	}
 }
 
-void	draw_walls(t_game *g, t_iterators it, float ray_angle)
+typedef struct s_draw_walls
 {
 	int			i;
 	int			wall_top_pixel;
 	int			wall_bottom_pixel;
 	float		depth;
+}	t_draw_walls;
 
-	depth = g->rays[it.i].depth * (float) cos(g->player.angle - ray_angle);
-	g->rays[it.i].proj_h = (TILE_SIZE / depth) * g->constants.screen_dist;
-	wall_top_pixel
+void	draw_walls(t_game *g, t_iterators it, float ray_angle)
+{
+	t_draw_walls	s;
+
+	s.depth = g->rays[it.i].depth * (float) cos(g->player.angle - ray_angle);
+	g->rays[it.i].proj_h = (TILE_SIZE / s.depth) * g->constants.screen_dist;
+	s.wall_top_pixel
 		= g->constants.half_win_height - (int) g->rays[it.i].proj_h / 2;
-	if (wall_top_pixel < 0)
-		wall_top_pixel = 0;
-	wall_bottom_pixel
+	if (s.wall_top_pixel < 0)
+		s.wall_top_pixel = 0;
+	s.wall_bottom_pixel
 		= g->constants.half_win_height + (int) g->rays[it.i].proj_h / 2;
-	if (wall_bottom_pixel > WIN_HEIGHT)
-		wall_bottom_pixel = WIN_HEIGHT;
-	i = -1;
-	while (++i < wall_top_pixel)
+	if (s.wall_bottom_pixel > WIN_HEIGHT)
+		s.wall_bottom_pixel = WIN_HEIGHT;
+	s.i = -1;
+	while (++s.i < s.wall_top_pixel)
 		cub_pixel_put(g,
-			it.i * g->constants.scale, i, create_rgb(g->assets.ceiling));
-	draw_stripe(g, it, wall_top_pixel, wall_bottom_pixel);
-	i = wall_bottom_pixel - 1;
-	while (++i < WIN_HEIGHT)
+			it.i * g->constants.scale, s.i, create_rgb(g->assets.ceiling));
+	draw_stripe(g, it, s.wall_top_pixel, s.wall_bottom_pixel);
+	s.i = s.wall_bottom_pixel - 1;
+	while (++s.i < WIN_HEIGHT)
 		cub_pixel_put(g,
-			it.i * g->constants.scale, i, create_rgb(g->assets.floor));
+			it.i * g->constants.scale, s.i, create_rgb(g->assets.floor));
 }

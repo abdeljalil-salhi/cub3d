@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 00:50:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/19 02:40:25 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/20 00:21:49 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ static int	open_weapons_xpm_files(t_game *g, t_iterators it)
 int	init_weapon(t_game *g)
 {
 	t_iterators	it;
+	float		pos_x;
+	float		pos_y;
 
 	g->textures.weapon.type = WEAPON_KNIFE;
 	g->textures.weapon.frame = 0;
@@ -76,9 +78,10 @@ int	init_weapon(t_game *g)
 			if (open_weapons_xpm_files(g, it))
 				return (RETURN_FAILURE);
 	}
-	g->textures.weapon.pos.x
-		= HALF_WIN_WIDTH - g->textures.weapon.dimension[WEAPON_SHOTGUN].j / 2;
-	g->textures.weapon.pos.y
-		= WIN_HEIGHT - g->textures.weapon.dimension[WEAPON_SHOTGUN].i;
+	pos_x = g->constants.half_win_width
+		- g->textures.weapon.dimension[WEAPON_SHOTGUN].j / 2;
+	pos_y = WIN_HEIGHT - g->textures.weapon.dimension[WEAPON_SHOTGUN].i;
+	g->textures.weapon.pos.x = pos_x;
+	g->textures.weapon.pos.y = pos_y;
 	return (RETURN_SUCCESS);
 }
