@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 01:49:52 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/20 02:04:20 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/21 01:46:41 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,18 @@ static void	put_color(t_game *g, t_draw_minimap *s, int color)
 
 static void	map_check_walls(t_game *g, t_draw_minimap *s)
 {
-	s->top = (!has_wall_at(g, s->world_x, s->world_y - s->factor)
-			|| has_door_at(g, s->world_x, s->world_y - s->factor));
-	s->bottom = (!has_wall_at(g, s->world_x, s->world_y + s->factor)
-			|| has_door_at(g, s->world_x, s->world_y + s->factor));
-	s->left = (!has_wall_at(g, s->world_x - s->factor, s->world_y)
-			|| has_door_at(g, s->world_x - s->factor, s->world_y));
-	s->right = (!has_wall_at(g, s->world_x + s->factor, s->world_y)
-			|| has_door_at(g, s->world_x + s->factor, s->world_y));
+	s->top = ((!has_wall_at(g, s->world_x, s->world_y - s->factor)
+				|| has_door_at(g, s->world_x, s->world_y - s->factor))
+			&& !has_void_at(g, s->world_x, s->world_y - s->factor));
+	s->bottom = ((!has_wall_at(g, s->world_x, s->world_y + s->factor)
+				|| has_door_at(g, s->world_x, s->world_y + s->factor))
+			&& !has_void_at(g, s->world_x, s->world_y + s->factor));
+	s->left = ((!has_wall_at(g, s->world_x - s->factor, s->world_y)
+				|| has_door_at(g, s->world_x - s->factor, s->world_y))
+			&& !has_void_at(g, s->world_x - s->factor, s->world_y));
+	s->right = ((!has_wall_at(g, s->world_x + s->factor, s->world_y)
+				|| has_door_at(g, s->world_x + s->factor, s->world_y))
+			&& !has_void_at(g, s->world_x + s->factor, s->world_y));
 }
 
 static bool	is_door_closed(t_game *g, t_draw_minimap *s)
@@ -67,8 +71,7 @@ static void	draw_x_radius(t_game *g, t_draw_minimap *s)
 		{
 			s->world_x = g->player.pos.x + s->factor * (s->it.j - s->radius_x);
 			s->world_y = g->player.pos.y + s->factor * (s->it.i - s->radius_y);
-			if (s->world_x < 0 || s->world_x > g->map.width * TILE_SIZE
-				|| s->world_y < 0 || s->world_y > g->map.height * TILE_SIZE)
+			if (has_void_at(g, s->world_x, s->world_y))
 				put_color(g, s, 0x000000);
 			else if (is_door_closed(g, s))
 				put_color(g, s, 0x003300);

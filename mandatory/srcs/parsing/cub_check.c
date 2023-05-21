@@ -6,24 +6,31 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 17:19:06 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/17 04:52:42 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/21 05:51:10 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+static bool	is_invalid_border(int c)
+{
+	if (c == 0 || c == PLAYER)
+		return (true);
+	return (false);
+}
+
 static int	cub_check_map_components(t_game *g, int i, int j)
 {
 	if (j + 1 < g->map.width && g->map.arr[i][j] == -1
-		&& g->map.arr[i][j + 1] == 0)
+		&& is_invalid_border(g->map.arr[i][j + 1]))
 		return (cub_errors_setter(g, MAP_INVALID_BORDER));
 	if (i + 1 < g->map.height && g->map.arr[i][j] == -1
-		&& g->map.arr[i + 1][j] == 0)
+		&& is_invalid_border(g->map.arr[i + 1][j]))
 		return (cub_errors_setter(g, MAP_INVALID_BORDER));
-	if (j + 1 < g->map.width && g->map.arr[i][j] == 0
+	if (j + 1 < g->map.width && is_invalid_border(g->map.arr[i][j])
 		&& g->map.arr[i][j + 1] == -1)
 		return (cub_errors_setter(g, MAP_INVALID_BORDER));
-	if (i + 1 < g->map.height && g->map.arr[i][j] == 0
+	if (i + 1 < g->map.height && is_invalid_border(g->map.arr[i][j])
 		&& g->map.arr[i + 1][j] == -1)
 		return (cub_errors_setter(g, MAP_INVALID_BORDER));
 	return (RETURN_SUCCESS);
@@ -35,13 +42,13 @@ int	cub_check_map(t_game *g)
 
 	it.i = -1;
 	while (++it.i < g->map.width)
-		if (g->map.arr[0][it.i] == 0
-			|| g->map.arr[g->map.height - 1][it.i] == 0)
+		if (is_invalid_border(g->map.arr[0][it.i])
+			|| is_invalid_border(g->map.arr[g->map.height - 1][it.i]))
 			return (cub_errors_setter(g, MAP_INVALID_BORDER));
 	it.i = -1;
 	while (++it.i < g->map.height)
-		if (g->map.arr[it.i][0] == 0
-			|| g->map.arr[it.i][g->map.width - 1] == 0)
+		if (is_invalid_border(g->map.arr[it.i][0])
+			|| is_invalid_border(g->map.arr[it.i][g->map.width - 1]))
 			return (cub_errors_setter(g, MAP_INVALID_BORDER));
 	it.i = -1;
 	while (++it.i < g->map.height)

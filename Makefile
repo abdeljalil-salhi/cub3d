@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: isalhi <isalhi@student.42.fr>              +#+  +:+       +#+         #
+#    By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/19 21:24:26 by absalhi           #+#    #+#              #
-#    Updated: 2023/05/20 16:24:15 by isalhi           ###   ########.fr        #
+#    Updated: 2023/05/21 01:45:57 by absalhi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,7 +63,8 @@ B_PARSING	=	$(addprefix parsing/, $(_BPARSING))
 
 _BSPRITES	=	weapon.c		medkit.c		door.c		tips.c
 _BSINIT		=	$(addprefix init/,														\
-				objects.c		enemy/soldier.c		enemy/cyberdemon.c		weapon.c	)
+				enemy/soldier.c		enemy/cyberdemon.c		enemy/cacodemon.c			\
+				objects.c			weapon.c											)
 _BSENEMY	=	$(addprefix enemy/,														\
 				enemy.c			state_checker.c		framer.c		movement.c			)
 _BSRENDER	=	$(addprefix render/,													\
@@ -136,6 +137,7 @@ help		:
 				@echo "     - [ "$(NONE)$(GREEN)"M"$(NONE)$(GRAY)" ] Medkit"
 				@echo "     - [ "$(NONE)$(GREEN)"V"$(NONE)$(GRAY)" ] Enemy - Soldier"
 				@echo "     - [ "$(NONE)$(GREEN)"C"$(NONE)$(GRAY)" ] Enemy - Cyberdemon"
+				@echo "     - [ "$(NONE)$(GREEN)"K"$(NONE)$(GRAY)" ] Enemy - Cacodemon"
 
 clean		:
 				@echo $(ITALIC)$(GRAY) "     - Removing object files..." $(NONE)

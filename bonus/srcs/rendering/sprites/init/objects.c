@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 08:34:35 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/19 02:40:14 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/21 00:05:21 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ int	init_objects(t_game *g)
 	init_interactive_objects(g);
 	init_soldier(g);
 	init_cyberdemon(g);
+	init_cacodemon(g);
 	it.i = -1;
 	while (++it.i < N_OF_OBJECTS)
 	{

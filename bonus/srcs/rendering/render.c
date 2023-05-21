@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isalhi <isalhi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 00:58:36 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/20 21:04:40 by isalhi           ###   ########.fr       */
+/*   Updated: 2023/05/21 00:23:53 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,11 @@ void	update(t_game *g)
 	ticks_last_frame = (float) current_time_ms();
 	player_movement(g);
 	raycast(g);
-	mlx_put_image_to_window(g->mlx, g->win.ref, g->frame.ref, 0, 0);
 	if (g->display_map)
 		draw_map(g);
 	else
 		draw_minimap(g);
+	mlx_put_image_to_window(g->mlx, g->win.ref, g->frame.ref, 0, 0);
 	if (!g->display_map)
 		draw_weapon(g);
 	put_tips(g);

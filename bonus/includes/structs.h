@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isalhi <isalhi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 22:05:12 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/20 15:28:33 by isalhi           ###   ########.fr       */
+/*   Updated: 2023/05/20 23:56:42 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ typedef unsigned long		t_ul;
 
 # define N_OF_SOUNDS 11
 
-# define N_OF_OBJECTS 15
+# define N_OF_OBJECTS 19
 # define OBJECTS_MAX_FRAME 9
 
 # define N_OF_WEAPONS 2

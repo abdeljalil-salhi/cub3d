@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 14:50:29 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/16 00:54:32 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/21 05:35:24 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,22 @@
 
 int	cub_file_line_parse_identifier(t_game *g, char **line)
 {
-	if (ft_strncmp(line[0], "NO", 2) == 0)
+	if (ft_strncmp(line[0], "NO", 3) == 0)
 		return (cub_parse_texture(g, line,
 				&g->assets.north, &g->parsing.has_north));
-	else if (ft_strncmp(line[0], "SO", 2) == 0)
+	else if (ft_strncmp(line[0], "SO", 3) == 0)
 		return (cub_parse_texture(g, line,
 				&g->assets.south, &g->parsing.has_south));
-	else if (ft_strncmp(line[0], "WE", 2) == 0)
+	else if (ft_strncmp(line[0], "WE", 3) == 0)
 		return (cub_parse_texture(g, line,
 				&g->assets.west, &g->parsing.has_west));
-	else if (ft_strncmp(line[0], "EA", 2) == 0)
+	else if (ft_strncmp(line[0], "EA", 3) == 0)
 		return (cub_parse_texture(g, line,
 				&g->assets.east, &g->parsing.has_east));
-	else if (ft_strncmp(line[0], "F", 1) == 0)
+	else if (ft_strncmp(line[0], "F", 2) == 0)
 		return (cub_parse_color(g, line,
 				&g->assets.floor, &g->parsing.has_floor));
-	else if (ft_strncmp(line[0], "C", 1) == 0)
+	else if (ft_strncmp(line[0], "C", 2) == 0)
 		return (cub_parse_color(g, line,
 				&g->assets.ceiling, &g->parsing.has_ceiling));
 	return (cub_errors_setter(g, MAP_INVALID_IDENTIFIER));

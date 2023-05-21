@@ -6,24 +6,31 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 17:19:06 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/19 10:46:08 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/21 05:51:46 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+static bool	is_invalid_border(int c)
+{
+	if (c == 0 || c == PLAYER)
+		return (true);
+	return (false);
+}
+
 static int	check_map_components(t_game *g, int i, int j)
 {
 	if (j + 1 < g->map.width && g->map.arr[i][j] == -1
-		&& g->map.arr[i][j + 1] == 0)
+		&& is_invalid_border(g->map.arr[i][j + 1]))
 		return (errors_setter(g, MAP_INVALID_BORDER));
 	if (i + 1 < g->map.height && g->map.arr[i][j] == -1
-		&& g->map.arr[i + 1][j] == 0)
+		&& is_invalid_border(g->map.arr[i + 1][j]))
 		return (errors_setter(g, MAP_INVALID_BORDER));
-	if (j + 1 < g->map.width && g->map.arr[i][j] == 0
+	if (j + 1 < g->map.width && is_invalid_border(g->map.arr[i][j])
 		&& g->map.arr[i][j + 1] == -1)
 		return (errors_setter(g, MAP_INVALID_BORDER));
-	if (i + 1 < g->map.height && g->map.arr[i][j] == 0
+	if (i + 1 < g->map.height && is_invalid_border(g->map.arr[i][j])
 		&& g->map.arr[i + 1][j] == -1)
 		return (errors_setter(g, MAP_INVALID_BORDER));
 	return (RETURN_SUCCESS);

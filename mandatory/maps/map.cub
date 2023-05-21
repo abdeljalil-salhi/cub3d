@@ -1,7 +1,7 @@
 
   SO	./assets/south.xpm
 
-     NO          ./assets/north.xpm    
+     NO         ./assets/north.xpm    
 
  WE ./assets/west.xpm
 
@@ -10,11 +10,11 @@
 
  EA ./assets/east.xpm
 
-   F     30  ,  30  ,  30      
+    F    30  ,  30  ,  30      
 
-         C	 240,155,34
+ C	 240,155,34
 
-
+    
 
 1111111111111111111111111
 1000000000000000000000001

@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   cub_map_norm.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isalhi <isalhi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 01:09:49 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/18 01:53:32 by isalhi           ###   ########.fr       */
+/*   Updated: 2023/05/21 05:36:54 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+static bool	is_invalid_eol(char *c)
+{
+	if (ft_strncmp(c, " \n", 2) == 0)
+		return (true);
+	return (false);
+}
 
 void	cub_map_init_norm(t_game *g, t_cub_map_init *s)
 {
@@ -20,10 +27,9 @@ void	cub_map_init_norm(t_game *g, t_cub_map_init *s)
 		s->it.i++;
 	s->it.j = s->it.i;
 	while (s->quick_line[s->it.j]
-		&& s->quick_line[s->it.j] != ' ' && s->quick_line[s->it.j] != '\n')
-	{
+		&& !is_invalid_eol(&s->quick_line[s->it.j])
+		&& s->quick_line[s->it.j] != '\n')
 		s->it.j++;
-	}
 	if (s->it.j - s->it.i > s->width)
 		s->width = s->it.j - s->it.i;
 	if (s->lowest_indent == -1)

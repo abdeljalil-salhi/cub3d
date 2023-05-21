@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 08:38:59 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/19 08:26:30 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/20 23:56:18 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,29 @@
 # define CYBERDEMON_DEATH_6 "assets/sprites/enemy/cyberdemon/death/6.xpm"
 # define CYBERDEMON_DEATH_7 "assets/sprites/enemy/cyberdemon/death/7.xpm"
 # define CYBERDEMON_DEATH_8 "assets/sprites/enemy/cyberdemon/death/8.xpm"
+
+/*
+**		CACODEMON
+*/
+# define CACODEMON_WALK_0 "assets/sprites/enemy/cacodemon/walk/0.xpm"
+# define CACODEMON_WALK_1 "assets/sprites/enemy/cacodemon/walk/1.xpm"
+# define CACODEMON_WALK_2 "assets/sprites/enemy/cacodemon/walk/2.xpm"
+# define CACODEMON_DAMAGED_0 "assets/sprites/enemy/cacodemon/damaged/0.xpm"
+# define CACODEMON_DAMAGED_1 "assets/sprites/enemy/cacodemon/damaged/1.xpm"
+# define CACODEMON_ATTACK_0 "assets/sprites/enemy/cacodemon/attack/0.xpm"
+# define CACODEMON_ATTACK_1 "assets/sprites/enemy/cacodemon/attack/1.xpm"
+# define CACODEMON_ATTACK_2 "assets/sprites/enemy/cacodemon/attack/2.xpm"
+# define CACODEMON_ATTACK_3 "assets/sprites/enemy/cacodemon/attack/3.xpm"
+# define CACODEMON_ATTACK_4 "assets/sprites/enemy/cacodemon/attack/4.xpm"
+# define CACODEMON_DEATH_0 "assets/sprites/enemy/cacodemon/death/0.xpm"
+# define CACODEMON_DEATH_1 "assets/sprites/enemy/cacodemon/death/1.xpm"
+# define CACODEMON_DEATH_2 "assets/sprites/enemy/cacodemon/death/2.xpm"
+# define CACODEMON_DEATH_3 "assets/sprites/enemy/cacodemon/death/3.xpm"
+# define CACODEMON_DEATH_4 "assets/sprites/enemy/cacodemon/death/4.xpm"
+# define CACODEMON_DEATH_5 "assets/sprites/enemy/cacodemon/death/5.xpm"
+# define CACODEMON_DEATH_6 "assets/sprites/enemy/cacodemon/death/6.xpm"
+# define CACODEMON_DEATH_7 "assets/sprites/enemy/cacodemon/death/7.xpm"
+# define CACODEMON_DEATH_8 "assets/sprites/enemy/cacodemon/death/8.xpm"
 
 /* ---------------------------------- WEAPON -------------------------------- */
 

@@ -6,7 +6,7 @@
 /*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 10:11:14 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/19 10:18:28 by absalhi          ###   ########.fr       */
+/*   Updated: 2023/05/21 05:21:19 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	interactive_objects_setter(t_game *g, char c, int count,
 		g->objects[count].type = OBJECT_WEAPON_SHOTGUN;
 }
 
-static void	enemies_setter(t_game *g, char c, int count)
+static void	soldier_setter(t_game *g, char c, int count)
 {
 	if (c == 'V')
 	{
@@ -51,22 +51,30 @@ static void	enemies_setter(t_game *g, char c, int count)
 		g->objects[count].infos[ENEMY_RANGE] = 300;
 		g->objects[count].infos[ENEMY_SPEED] = 200;
 	}
-	else if (c == 'C')
+}
+
+static void	demons_setter(t_game *g, char c, int count)
+{
+	if (c == 'C')
 	{
 		g->objects[count].type = OBJECT_CYBERDEMON_WALK;
-		g->objects[count].infos[ENEMY_HEALTH] = 200;
-		g->objects[count].infos[ENEMY_BOUNTY] = 500;
+		g->objects[count].infos[ENEMY_HEALTH] = 250;
+		g->objects[count].infos[ENEMY_BOUNTY] = 1000;
 		g->objects[count].infos[ENEMY_PRECISION] = 40;
 		g->objects[count].infos[ENEMY_DAMAGE] = 40;
 		g->objects[count].infos[ENEMY_RANGE] = 500;
 		g->objects[count].infos[ENEMY_SPEED] = 70;
 	}
-}
-
-bool	is_object(char c)
-{
-	return (c == 'B' || c == 'L' || c == 'P' || c == 'G'
-		|| c == 'M' || c == 'D' || c == 'V' || c == 'C' || c == 'H');
+	else if (c == 'K')
+	{
+		g->objects[count].type = OBJECT_CACODEMON_WALK;
+		g->objects[count].infos[ENEMY_HEALTH] = 300;
+		g->objects[count].infos[ENEMY_BOUNTY] = 500;
+		g->objects[count].infos[ENEMY_PRECISION] = 60;
+		g->objects[count].infos[ENEMY_DAMAGE] = 50;
+		g->objects[count].infos[ENEMY_RANGE] = 100;
+		g->objects[count].infos[ENEMY_SPEED] = 70;
+	}
 }
 
 void	object_setter(t_game *g, char c, int i, int j)
@@ -78,7 +86,8 @@ void	object_setter(t_game *g, char c, int i, int j)
 	g->objects[count].infos[ENEMY_HEALTH] = 1;
 	static_objects_setter(g, c, count);
 	interactive_objects_setter(g, c, count, (t_iterators){i, j});
-	enemies_setter(g, c, count);
+	soldier_setter(g, c, count);
+	demons_setter(g, c, count);
 	g->objects[count].pos.x = j * TILE_SIZE + TILE_SIZE / 2;
 	g->objects[count].pos.y = i * TILE_SIZE + TILE_SIZE / 2;
 	g->objects[count].frame = 0;

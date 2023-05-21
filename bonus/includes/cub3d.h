@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isalhi <isalhi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: absalhi <absalhi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 21:41:40 by absalhi           #+#    #+#             */
-/*   Updated: 2023/05/20 16:25:56 by isalhi           ###   ########.fr       */
+/*   Updated: 2023/05/21 01:19:37 by absalhi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,9 @@ typedef unsigned long long	t_ull;
 # define NAME "cub3D"
 # define TMP "assets/sounds/.tmp"
 
-# ifndef NO_TEXTURES
-#  define NO_TEXTURES 0
-# endif
-
-# ifdef MINIMAP
-#  define FPS 80
-#  define TILE_SIZE 32
-#  define PLAYER_SPEED 200
-# else
-#  define MINIMAP 0
-#  define FPS 40
-#  define TILE_SIZE 64
-#  define PLAYER_SPEED 250
-# endif
+# define FPS 40
+# define TILE_SIZE 64
+# define PLAYER_SPEED 250
 
 # define WIN_WIDTH 1600
 # define WIN_HEIGHT 900
@@ -157,6 +146,10 @@ enum
 	OBJECT_CYBERDEMON_DAMAGED,
 	OBJECT_CYBERDEMON_ATTACK,
 	OBJECT_CYBERDEMON_DEATH,
+	OBJECT_CACODEMON_WALK,
+	OBJECT_CACODEMON_DAMAGED,
+	OBJECT_CACODEMON_ATTACK,
+	OBJECT_CACODEMON_DEATH,
 	OBJECT_WEAPON_SHOTGUN,
 };
 
@@ -278,6 +271,7 @@ int		init_textures(t_game *g);
 int		init_sprites(t_game *g);
 int		init_game(t_game *g);
 bool	check_if_wall(int content);
+bool	has_void_at(t_game *g, float x, float y);
 bool	has_wall_at(t_game *g, float x, float y);
 bool	has_door_at(t_game *g, float x, float y);
 void	check_wall_collision(t_game *g, float dx, float dy);
@@ -334,6 +328,7 @@ int		init_weapon(t_game *g);
 int		init_objects(t_game *g);
 void	init_soldier(t_game *g);
 void	init_cyberdemon(t_game *g);
+void	init_cacodemon(t_game *g);
 void	check_for_doors(t_game *g, int z);
 void	check_for_enemies(t_game *g, int z);
 bool	check_for_medkits(t_game *g, int z);
