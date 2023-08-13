@@ -23,9 +23,11 @@
 ---
 
 <p align="center">
-    <img src="https://tnow-prod-weur.367791ca7abea81096902b345fee7b1f.r2.cloudflarestorage.com/2023-08-13/836cf2cd0f78b0008967160e1368ccff/20230813Eq8hLnCh/FxkMRl/showcasegif-min.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=3300106ad320d1c9e7be8252d99fb71b%2F20230813%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20230813T122725Z&X-Amz-Expires=86400&X-Amz-Signature=27dc63dcdab93fc130803fb9049c3dec048e685e490203c006d467b7eee18da3&X-Amz-SignedHeaders=host&response-content-disposition=inline%3B%20filename%3D%22showcasegif-min.gif%22" alt="cub3d gameplay" />
+    <a href="https://www.youtube.com/watch?v=2E4RQj_uQ4Q">
+	<img src="https://img.youtube.com/vi/2E4RQj_uQ4Q/0.jpg" alt="cub3d gameplay" />
+    </a>
     <br />
-	<i>My cub3d gameplay</i>
+    <i>My cub3d showcase - YouTube</i>
 </p>
 
 ---
